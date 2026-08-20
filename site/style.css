@@ -480,6 +480,13 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
 
 .band-dark .lede { color: var(--hero-muted); }
 
+/* вводка-рамка секции «Как я работаю» */
+.how-lede {
+  max-width: 720px;
+  margin: -16px auto 44px;
+  text-align: center;
+}
+
 /* ─── Ключевые задачи (список в секции «Опыт») ─── */
 
 .exp-highlights-title {

@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 # Ручной деплой sshorg.com: заливает site/ на VPS. Настройки — через env или дефолты ниже.
+# Кэш-бастинг: ?v=dev в index.html подменяется на git-хэш+время, чтобы браузеры
+# не держали старые app.js/style.css после деплоя (version skew ломает i18n).
 set -euo pipefail
 
 DEPLOY_HOST="${DEPLOY_HOST:-root@49.13.146.50}"
 DEPLOY_PATH="${DEPLOY_PATH:-/var/www/sshorg}"
 DEPLOY_KEY="${DEPLOY_KEY:-$HOME/.ssh/budget_bot_ci}"
 
-scp -i "$DEPLOY_KEY" site/* "$DEPLOY_HOST:$DEPLOY_PATH/"
-curl -s -o /dev/null -w "https://sshorg.com -> %{http_code}\n" https://sshorg.com
+VERSION="$(git rev-parse --short HEAD 2>/dev/null || date +%s)-$(date +%H%M)"
+STAGE="$(mktemp -d)"
+trap 'rm -rf "$STAGE"' EXIT
+
+cp site/* "$STAGE/"
+sed -i '' "s/?v=dev/?v=$VERSION/g" "$STAGE/index.html"
+
+scp -i "$DEPLOY_KEY" "$STAGE"/* "$DEPLOY_HOST:$DEPLOY_PATH/"
+curl -s -o /dev/null -w "https://sshorg.com -> %{http_code} (v=$VERSION)\n" https://sshorg.com

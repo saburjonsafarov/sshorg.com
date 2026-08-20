@@ -24,6 +24,8 @@ jobs:
 
       - name: Copy site to server
         run: |
+          VERSION="${GITHUB_SHA::7}"
+          sed -i "s/?v=dev/?v=$VERSION/g" site/index.html
           scp -i ~/.ssh/deploy_key site/* \
             "${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 

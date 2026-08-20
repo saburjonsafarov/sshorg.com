@@ -197,6 +197,57 @@ function typeGreeting() {
 // Метка «JS работает»: только с ней CSS прячет .reveal-блоки до появления в вьюпорте.
 document.documentElement.classList.add('js');
 
+// Лендинг всегда открывается с начала: браузерное восстановление позиции скролла
+// после перезагрузки ломает вводную анимацию hero.
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    window.scrollTo(0, 0);
+  }
+});
+
+function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  const inner = document.querySelector('.hero-inner');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!hero || !inner || reducedMotion) {
+    return;
+  }
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const heroHeight = hero.offsetHeight;
+    if (heroHeight === 0) {
+      return;
+    }
+    const scrolled = Math.min(Math.max(window.scrollY, 0), heroHeight);
+    const progress = scrolled / heroHeight;
+    // Контент уезжает медленнее фона, гаснет к 70% высоты hero и слегка сжимается.
+    inner.style.opacity = String(Math.max(1 - progress / 0.7, 0));
+    inner.style.transform = `translateY(${(scrolled * 0.3).toFixed(1)}px) scale(${(1 - progress * 0.06).toFixed(3)})`;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }, { passive: true });
+  update();
+}
+
+function initTopbarShadow() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) {
+    return;
+  }
+  const update = () => topbar.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
 function revealOnScroll() {
   const blocks = document.querySelectorAll('.reveal');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -223,6 +274,8 @@ if (savedTheme === 'dark' || savedTheme === 'light') {
 applyLanguage(initialLanguage());
 typeGreeting();
 revealOnScroll();
+initHeroParallax();
+initTopbarShadow();
 
 document.querySelectorAll('.lang-btn').forEach((button) => {
   button.addEventListener('click', () => applyLanguage(button.dataset.lang));

@@ -71,7 +71,10 @@ body {
   background: var(--bar);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
+  transition: box-shadow 0.3s ease;
 }
+
+.topbar.scrolled { box-shadow: 0 1px 12px rgba(0, 0, 0, 0.12); }
 
 .topbar-inner {
   max-width: 1024px;
@@ -168,11 +171,24 @@ body {
   line-height: 1.05;
   font-weight: 700;
   letter-spacing: -0.02em;
-  background: linear-gradient(100deg, #2997ff 0%, #a972ff 55%, #ff6482 100%);
+  background: linear-gradient(100deg, #2997ff 0%, #a972ff 40%, #ff6482 60%, #a972ff 80%, #2997ff 100%);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #2997ff; /* фолбэк, если background-clip: text не поддержан */
+  animation: gradient-pan 9s ease-in-out infinite alternate;
+}
+
+@keyframes gradient-pan {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+.hero-inner { will-change: transform, opacity; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title { animation: none; }
 }
 
 .hero-sub {
@@ -355,17 +371,24 @@ body {
 
 .footer p { margin: 4px 0; }
 
+.footer-hobbies { font-size: 15px; letter-spacing: 2px; margin-bottom: 10px; }
+
 /* ─── Появление при скролле ─── */
 
 /* скрытое стартовое состояние — только при работающем JS (html.js вешает app.js),
    иначе контент был бы навсегда невидим без скриптов */
 html.js .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(24px) scale(0.985);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 html.js .reveal.in { opacity: 1; transform: none; }
+
+/* каскад внутри бенто-сетки: карточки догоняют друг друга */
+html.js .bento .reveal:nth-child(2) { transition-delay: 0.08s; }
+html.js .bento .reveal:nth-child(3) { transition-delay: 0.16s; }
+html.js .bento .reveal:nth-child(4) { transition-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

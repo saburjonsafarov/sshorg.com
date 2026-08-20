@@ -16,6 +16,11 @@ const translations = {
     s_legacy: 'Перевожу легаси-монолиты на современный стек — Compose, Ktor, модуляризация, статанализ — стратегией strangler, не останавливая продукт.',
     s_product_title: 'Продукт и дизайн',
     s_product: 'Не прощаю плохой UX: island-эстетика, анимации, нативные жесты; каждую фичу проверяю на реальных устройствах.',
+    statement_kmp: 'Один Kotlin. Обе платформы.',
+    statement_craft: 'Хороший продукт собирается из деталей.',
+    stat_review: 'быстрее код-ревью с ИИ',
+    stat_wait: 'меньше ожидания ревью',
+    stat_years: 'лет в одной команде',
     exp_title: 'Опыт',
     exp_text: 'Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025. Клиентские мобильные приложения банка, менторство джунов.',
     projects_title: 'Проекты',
@@ -49,6 +54,11 @@ const translations = {
     s_legacy: 'Монолитҳои кӯҳнаро ба стеки муосир мегузаронам — Compose, Ktor, модулбандӣ, таҳлили статикӣ — бо стратегияи strangler, бе таваққуфи маҳсулот.',
     s_product_title: 'Маҳсулот ва дизайн',
     s_product: 'UX-и бадро намебахшам: эстетикаи island, аниматсияҳо, жестҳои нативӣ; ҳар хусусиятро дар дастгоҳҳои воқеӣ месанҷам.',
+    statement_kmp: 'Як Kotlin. Ҳар ду платформа.',
+    statement_craft: 'Маҳсулоти хуб аз ҷузъиёт сохта мешавад.',
+    stat_review: 'код-ревю бо зеҳни сунъӣ тезтар',
+    stat_wait: 'интизории ревю камтар',
+    stat_years: 'сол дар як даста',
     exp_title: 'Таҷриба',
     exp_text: 'Бонки «Эсхата», Хуҷанд — қариб панҷ сол дар як даста: ихтиёрӣ (ноябри 2021) → таҷрибаомӯз → Junior → Middle → аз ноябри 2025 Senior Android-барномасоз. Замимаҳои мобилии муштариёни бонк ва роҳбаладии барномасозони ҷавон.',
     projects_title: 'Лоиҳаҳо',
@@ -82,6 +92,11 @@ const translations = {
     s_legacy: 'I move legacy monoliths onto a modern stack — Compose, Ktor, modularization, static analysis — using the strangler pattern, without pausing the product.',
     s_product_title: 'Product and design',
     s_product: "I don't let bad UX slide: island aesthetics, animations, native gestures; I test every feature on real devices.",
+    statement_kmp: 'One Kotlin. Both platforms.',
+    statement_craft: 'Great products are made of details.',
+    stat_review: 'faster code review with AI',
+    stat_wait: 'less review waiting',
+    stat_years: 'years on one team',
     exp_title: 'Experience',
     exp_text: 'Bank Eskhata, Khujand — nearly five years on one team: volunteer (November 2021) → intern → Junior → Middle → Senior Android developer since November 2025. The bank\'s client mobile apps, plus mentoring juniors.',
     projects_title: 'Projects',
@@ -317,6 +332,7 @@ function initCountUp() {
       return;
     }
     const prefix = element.dataset.prefix || '';
+    const suffix = element.dataset.suffix || '';
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
@@ -328,7 +344,7 @@ function initCountUp() {
         const tick = (now) => {
           const progress = Math.min((now - started) / DURATION_MS, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
-          element.textContent = `${prefix}${Math.round(eased * target)}`;
+          element.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
           if (progress < 1) {
             window.requestAnimationFrame(tick);
           }
@@ -338,6 +354,237 @@ function initCountUp() {
     }, { threshold: 0.4 });
     observer.observe(element);
   });
+}
+
+// Живой force-directed граф в hero — веб-оммаж библиотеке compose-graph владельца.
+// Физика: пружины по рёбрам + кулоновское отталкивание + гравитация к кольцу
+// вокруг текста + отталкивание от курсора. Пауза, когда hero вне вьюпорта.
+function initHeroGraph() {
+  const canvas = document.querySelector('.hero-graph');
+  const hero = document.querySelector('.hero');
+  if (!canvas || !hero || !canvas.getContext) {
+    return;
+  }
+  const ctx = canvas.getContext('2d');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const GROUP_COLORS = ['#2997ff', '#a972ff', '#ff6482', '#64d2ff'];
+  const nodes = [
+    { id: 'Kotlin', group: 0 },
+    { id: 'KMP', group: 0 },
+    { id: 'Compose', group: 0 },
+    { id: 'Ktor', group: 0 },
+    { id: 'Coroutines', group: 0 },
+    { id: 'Android', group: 1 },
+    { id: 'iOS', group: 1 },
+    { id: 'SwiftUI', group: 1 },
+    { id: 'AI', group: 2 },
+    { id: 'Claude', group: 2 },
+    { id: 'CI', group: 2 },
+    { id: 'UX', group: 3 },
+    { id: 'Figma', group: 3 },
+  ].map((node) => ({
+    ...node,
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+  }));
+  const edges = [
+    [0, 1], [0, 2], [0, 3], [0, 4],
+    [1, 5], [1, 6], [6, 7], [2, 5],
+    [8, 9], [8, 10], [0, 8],
+    [11, 12], [2, 11],
+  ];
+  const pointer = { x: -1e4, y: -1e4 };
+  const inner = hero.querySelector('.hero-inner');
+  const textZone = { x0: 0, y0: 0, x1: 0, y1: 0 };
+  let width = 0;
+  let height = 0;
+  let rafId = null;
+  let running = false;
+
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = hero.clientWidth;
+    height = hero.clientHeight;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (inner) {
+      // зона текста (offsetTop/Left не зависят от transform параллакса)
+      const PAD = 36;
+      textZone.x0 = inner.offsetLeft - PAD;
+      textZone.y0 = inner.offsetTop - PAD;
+      textZone.x1 = inner.offsetLeft + inner.offsetWidth + PAD;
+      textZone.y1 = inner.offsetTop + inner.offsetHeight + PAD;
+    }
+  };
+
+  const seed = () => {
+    nodes.forEach((node, index) => {
+      const angle = (index / nodes.length) * Math.PI * 2;
+      const radius = Math.min(width, height) * 0.36;
+      node.x = width / 2 + Math.cos(angle) * radius;
+      node.y = height / 2 + Math.sin(angle) * radius;
+    });
+  };
+
+  const step = () => {
+    const restLength = Math.min(width, height) * 0.18;
+    for (let i = 0; i < nodes.length; i += 1) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j += 1) {
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const distSq = Math.max(dx * dx + dy * dy, 64);
+        const force = 1600 / distSq;
+        const dist = Math.sqrt(distSq);
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        a.vx += fx; a.vy += fy;
+        b.vx -= fx; b.vy -= fy;
+      }
+    }
+    edges.forEach(([ai, bi]) => {
+      const a = nodes[ai];
+      const b = nodes[bi];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.max(Math.hypot(dx, dy), 1);
+      const force = (dist - restLength) * 0.015;
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+      a.vx += fx; a.vy += fy;
+      b.vx -= fx; b.vy -= fy;
+    });
+    nodes.forEach((node) => {
+      // мягкая гравитация к центру + выталкивание из прямоугольника текста
+      const cx = width / 2 - node.x;
+      const cy = height / 2 - node.y;
+      node.vx += cx * 0.0015;
+      node.vy += cy * 0.0015;
+      if (node.x > textZone.x0 && node.x < textZone.x1 && node.y > textZone.y0 && node.y < textZone.y1) {
+        const toLeft = node.x - textZone.x0;
+        const toRight = textZone.x1 - node.x;
+        const toTop = node.y - textZone.y0;
+        const toBottom = textZone.y1 - node.y;
+        const minDist = Math.min(toLeft, toRight, toTop, toBottom);
+        // сила растёт с глубиной проникновения — равновесие всегда вне зоны
+        const push = Math.min(minDist * 0.06, 4);
+        if (minDist === toLeft) {
+          node.vx -= push;
+        } else if (minDist === toRight) {
+          node.vx += push;
+        } else if (minDist === toTop) {
+          node.vy -= push;
+        } else {
+          node.vy += push;
+        }
+      }
+      const px = node.x - pointer.x;
+      const py = node.y - pointer.y;
+      const pointerDist = Math.hypot(px, py);
+      if (pointerDist < 140 && pointerDist > 0) {
+        node.vx += (px / pointerDist) * (140 - pointerDist) * 0.03;
+        node.vy += (py / pointerDist) * (140 - pointerDist) * 0.03;
+      }
+      node.vx *= 0.9;
+      node.vy *= 0.9;
+      node.x = Math.min(Math.max(node.x + node.vx, 30), width - 30);
+      node.y = Math.min(Math.max(node.y + node.vy, 30), height - 30);
+    });
+  };
+
+  const draw = () => {
+    const isDark = effectiveTheme() === 'dark';
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = isDark ? 'rgba(245, 245, 247, 0.14)' : 'rgba(29, 29, 31, 0.12)';
+    edges.forEach(([ai, bi]) => {
+      ctx.beginPath();
+      ctx.moveTo(nodes[ai].x, nodes[ai].y);
+      ctx.lineTo(nodes[bi].x, nodes[bi].y);
+      ctx.stroke();
+    });
+    ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.textAlign = 'center';
+    nodes.forEach((node) => {
+      const color = GROUP_COLORS[node.group];
+      ctx.save();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = isDark ? 'rgba(245, 245, 247, 0.55)' : 'rgba(29, 29, 31, 0.55)';
+      ctx.fillText(node.id, node.x, node.y + 17);
+    });
+  };
+
+  const frame = () => {
+    step();
+    draw();
+    rafId = window.requestAnimationFrame(frame);
+  };
+
+  const start = () => {
+    if (!running && !reducedMotion) {
+      running = true;
+      rafId = window.requestAnimationFrame(frame);
+    }
+  };
+
+  const stop = () => {
+    running = false;
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  };
+
+  resize();
+  seed();
+  // граф появляется уже уложенным: короткий прогон физики + первый кадр сразу
+  for (let i = 0; i < 160; i += 1) {
+    step();
+  }
+  draw();
+  if (reducedMotion) {
+    for (let i = 0; i < 100; i += 1) {
+      step();
+    }
+    draw();
+  } else {
+    hero.addEventListener('pointermove', (event) => {
+      const rect = hero.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+    });
+    hero.addEventListener('pointerleave', () => {
+      pointer.x = -1e4;
+      pointer.y = -1e4;
+    });
+    window.addEventListener('resize', () => {
+      resize();
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((entry) => (entry.isIntersecting ? start() : stop()));
+      }).observe(hero);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    });
+  }
 }
 
 function initScrollProgress() {
@@ -394,6 +641,7 @@ initCardSpotlight();
 initHeroGlow();
 initMagneticCta();
 initCountUp();
+initHeroGraph();
 
 document.querySelectorAll('.lang-btn').forEach((button) => {
   button.addEventListener('click', () => applyLanguage(button.dataset.lang));

@@ -33,6 +33,7 @@
 <main class="page">
 
   <section class="hero">
+    <canvas class="hero-graph" aria-hidden="true"></canvas>
     <div class="hero-inner">
       <p class="hero-greeting"><span id="typedGreeting" data-i18n="greeting">Привет, я Сабурджон.</span></p>
       <h1 class="hero-title" data-i18n="role">Senior Android · Kotlin Multiplatform инженер</h1>
@@ -71,10 +72,31 @@
     </div>
   </section>
 
+  <section class="statement band-alt" aria-label="KMP">
+    <p class="statement-text reveal" data-i18n="statement_kmp">Один Kotlin. Обе платформы.</p>
+  </section>
+
   <section class="band" aria-labelledby="expTitle">
     <div class="band-inner band-narrow">
       <h2 id="expTitle" class="band-title reveal" data-i18n="exp_title">Опыт</h2>
       <p class="lede reveal" data-i18n="exp_text">Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025. Клиентские мобильные приложения банка, менторство джунов.</p>
+    </div>
+  </section>
+
+  <section class="band stats" aria-label="Цифры">
+    <div class="band-inner stats-row">
+      <div class="stat reveal">
+        <p class="stat-num" data-countup="48" data-prefix="×">×48</p>
+        <p class="stat-label" data-i18n="stat_review">быстрее код-ревью с ИИ</p>
+      </div>
+      <div class="stat reveal">
+        <p class="stat-num" data-countup="98" data-suffix="%">98%</p>
+        <p class="stat-label" data-i18n="stat_wait">меньше ожидания ревью</p>
+      </div>
+      <div class="stat reveal">
+        <p class="stat-num" data-countup="5">5</p>
+        <p class="stat-label" data-i18n="stat_years">лет в одной команде</p>
+      </div>
     </div>
   </section>
 
@@ -128,6 +150,10 @@
         <li>MockK · Turbine</li>
       </ul>
     </div>
+  </section>
+
+  <section class="statement" aria-label="Craft">
+    <p class="statement-text reveal" data-i18n="statement_craft">Хороший продукт собирается из деталей.</p>
   </section>
 
   <section class="band band-alt" aria-labelledby="eduTitle">

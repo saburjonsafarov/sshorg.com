@@ -248,6 +248,27 @@ function initTopbarShadow() {
   update();
 }
 
+function initScrollProgress() {
+  const bar = document.querySelector('.scroll-progress');
+  if (!bar) {
+    return;
+  }
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? window.scrollY / max : 0;
+    bar.style.width = `${(progress * 100).toFixed(2)}%`;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }, { passive: true });
+  update();
+}
+
 function revealOnScroll() {
   const blocks = document.querySelectorAll('.reveal');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -276,6 +297,7 @@ typeGreeting();
 revealOnScroll();
 initHeroParallax();
 initTopbarShadow();
+initScrollProgress();
 
 document.querySelectorAll('.lang-btn').forEach((button) => {
   button.addEventListener('click', () => applyLanguage(button.dataset.lang));

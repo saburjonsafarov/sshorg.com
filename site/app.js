@@ -248,6 +248,98 @@ function initTopbarShadow() {
   update();
 }
 
+function isFinePointer() {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+function initCardSpotlight() {
+  if (!isFinePointer()) {
+    return;
+  }
+  document.querySelectorAll('.card').forEach((card) => {
+    card.addEventListener('pointermove', (event) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${(((event.clientX - rect.left) / rect.width) * 100).toFixed(1)}%`);
+      card.style.setProperty('--my', `${(((event.clientY - rect.top) / rect.height) * 100).toFixed(1)}%`);
+    });
+  });
+}
+
+function initHeroGlow() {
+  const hero = document.querySelector('.hero');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!hero || !isFinePointer() || reducedMotion) {
+    return;
+  }
+  hero.addEventListener('pointermove', (event) => {
+    const rect = hero.getBoundingClientRect();
+    hero.style.setProperty('--gx', `${(((event.clientX - rect.left) / rect.width) * 100).toFixed(1)}%`);
+    hero.style.setProperty('--gy', `${(((event.clientY - rect.top) / rect.height) * 100).toFixed(1)}%`);
+    hero.classList.add('glow-on');
+  });
+  hero.addEventListener('pointerleave', () => hero.classList.remove('glow-on'));
+}
+
+function initMagneticCta() {
+  const zone = document.querySelector('.hero-actions');
+  const button = zone ? zone.querySelector('.btn-primary') : null;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!zone || !button || !isFinePointer() || reducedMotion) {
+    return;
+  }
+  const MAGNET_RANGE = 120;
+  const MAGNET_PULL = 0.3;
+  zone.addEventListener('pointermove', (event) => {
+    const rect = button.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    const distance = Math.hypot(dx, dy);
+    if (distance < MAGNET_RANGE) {
+      const pull = (1 - distance / MAGNET_RANGE) * MAGNET_PULL;
+      button.style.transform = `translate(${(dx * pull).toFixed(1)}px, ${(dy * pull).toFixed(1)}px) scale(1.03)`;
+    } else {
+      button.style.transform = '';
+    }
+  });
+  zone.addEventListener('pointerleave', () => {
+    button.style.transform = '';
+  });
+}
+
+function initCountUp() {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    return;
+  }
+  document.querySelectorAll('[data-countup]').forEach((element) => {
+    const target = Number(element.dataset.countup);
+    if (!Number.isFinite(target)) {
+      return;
+    }
+    const prefix = element.dataset.prefix || '';
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        observer.disconnect();
+        const started = performance.now();
+        const DURATION_MS = 1200;
+        const tick = (now) => {
+          const progress = Math.min((now - started) / DURATION_MS, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          element.textContent = `${prefix}${Math.round(eased * target)}`;
+          if (progress < 1) {
+            window.requestAnimationFrame(tick);
+          }
+        };
+        window.requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.4 });
+    observer.observe(element);
+  });
+}
+
 function initScrollProgress() {
   const bar = document.querySelector('.scroll-progress');
   if (!bar) {
@@ -298,6 +390,10 @@ revealOnScroll();
 initHeroParallax();
 initTopbarShadow();
 initScrollProgress();
+initCardSpotlight();
+initHeroGlow();
+initMagneticCta();
+initCountUp();
 
 document.querySelectorAll('.lang-btn').forEach((button) => {
   button.addEventListener('click', () => applyLanguage(button.dataset.lang));

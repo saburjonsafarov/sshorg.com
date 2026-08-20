@@ -672,12 +672,15 @@ function revealOnScroll() {
     blocks.forEach((block) => block.classList.add('in'));
     return;
   }
+  const STAGGER_MS = 80;
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
+    // батч, попавший во вьюпорт одновременно, появляется каскадом сверху вниз
+    const visible = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    visible.forEach((entry, index) => {
+      window.setTimeout(() => entry.target.classList.add('in'), index * STAGGER_MS);
+      observer.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -10% 0px' });
   blocks.forEach((block) => observer.observe(block));

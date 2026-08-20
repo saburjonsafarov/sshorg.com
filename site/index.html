@@ -63,7 +63,7 @@
         <article class="card card-feature reveal">
           <p class="card-stat" aria-hidden="true" data-countup="48" data-prefix="×">×48</p>
           <h3 data-i18n="s_ai_title">AI-augmented разработка</h3>
-          <p data-i18n="s_ai">Придумал и сам внедрил AI Code Review в CI банка: ревью каждого PR — в 48 раз быстрее, ожидание сократилось на 98%.</p>
+          <p data-i18n="s_ai">Придумал и сам внедрил AI Code Review в CI банка: Claude читает весь контекст проекта, а не только diff, — ревью каждого PR в 48 раз быстрее, ожидание сократилось на 98%.</p>
         </article>
         <article class="card reveal">
           <h3 data-i18n="s_legacy_title">Модернизация легаси</h3>
@@ -84,7 +84,7 @@
   <section class="band" aria-labelledby="expTitle">
     <div class="band-inner band-narrow">
       <h2 id="expTitle" class="band-title reveal" data-i18n="exp_title">Опыт</h2>
-      <p class="lede reveal" data-i18n="exp_text">Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025. Клиентские мобильные приложения банка, менторство джунов.</p>
+      <p class="lede reveal" data-i18n="exp_text">Путь начал ещё студентом — волонтёром в отделе разработки Худжандского политеха (оттуда вырос DicTeach). Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025; менторство джунов. Траектория технологий: C#/.NET → Kotlin/Android → Kotlin Multiplatform → сейчас осваиваю Swift/iOS.</p>
     </div>
   </section>
 
@@ -114,7 +114,7 @@
             <h3>compose-graph</h3>
             <span class="tag" data-i18n="tag_oss">опенсорс</span>
           </div>
-          <p data-i18n="p_graph">Библиотека force-directed графа «как в Obsidian» для Compose Multiplatform: физика без зависимостей, живое поведение узлов. Apache-2.0.</p>
+          <p data-i18n="p_graph">Первый force-directed граф для Compose Multiplatform (Android · iOS · Desktop): ядро физики без единой зависимости с Barnes-Hut O(n log n), Compose-рендерер и парсер Obsidian-вольтов. Apache-2.0, опубликована в Maven.</p>
           <a class="card-link" href="https://github.com/saburjonsafarov/compose-graph">GitHub&nbsp;›</a>
         </article>
         <article class="card reveal">
@@ -122,7 +122,7 @@
             <h3>Eskhata Online</h3>
             <span class="tag" data-i18n="tag_work">работа</span>
           </div>
-          <p data-i18n="p_eskhata">Суперприложение Eskhata Bank (E-Wallet) в Google Play: код-ревью, модернизация легаси и общий KMP-код для Android и iOS в команде Mobile Platform.</p>
+          <p data-i18n="p_eskhata">Суперприложение Eskhata Bank в Google Play: платежи и переводы, карты, рассрочка, сбережения. Мои зоны: модули переводов и платежей, миграции сборки (Version Catalog, производительность Gradle), архитектурные ревью и общий KMP-код для Android и iOS.</p>
           <a class="card-link" href="https://play.google.com/store/apps/details?id=com.eskhata.online">Google&nbsp;Play&nbsp;›</a>
         </article>
         <article class="card reveal">
@@ -165,11 +165,11 @@
       <div class="bento">
         <article class="card reveal">
           <h3 data-i18n="how_spec_title">Спека раньше кода</h3>
-          <p data-i18n="how_spec">Сначала спека с критериями приёмки, потом код. Требования фиксируются до реализации — меньше переделок, меньше сюрпризов.</p>
+          <p data-i18n="how_spec">Любая задача начинается со спеки: от пары строк с одним критерием приёмки до полного конвейера с чекпоинтами. Критерии — в нотации EARS: каждое требование проверяемо.</p>
         </article>
         <article class="card reveal">
           <h3 data-i18n="how_agents_title">ИИ-агенты — часть команды</h3>
-          <p data-i18n="how_agents">Работаю с ИИ-агентами каждый день: они пишут и исследуют, я ставлю задачу, направляю и ревьюю. Для важных решений — панель независимых агентов и судей.</p>
+          <p data-i18n="how_agents">Работаю с ИИ-агентами каждый день: параллельные сессии, очередь задач, сквозной цикл «код → merge → deploy → тест на устройстве». Для важных решений — панель независимых агентов и судей.</p>
         </article>
         <article class="card reveal">
           <h3 data-i18n="how_tools_title">Нет инструмента — построю</h3>
@@ -177,7 +177,7 @@
         </article>
         <article class="card reveal">
           <h3 data-i18n="how_bar_title">Планку держит человек</h3>
-          <p data-i18n="how_bar">ИИ ускоряет, но не решает: тесты, статанализ и финальное слово в ревью остаются за инженером.</p>
+          <p data-i18n="how_bar">ИИ ускоряет, но не решает: тесты, статанализ, adversarial-ревью перед первым запуском CI — и финальное слово всегда за инженером. Даже физику графа проверяю кадрами рендера в CI, а не на глаз.</p>
         </article>
       </div>
     </div>

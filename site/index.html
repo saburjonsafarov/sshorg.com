@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сабурджон Сафаров — Senior Android · Kotlin Multiplatform инженер</title>
+  <meta name="description" content="Личный сайт Сабурджона Сафарова: Senior Android/KMP-инженер из Худжанда. Kotlin Multiplatform, Compose, AI-augmented разработка.">
+  <meta property="og:title" content="Сабурджон Сафаров — Senior Android · KMP инженер">
+  <meta property="og:description" content="Kotlin Multiplatform, Compose Multiplatform, AI-augmented разработка. Худжанд, Таджикистан.">
+  <meta property="og:url" content="https://sshorg.com">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23181818'/%3E%3Ctext x='32' y='43' font-family='system-ui' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="monogram" aria-hidden="true">S</span>
+    <span class="topbar-name">Saburjon</span>
+    <span class="topbar-spacer"></span>
+    <nav class="lang-switch" aria-label="Язык · Забон · Language">
+      <button type="button" class="lang-btn" data-lang="ru" aria-pressed="true">Рус</button>
+      <button type="button" class="lang-btn" data-lang="tg" aria-pressed="false">Тоҷ</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">Eng</button>
+    </nav>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="Переключить тему">◐</button>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="hero">
+    <p class="hero-greeting"><span id="typedGreeting" data-i18n="greeting">Привет, я Сабурджон.</span></p>
+    <h1 class="hero-title" data-i18n="role">Senior Android · Kotlin Multiplatform инженер</h1>
+    <p class="hero-sub" data-i18n="tagline">Продуктовый инженер: общий Kotlin-код для Android и iOS, забота об UI/UX и разработка, выстроенная вокруг ИИ-агентов.</p>
+    <p class="hero-location" data-i18n="location">Худжанд, Таджикистан · Eskhata Bank, команда Mobile Platform</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://t.me/SaburjonSaburjon" data-i18n="cta_telegram">Написать в Telegram</a>
+      <a class="btn btn-quiet" href="https://github.com/saburjonsafarov">GitHub&nbsp;›</a>
+    </div>
+  </section>
+
+  <section class="band band-alt" aria-labelledby="strengthsTitle">
+    <div class="band-inner">
+      <h2 id="strengthsTitle" class="band-title reveal" data-i18n="strengths_title">Чем я силён</h2>
+      <div class="bento">
+        <article class="card card-feature reveal">
+          <p class="card-stat" aria-hidden="true">KMP</p>
+          <h3>Kotlin Multiplatform</h3>
+          <p data-i18n="s_kmp">Ранний адоптер и чемпион KMP: занёс технологию в банк — общий модуль EWalletKmp питает Android- и iOS-клиенты кошелька.</p>
+        </article>
+        <article class="card card-feature reveal">
+          <p class="card-stat" aria-hidden="true">×48</p>
+          <h3 data-i18n="s_ai_title">AI-augmented разработка</h3>
+          <p data-i18n="s_ai">Придумал и сам внедрил AI Code Review в CI банка: ревью каждого PR — в 48 раз быстрее, ожидание сократилось на 98%.</p>
+        </article>
+        <article class="card reveal">
+          <h3 data-i18n="s_legacy_title">Модернизация легаси</h3>
+          <p data-i18n="s_legacy">Перевожу легаси-монолиты на современный стек — Compose, Ktor, модуляризация, статанализ — стратегией strangler, не останавливая продукт.</p>
+        </article>
+        <article class="card reveal">
+          <h3 data-i18n="s_product_title">Продукт и дизайн</h3>
+          <p data-i18n="s_product">Не прощаю плохой UX: island-эстетика, анимации, нативные жесты; каждую фичу проверяю на реальных устройствах.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="expTitle">
+    <div class="band-inner band-narrow">
+      <h2 id="expTitle" class="band-title reveal" data-i18n="exp_title">Опыт</h2>
+      <p class="lede reveal" data-i18n="exp_text">Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025. Клиентские мобильные приложения банка, менторство джунов.</p>
+    </div>
+  </section>
+
+  <section class="band band-alt" aria-labelledby="projectsTitle">
+    <div class="band-inner">
+      <h2 id="projectsTitle" class="band-title reveal" data-i18n="projects_title">Проекты</h2>
+      <div class="bento bento-three">
+        <article class="card reveal">
+          <div class="card-head">
+            <h3>compose-graph</h3>
+            <span class="tag" data-i18n="tag_oss">опенсорс</span>
+          </div>
+          <p data-i18n="p_graph">Библиотека force-directed графа «как в Obsidian» для Compose Multiplatform: физика без зависимостей, живое поведение узлов. Apache-2.0.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-head">
+            <h3>Eskhata Online</h3>
+            <span class="tag" data-i18n="tag_work">работа</span>
+          </div>
+          <p data-i18n="p_eskhata">Суперприложение Eskhata Bank (E-Wallet) в Google Play: код-ревью, модернизация легаси и общий KMP-код для Android и iOS в команде Mobile Platform.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-head">
+            <h3>DicTeach</h3>
+            <span class="tag" data-i18n="tag_edu">для вуза</span>
+          </div>
+          <p data-i18n="p_dicteach">Словарь-разговорник на трёх языках — таджикский, русский, английский — для Худжандского политеха. Опубликован в Google Play.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="stackTitle">
+    <div class="band-inner">
+      <h2 id="stackTitle" class="band-title reveal" data-i18n="stack_title">Стек</h2>
+      <ul class="chips reveal">
+        <li>Kotlin</li>
+        <li>Kotlin Multiplatform</li>
+        <li>Compose Multiplatform</li>
+        <li>Jetpack Compose</li>
+        <li>Swift · SwiftUI</li>
+        <li>Ktor</li>
+        <li>Koin · Hilt</li>
+        <li>Coroutines · Flow</li>
+        <li>Room · SQLite</li>
+        <li>Firebase</li>
+        <li>PostgreSQL · Exposed</li>
+        <li>Gradle · convention plugins</li>
+        <li>Detekt</li>
+        <li>GitHub Actions</li>
+        <li>MockK · Turbine</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band-alt" aria-labelledby="eduTitle">
+    <div class="band-inner band-narrow">
+      <h2 id="eduTitle" class="band-title reveal" data-i18n="edu_title">Образование</h2>
+      <p class="lede reveal" data-i18n="edu_text">Худжандский политехнический институт Таджикского технического университета — бакалавр программной инженерии (2020–2024), красный диплом.</p>
+    </div>
+  </section>
+
+  <section class="band band-dark" aria-labelledby="contactsTitle">
+    <div class="band-inner band-narrow">
+      <h2 id="contactsTitle" class="band-title reveal" data-i18n="contacts_title">Контакты</h2>
+      <div class="contacts reveal">
+        <a class="btn btn-primary" href="https://t.me/SaburjonSaburjon">Telegram</a>
+        <a class="btn btn-quiet" href="https://github.com/saburjonsafarov">GitHub&nbsp;›</a>
+        <a class="btn btn-quiet" href="https://www.linkedin.com/in/saburjon-safarov-0a0997270">LinkedIn&nbsp;›</a>
+        <a class="btn btn-quiet" href="mailto:safarovsaburjon2002@gmail.com">Email&nbsp;›</a>
+        <a class="btn btn-quiet" id="cvLink" href="https://raw.githubusercontent.com/saburjonsafarov/saburjonsafarov/main/cv_ru.pdf" data-i18n="cv_label">Резюме (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2026 <span data-i18n="footer_name">Сабурджон Сафаров</span> · sshorg.com</p>
+  <p class="footer-note" data-i18n="footer_note">Без фреймворков: HTML + CSS + капля JS.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -24,7 +24,7 @@ jobs:
 
       - name: Copy site to server
         run: |
-          scp -i ~/.ssh/deploy_key site/index.html site/style.css site/app.js \
+          scp -i ~/.ssh/deploy_key site/* \
             "${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
       - name: Smoke check

@@ -521,6 +521,17 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   color: #2997ff;
 }
 
+.card-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--accent);
+  font-size: 15px;
+  text-decoration: none;
+  position: relative; /* поверх спотлайт-слоя ::after */
+}
+
+.card-link:hover { text-decoration: underline; }
+
 .card-head {
   display: flex;
   align-items: baseline;

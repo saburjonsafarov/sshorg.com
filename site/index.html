@@ -26,6 +26,13 @@
     <span class="monogram" aria-hidden="true">S</span>
     <span class="topbar-name">Saburjon</span>
     <span class="topbar-spacer"></span>
+    <nav class="site-nav" aria-label="Разделы · Бахшҳо · Sections">
+      <a class="nav-link" href="#exp" data-i18n="nav_exp">Опыт</a>
+      <a class="nav-link" href="#projects" data-i18n="nav_projects">Проекты</a>
+      <a class="nav-link" href="#how" data-i18n="nav_how">Метод</a>
+      <a class="nav-link" href="#contacts" data-i18n="nav_contacts">Контакты</a>
+    </nav>
+    <span class="topbar-spacer"></span>
     <nav class="lang-switch" aria-label="Язык · Забон · Language">
       <button type="button" class="lang-btn" data-lang="ru" aria-pressed="true">Рус</button>
       <button type="button" class="lang-btn" data-lang="tg" aria-pressed="false">Тоҷ</button>
@@ -81,7 +88,7 @@
     <p class="statement-text reveal" data-i18n="statement_kmp">Один Kotlin. Обе платформы.</p>
   </section>
 
-  <section class="band" aria-labelledby="expTitle">
+  <section class="band" id="exp" aria-labelledby="expTitle">
     <div class="band-inner band-narrow">
       <h2 id="expTitle" class="band-title reveal" data-i18n="exp_title">Опыт</h2>
       <p class="lede reveal" data-i18n="exp_text">Путь начал ещё студентом — волонтёром в отделе разработки Худжандского политеха (оттуда вырос DicTeach). Bank Eskhata, Худжанд — почти пять лет в одной команде: волонтёр (ноябрь 2021) → стажёр → Junior → Middle → Senior Android-разработчик с ноября 2025; менторство джунов. Траектория технологий: C#/.NET → Kotlin/Android → Kotlin Multiplatform → сейчас осваиваю Swift/iOS.</p>
@@ -114,7 +121,7 @@
     </div>
   </section>
 
-  <section class="band band-alt" aria-labelledby="projectsTitle">
+  <section class="band band-alt" id="projects" aria-labelledby="projectsTitle">
     <div class="band-inner">
       <h2 id="projectsTitle" class="band-title reveal" data-i18n="projects_title">Проекты</h2>
       <div class="bento bento-three">
@@ -123,6 +130,7 @@
             <h3>compose-graph</h3>
             <span class="tag" data-i18n="tag_oss">опенсорс</span>
           </div>
+          <canvas class="card-graph" aria-hidden="true"></canvas>
           <p data-i18n="p_graph">Первый force-directed граф для Compose Multiplatform (Android · iOS · Desktop): ядро физики без единой зависимости с Barnes-Hut O(n log n), Compose-рендерер и парсер Obsidian-вольтов. Apache-2.0, опубликована в Maven.</p>
           <a class="card-link" href="https://github.com/saburjonsafarov/compose-graph">GitHub&nbsp;›</a>
         </article>
@@ -168,7 +176,7 @@
     </div>
   </section>
 
-  <section class="band band-alt" aria-labelledby="howTitle">
+  <section class="band band-alt" id="how" aria-labelledby="howTitle">
     <div class="band-inner">
       <h2 id="howTitle" class="band-title reveal" data-i18n="how_title">Как я работаю</h2>
       <div class="bento">
@@ -213,7 +221,7 @@
     </div>
   </section>
 
-  <section class="band band-dark" aria-labelledby="contactsTitle">
+  <section class="band band-dark" id="contacts" aria-labelledby="contactsTitle">
     <div class="band-inner band-narrow">
       <h2 id="contactsTitle" class="band-title reveal" data-i18n="contacts_title">Контакты</h2>
       <div class="contacts reveal">

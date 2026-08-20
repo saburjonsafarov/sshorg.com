@@ -114,6 +114,31 @@ body {
 
 .topbar-spacer { flex: 1; }
 
+/* якорная навигация по секциям */
+.site-nav { display: flex; gap: 2px; }
+
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 980px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.nav-link:hover { color: var(--ink); }
+
+.nav-link.active {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+@media (max-width: 760px) {
+  .site-nav { display: none; }
+}
+
+section[id] { scroll-margin-top: 64px; }
+
 .lang-switch { display: flex; gap: 2px; }
 
 .lang-btn,
@@ -169,6 +194,8 @@ body {
   color: var(--hero-ink);
   text-align: center;
   padding: clamp(90px, 16vh, 160px) 22px clamp(80px, 14vh, 140px);
+  /* вертикальный скролл жив, горизонтальные жесты достаются графу */
+  touch-action: pan-y;
 }
 
 /* амбиентное свечение за контентом — медленно дышит */
@@ -602,6 +629,14 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #2997ff;
+}
+
+/* мини-демо графа внутри карточки compose-graph */
+.card-graph {
+  display: block;
+  width: 100%;
+  height: 150px;
+  margin-bottom: 12px;
 }
 
 .card-link {

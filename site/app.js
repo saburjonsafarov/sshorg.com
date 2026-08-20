@@ -8,6 +8,10 @@ const translations = {
     tagline: 'Продуктовый инженер: общий Kotlin-код для Android и iOS, забота об UI/UX и разработка, выстроенная вокруг ИИ-агентов.',
     location: 'Худжанд, Таджикистан · Eskhata Bank, команда Mobile Platform',
     cta_telegram: 'Написать в Telegram',
+    nav_exp: 'Опыт',
+    nav_projects: 'Проекты',
+    nav_how: 'Метод',
+    nav_contacts: 'Контакты',
     strengths_title: 'Чем я силён',
     s_kmp: 'Ранний адоптер и чемпион KMP: занёс технологию в банк — общий модуль EWalletKmp питает Android- и iOS-клиенты кошелька.',
     s_ai_title: 'AI-augmented разработка',
@@ -65,6 +69,10 @@ const translations = {
     tagline: 'Муҳандиси маҳсулот: коди умумии Kotlin барои Android ва iOS, ғамхорӣ ба UI/UX ва таҳияе, ки дар атрофи агентҳои зеҳни сунъӣ сохта шудааст.',
     location: 'Хуҷанд, Тоҷикистон · Бонки «Эсхата», дастаи Mobile Platform',
     cta_telegram: 'Дар Telegram нависед',
+    nav_exp: 'Таҷриба',
+    nav_projects: 'Лоиҳаҳо',
+    nav_how: 'Усул',
+    nav_contacts: 'Тамос',
     strengths_title: 'Тавоноиҳои ман',
     s_kmp: 'Пешсаф ва чемпиони KMP: ин технологияро ба бонк овардам — модули умумии EWalletKmp клиентҳои Android ва iOS-и ҳамёнро таъмин мекунад.',
     s_ai_title: 'Таҳияи AI-augmented',
@@ -122,6 +130,10 @@ const translations = {
     tagline: 'Product engineer: shared Kotlin code for Android and iOS, real care for UI/UX, and development built around AI agents.',
     location: 'Khujand, Tajikistan · Eskhata Bank, Mobile Platform team',
     cta_telegram: 'Message me on Telegram',
+    nav_exp: 'Experience',
+    nav_projects: 'Projects',
+    nav_how: 'Method',
+    nav_contacts: 'Contact',
     strengths_title: "What I'm good at",
     s_kmp: 'Early KMP adopter and champion: I brought it into the bank — the shared EWalletKmp module powers the Android and iOS wallet clients.',
     s_ai_title: 'AI-augmented development',
@@ -413,67 +425,45 @@ function initCountUp() {
   });
 }
 
-// Живой force-directed граф в hero — веб-оммаж библиотеке compose-graph владельца.
-// Физика: пружины по рёбрам + кулоновское отталкивание + гравитация к кольцу
-// вокруг текста + отталкивание от курсора. Пауза, когда hero вне вьюпорта.
-function initHeroGraph() {
-  const canvas = document.querySelector('.hero-graph');
-  const hero = document.querySelector('.hero');
-  if (!canvas || !hero || !canvas.getContext) {
+// Живой force-directed граф — веб-оммаж библиотеке compose-graph владельца.
+// Общий движок на два экземпляра: большой интерактивный в hero (drag с флингом,
+// волна от тапа по пустому месту, клик по узлу подсвечивает его связи) и
+// мини-демо в карточке проекта. Пауза, когда канвас вне вьюпорта или вкладка скрыта.
+const GRAPH_COLORS = ['#2997ff', '#a972ff', '#ff6482', '#64d2ff'];
+
+function createForceGraph(config) {
+  const canvas = config.canvas;
+  const host = config.host;
+  if (!canvas || !host || !canvas.getContext) {
     return;
   }
   const ctx = canvas.getContext('2d');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const GROUP_COLORS = ['#2997ff', '#a972ff', '#ff6482', '#64d2ff'];
-  const nodes = [
-    { id: 'Kotlin', group: 0 },
-    { id: 'KMP', group: 0 },
-    { id: 'Compose', group: 0 },
-    { id: 'Ktor', group: 0 },
-    { id: 'Coroutines', group: 0 },
-    { id: 'Android', group: 1 },
-    { id: 'iOS', group: 1 },
-    { id: 'SwiftUI', group: 1 },
-    { id: 'AI', group: 2 },
-    { id: 'Claude', group: 2 },
-    { id: 'CI', group: 2 },
-    { id: 'UX', group: 3 },
-    { id: 'Figma', group: 3 },
-  ].map((node) => ({
-    ...node,
-    x: 0,
-    y: 0,
-    vx: 0,
-    vy: 0,
-  }));
-  const edges = [
-    [0, 1], [0, 2], [0, 3], [0, 4],
-    [1, 5], [1, 6], [6, 7], [2, 5],
-    [8, 9], [8, 10], [0, 8],
-    [11, 12], [2, 11],
-  ];
+  const nodes = config.nodes.map((node) => ({ ...node, x: 0, y: 0, vx: 0, vy: 0 }));
+  const edges = config.edges;
   const pointer = { x: -1e4, y: -1e4 };
-  const inner = hero.querySelector('.hero-inner');
-  const textZone = { x0: 0, y0: 0, x1: 0, y1: 0 };
+  const drag = { node: null, pointerId: null, moved: 0 };
+  let selected = null;
   let width = 0;
   let height = 0;
   let rafId = null;
   let running = false;
 
+  const neighbors = nodes.map(() => new Set());
+  edges.forEach(([a, b]) => {
+    neighbors[a].add(b);
+    neighbors[b].add(a);
+  });
+
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = hero.clientWidth;
-    height = hero.clientHeight;
+    width = canvas.clientWidth || host.clientWidth;
+    height = canvas.clientHeight || host.clientHeight;
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (inner) {
-      // зона текста (offsetTop/Left не зависят от transform параллакса)
-      const PAD = 36;
-      textZone.x0 = inner.offsetLeft - PAD;
-      textZone.y0 = inner.offsetTop - PAD;
-      textZone.x1 = inner.offsetLeft + inner.offsetWidth + PAD;
-      textZone.y1 = inner.offsetTop + inner.offsetHeight + PAD;
+    if (config.measureExclude) {
+      config.measureExclude();
     }
   };
 
@@ -487,7 +477,7 @@ function initHeroGraph() {
   };
 
   const step = () => {
-    const restLength = Math.min(width, height) * 0.18;
+    const restLength = Math.min(width, height) * config.restFactor;
     for (let i = 0; i < nodes.length; i += 1) {
       const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j += 1) {
@@ -495,7 +485,7 @@ function initHeroGraph() {
         const dx = a.x - b.x;
         const dy = a.y - b.y;
         const distSq = Math.max(dx * dx + dy * dy, 64);
-        const force = 1600 / distSq;
+        const force = config.repulsion / distSq;
         const dist = Math.sqrt(distSq);
         const fx = (dx / dist) * force;
         const fy = (dy / dist) * force;
@@ -515,17 +505,20 @@ function initHeroGraph() {
       a.vx += fx; a.vy += fy;
       b.vx -= fx; b.vy -= fy;
     });
+    const zone = config.excludeZone;
     nodes.forEach((node) => {
-      // мягкая гравитация к центру + выталкивание из прямоугольника текста
+      if (node === drag.node) {
+        return; // позицию ведёт указатель, скорость копится для флинга
+      }
       const cx = width / 2 - node.x;
       const cy = height / 2 - node.y;
       node.vx += cx * 0.0015;
       node.vy += cy * 0.0015;
-      if (node.x > textZone.x0 && node.x < textZone.x1 && node.y > textZone.y0 && node.y < textZone.y1) {
-        const toLeft = node.x - textZone.x0;
-        const toRight = textZone.x1 - node.x;
-        const toTop = node.y - textZone.y0;
-        const toBottom = textZone.y1 - node.y;
+      if (zone && node.x > zone.x0 && node.x < zone.x1 && node.y > zone.y0 && node.y < zone.y1) {
+        const toLeft = node.x - zone.x0;
+        const toRight = zone.x1 - node.x;
+        const toTop = node.y - zone.y0;
+        const toBottom = zone.y1 - node.y;
         const minDist = Math.min(toLeft, toRight, toTop, toBottom);
         // сила растёт с глубиной проникновения — равновесие всегда вне зоны
         const push = Math.min(minDist * 0.06, 4);
@@ -548,37 +541,49 @@ function initHeroGraph() {
       }
       node.vx *= 0.9;
       node.vy *= 0.9;
-      node.x = Math.min(Math.max(node.x + node.vx, 30), width - 30);
-      node.y = Math.min(Math.max(node.y + node.vy, 30), height - 30);
+      node.x = Math.min(Math.max(node.x + node.vx, 24), width - 24);
+      node.y = Math.min(Math.max(node.y + node.vy, 24), height - 24);
     });
   };
 
   const draw = () => {
     const isDark = effectiveTheme() === 'dark';
+    const selectedIndex = selected === null ? -1 : nodes.indexOf(selected);
     ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = isDark ? 'rgba(245, 245, 247, 0.14)' : 'rgba(29, 29, 31, 0.12)';
     edges.forEach(([ai, bi]) => {
+      const active = selectedIndex >= 0 && (ai === selectedIndex || bi === selectedIndex);
+      if (active) {
+        ctx.strokeStyle = GRAPH_COLORS[selected.group];
+        ctx.globalAlpha = 0.8;
+        ctx.lineWidth = 1.6;
+      } else {
+        ctx.strokeStyle = isDark ? 'rgba(245, 245, 247, 0.14)' : 'rgba(29, 29, 31, 0.12)';
+        ctx.globalAlpha = selectedIndex >= 0 ? 0.35 : 1;
+        ctx.lineWidth = 1;
+      }
       ctx.beginPath();
       ctx.moveTo(nodes[ai].x, nodes[ai].y);
       ctx.lineTo(nodes[bi].x, nodes[bi].y);
       ctx.stroke();
     });
-    ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.font = config.labelFont;
     ctx.textAlign = 'center';
-    nodes.forEach((node) => {
-      const color = GROUP_COLORS[node.group];
+    nodes.forEach((node, index) => {
+      const related = selectedIndex < 0 || index === selectedIndex || neighbors[selectedIndex].has(index);
+      ctx.globalAlpha = related ? 1 : 0.3;
+      const color = GRAPH_COLORS[node.group];
       ctx.save();
       ctx.shadowColor = color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = node === selected ? 16 : 10;
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(node.x, node.y, 4.5, 0, Math.PI * 2);
+      ctx.arc(node.x, node.y, node === selected ? config.nodeRadius + 1.5 : config.nodeRadius, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
       ctx.fillStyle = isDark ? 'rgba(245, 245, 247, 0.55)' : 'rgba(29, 29, 31, 0.55)';
-      ctx.fillText(node.id, node.x, node.y + 17);
+      ctx.fillText(node.id, node.x, node.y + config.labelOffset);
     });
+    ctx.globalAlpha = 1;
   };
 
   const frame = () => {
@@ -602,6 +607,16 @@ function initHeroGraph() {
     }
   };
 
+  const localPoint = (event) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  };
+
+  const findNode = (point) => {
+    const HIT_RADIUS = 20;
+    return nodes.find((node) => Math.hypot(node.x - point.x, node.y - point.y) < HIT_RADIUS) || null;
+  };
+
   resize();
   seed();
   // граф появляется уже уложенным: короткий прогон физики + первый кадр сразу
@@ -614,34 +629,194 @@ function initHeroGraph() {
       step();
     }
     draw();
+    return;
+  }
+
+  host.addEventListener('pointermove', (event) => {
+    const point = localPoint(event);
+    pointer.x = point.x;
+    pointer.y = point.y;
+    if (config.interactive && !drag.node) {
+      host.style.cursor = findNode(point) ? 'grab' : '';
+    }
+  });
+  host.addEventListener('pointerleave', () => {
+    pointer.x = -1e4;
+    pointer.y = -1e4;
+    if (config.interactive) {
+      host.style.cursor = '';
+    }
+  });
+
+  if (config.interactive) {
+    host.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('a, button')) {
+        return;
+      }
+      const point = localPoint(event);
+      const hit = findNode(point);
+      drag.moved = 0;
+      if (hit) {
+        drag.node = hit;
+        drag.pointerId = event.pointerId;
+        host.style.cursor = 'grabbing';
+        event.preventDefault();
+      } else {
+        // волна-импульс от точки касания (shockwave как в compose-graph 0.4.0)
+        nodes.forEach((node) => {
+          const dx = node.x - point.x;
+          const dy = node.y - point.y;
+          const dist = Math.max(Math.hypot(dx, dy), 1);
+          if (dist < 260) {
+            const impulse = (1 - dist / 260) * 22;
+            node.vx += (dx / dist) * impulse;
+            node.vy += (dy / dist) * impulse;
+          }
+        });
+        selected = null;
+      }
+    });
+    window.addEventListener('pointermove', (event) => {
+      if (!drag.node || event.pointerId !== drag.pointerId) {
+        return;
+      }
+      const point = localPoint(event);
+      const nextX = Math.min(Math.max(point.x, 24), width - 24);
+      const nextY = Math.min(Math.max(point.y, 24), height - 24);
+      drag.moved += Math.abs(nextX - drag.node.x) + Math.abs(nextY - drag.node.y);
+      // остаточная скорость даёт флинг при отпускании
+      drag.node.vx = (nextX - drag.node.x) * 0.5;
+      drag.node.vy = (nextY - drag.node.y) * 0.5;
+      drag.node.x = nextX;
+      drag.node.y = nextY;
+    });
+    window.addEventListener('pointerup', (event) => {
+      if (!drag.node || event.pointerId !== drag.pointerId) {
+        return;
+      }
+      const TAP_THRESHOLD = 6;
+      if (drag.moved < TAP_THRESHOLD) {
+        selected = selected === drag.node ? null : drag.node;
+      }
+      drag.node = null;
+      drag.pointerId = null;
+      host.style.cursor = '';
+    });
+  }
+
+  window.addEventListener('resize', resize);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => (entry.isIntersecting ? start() : stop()));
+    }).observe(host);
   } else {
-    hero.addEventListener('pointermove', (event) => {
-      const rect = hero.getBoundingClientRect();
-      pointer.x = event.clientX - rect.left;
-      pointer.y = event.clientY - rect.top;
-    });
-    hero.addEventListener('pointerleave', () => {
-      pointer.x = -1e4;
-      pointer.y = -1e4;
-    });
-    window.addEventListener('resize', () => {
-      resize();
-    });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((entries) => {
-        entries.forEach((entry) => (entry.isIntersecting ? start() : stop()));
-      }).observe(hero);
+    start();
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stop();
     } else {
       start();
     }
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        stop();
-      } else {
-        start();
+  });
+}
+
+function initGraphs() {
+  const hero = document.querySelector('.hero');
+  const heroInner = document.querySelector('.hero-inner');
+  const heroZone = { x0: 0, y0: 0, x1: 0, y1: 0 };
+  createForceGraph({
+    canvas: document.querySelector('.hero-graph'),
+    host: hero,
+    nodes: [
+      { id: 'Kotlin', group: 0 },
+      { id: 'KMP', group: 0 },
+      { id: 'Compose', group: 0 },
+      { id: 'Ktor', group: 0 },
+      { id: 'Coroutines', group: 0 },
+      { id: 'Android', group: 1 },
+      { id: 'iOS', group: 1 },
+      { id: 'SwiftUI', group: 1 },
+      { id: 'AI', group: 2 },
+      { id: 'Claude', group: 2 },
+      { id: 'CI', group: 2 },
+      { id: 'UX', group: 3 },
+      { id: 'Figma', group: 3 },
+    ],
+    edges: [
+      [0, 1], [0, 2], [0, 3], [0, 4],
+      [1, 5], [1, 6], [6, 7], [2, 5],
+      [8, 9], [8, 10], [0, 8],
+      [11, 12], [2, 11],
+    ],
+    nodeRadius: 4.5,
+    labelFont: '11px -apple-system, BlinkMacSystemFont, sans-serif',
+    labelOffset: 17,
+    restFactor: 0.18,
+    repulsion: 1600,
+    excludeZone: heroZone,
+    measureExclude: () => {
+      if (!heroInner) {
+        return;
       }
+      // offsetTop/Left не зависят от transform параллакса — зона стабильна
+      const PAD = 36;
+      heroZone.x0 = heroInner.offsetLeft - PAD;
+      heroZone.y0 = heroInner.offsetTop - PAD;
+      heroZone.x1 = heroInner.offsetLeft + heroInner.offsetWidth + PAD;
+      heroZone.y1 = heroInner.offsetTop + heroInner.offsetHeight + PAD;
+    },
+    interactive: true,
+  });
+
+  const cardCanvas = document.querySelector('.card-graph');
+  if (cardCanvas) {
+    createForceGraph({
+      canvas: cardCanvas,
+      host: cardCanvas.closest('.card'),
+      nodes: [
+        { id: 'compose-graph', group: 0 },
+        { id: 'Android', group: 1 },
+        { id: 'iOS', group: 1 },
+        { id: 'Desktop', group: 1 },
+        { id: 'physics', group: 2 },
+        { id: 'canvas', group: 2 },
+        { id: 'obsidian', group: 3 },
+      ],
+      edges: [[0, 1], [0, 2], [0, 3], [0, 4], [4, 5], [0, 6]],
+      nodeRadius: 3.5,
+      labelFont: '9px -apple-system, BlinkMacSystemFont, sans-serif',
+      labelOffset: 13,
+      restFactor: 0.34,
+      repulsion: 700,
+      excludeZone: null,
+      measureExclude: null,
+      interactive: false,
     });
   }
+}
+
+function initScrollSpy() {
+  const links = document.querySelectorAll('.nav-link');
+  if (!links.length || !('IntersectionObserver' in window)) {
+    return;
+  }
+  const sectionToLink = new Map();
+  links.forEach((link) => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (section) {
+      sectionToLink.set(section, link);
+    }
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        links.forEach((link) => link.classList.remove('active'));
+        sectionToLink.get(entry.target).classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sectionToLink.forEach((link, section) => observer.observe(section));
 }
 
 function initScrollProgress() {
@@ -701,7 +876,8 @@ initCardSpotlight();
 initHeroGlow();
 initMagneticCta();
 initCountUp();
-initHeroGraph();
+initGraphs();
+initScrollSpy();
 
 document.querySelectorAll('.lang-btn').forEach((button) => {
   button.addEventListener('click', () => applyLanguage(button.dataset.lang));

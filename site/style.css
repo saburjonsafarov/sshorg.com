@@ -453,6 +453,42 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
 
 .band-dark .lede { color: var(--hero-muted); }
 
+/* ─── Ключевые задачи (список в секции «Опыт») ─── */
+
+.exp-highlights-title {
+  margin: 52px 0 8px;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.exp-highlights {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 640px;
+  text-align: left;
+}
+
+.exp-highlights li {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--chip-border);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.exp-highlights li:last-child { border-bottom: 0; }
+
+.exp-highlights li::before {
+  content: "›";
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
 /* ─── Бенто-карточки ─── */
 
 .bento {
@@ -570,6 +606,8 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   font-size: 15px;
   color: var(--ink);
 }
+
+.hire-cta { margin-top: 32px; }
 
 /* ─── Контакты ─── */
 

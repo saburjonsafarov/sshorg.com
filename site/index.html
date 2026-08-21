@@ -86,6 +86,34 @@
 
   <section class="statement band-alt" aria-label="KMP">
     <p class="statement-text reveal" data-i18n="statement_kmp">Один Kotlin. Обе платформы.</p>
+    <div class="kmp-scheme reveal">
+      <div class="kmp-node kmp-node-common">
+        <p class="kmp-node-title" data-i18n="kmp_common_title">Общий Kotlin-код</p>
+        <p class="kmp-node-sub" data-i18n="kmp_common_sub">домен · данные · сеть — одна кодовая база</p>
+      </div>
+      <svg class="kmp-connectors" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="kmpGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#2997ff"/>
+            <stop offset="0.5" stop-color="#a972ff"/>
+            <stop offset="1" stop-color="#ff6482"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 0 L0 12" stroke="url(#kmpGrad)" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"/>
+        <path d="M50 0 L100 12" stroke="url(#kmpGrad)" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"/>
+      </svg>
+      <div class="kmp-platforms">
+        <div class="kmp-node">
+          <p class="kmp-node-title">Android</p>
+          <p class="kmp-node-sub" data-i18n="kmp_android_sub">нативный UI на Jetpack Compose</p>
+        </div>
+        <div class="kmp-node">
+          <p class="kmp-node-title">iOS</p>
+          <p class="kmp-node-sub" data-i18n="kmp_ios_sub">нативный UI на SwiftUI</p>
+        </div>
+      </div>
+      <p class="kmp-caption" data-i18n="kmp_caption">Логика — общая. UI — нативный.</p>
+    </div>
   </section>
 
   <section class="band" id="exp" aria-labelledby="expTitle">

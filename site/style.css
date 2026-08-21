@@ -428,6 +428,66 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   color: #2997ff;
 }
 
+/* ─── Схема KMP (своя отрисовка идеи с kotlinlang.org) ─── */
+
+.kmp-scheme {
+  max-width: 620px;
+  margin: 56px auto 0;
+}
+
+.kmp-node {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 18px 22px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* центральный узел — градиентная рамка */
+.kmp-node-common {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(100deg, #2997ff, #a972ff, #ff6482) border-box;
+}
+
+.kmp-node-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.kmp-node-sub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.kmp-connectors {
+  display: block;
+  width: 50%;
+  height: 40px;
+  margin: 0 auto;
+}
+
+.kmp-platforms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.kmp-caption {
+  margin: 24px 0 0;
+  font-size: 15px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .kmp-platforms { gap: 10px; }
+}
+
 /* ─── Кейноут-статы ─── */
 
 .stats-row {

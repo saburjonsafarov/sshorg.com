@@ -12,6 +12,15 @@ A single static page, no frameworks and no build step: `site/index.html` + `site
 - **Light / dark theme** follows the system by default, with a manual toggle.
 - **Progressive enhancement**: with JavaScript disabled the full page still renders (Russian).
 - Design in the apple.com aesthetic: system font stack, large type, alternating light bands with dark hero/footer sections, blurred sticky navbar, scroll-reveal (respecting `prefers-reduced-motion`).
+- **SEO / hygiene**: JSON-LD (`schema.org/Person`), `robots.txt`, `sitemap.xml`, `.well-known/security.txt`, `404.html`. To actually serve the 404 page, add to the Caddyfile:
+
+  ```
+  handle_errors {
+      @404 expression {err.status_code} == 404
+      rewrite @404 /404.html
+      file_server
+  }
+  ```
 
 ## Deploy
 

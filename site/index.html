@@ -9,6 +9,10 @@
   <meta property="og:description" content="Kotlin Multiplatform, Compose Multiplatform, AI-augmented разработка. Худжанд, Таджикистан.">
   <meta property="og:url" content="https://sshorg.com">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:locale:alternate" content="tg_TJ">
+  <meta property="og:locale:alternate" content="en_US">
+  <link rel="canonical" href="https://sshorg.com">
   <meta property="og:image" content="https://sshorg.com/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -16,6 +20,26 @@
   <meta name="twitter:image" content="https://sshorg.com/og.jpg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23181818'/%3E%3Ctext x='32' y='43' font-family='system-ui' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css?v=dev">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Saburjon Safarov",
+    "alternateName": "Сабурджон Сафаров",
+    "jobTitle": "Senior Android · Kotlin Multiplatform Engineer",
+    "worksFor": { "@type": "Organization", "name": "Eskhata Bank" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Khujand", "addressCountry": "TJ" },
+    "url": "https://sshorg.com",
+    "image": "https://sshorg.com/og.jpg",
+    "email": "mailto:safarovsaburjon2002@gmail.com",
+    "sameAs": [
+      "https://github.com/saburjonsafarov",
+      "https://www.linkedin.com/in/saburjon-safarov-0a0997270",
+      "https://t.me/SaburjonSafarov"
+    ],
+    "knowsAbout": ["Kotlin", "Kotlin Multiplatform", "Compose Multiplatform", "Jetpack Compose", "Android", "AI-augmented development"]
+  }
+  </script>
 </head>
 <body>
 
@@ -183,6 +207,22 @@
             <span class="tag" data-i18n="tag_rnd">личный R&D</span>
           </div>
           <p data-i18n="p_aide">Собственная AI-IDE для macOS на SwiftUI: оркестратор классифицирует запросы по сложности и маршрутизирует между локальными моделями (Ollama) и облачными LLM — со sticky-роутингом, прогревом предсказанной модели во время набора и авто-фолбэком на локальные при потере сети.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-head">
+            <h3>NavKit</h3>
+            <span class="tag" data-i18n="tag_oss">опенсорс</span>
+          </div>
+          <p data-i18n="p_navkit">KMP-движок навигации в духе Jetpack Navigation 3: аннотация @Destination на сериализуемом ключе экрана — и KSP генерирует граф, матчеры диплинков и связку с хостом. Ядро — чистый Kotlin; работает с Compose, Fragment и Activity, а граф приложения выпускается markdown-документом в git с проверкой в CI.</p>
+          <a class="card-link" href="https://github.com/saburjonsafarov/nav-kit">GitHub&nbsp;›</a>
+        </article>
+        <article class="card reveal">
+          <div class="card-head">
+            <h3>kmp-scanner</h3>
+            <span class="tag" data-i18n="tag_oss">опенсорс</span>
+          </div>
+          <p data-i18n="p_scanner">Сканер QR-кодов для Kotlin/Compose Multiplatform, написанный с нуля без ML Kit и ZXing: свой бинаризатор, Рид-Соломон над GF(256), поиск искателей и гомография. Ядро не зависит ни от камеры, ни от UI — и целиком тестируется на чистой JVM.</p>
+          <a class="card-link" href="https://github.com/saburjonsafarov/scanner">GitHub&nbsp;›</a>
         </article>
       </div>
     </div>

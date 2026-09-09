@@ -1,4 +1,10 @@
 /* Project detail, measured impact, and a compact mobile reading companion. */
+:root { --graph-preview-filter: invert(1) brightness(1.08); --graph-preview-bg: #f3f3f3; --graph-preview-caption: #55555a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --graph-preview-filter: none; --graph-preview-bg: #1e1e1e; --graph-preview-caption: #d2d2d7; }
+}
+:root[data-theme="dark"] { --graph-preview-filter: none; --graph-preview-bg: #1e1e1e; --graph-preview-caption: #d2d2d7; }
+.project-preview, .preview-slide img { filter: var(--graph-preview-filter); }
 .build-band { padding-top: 0; }
 .build-comparison { margin: 0; padding: clamp(24px, 5vw, 48px); border-radius: 28px; background: var(--bg-alt); }
 .build-comparison figcaption { font-size: clamp(24px, 4vw, 36px); font-weight: 650; line-height: 1.15; letter-spacing: -.035em; margin-bottom: 36px; }
@@ -40,10 +46,10 @@ html.case-is-open { overflow: hidden; }
 .case-results span { font-size: 16px; }
 .case-content > .btn { margin-top: 24px; }
 .preview-gallery { margin: 24px 0 32px; }
-.preview-strip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 18px; background: #1e1e1e; scrollbar-width: thin; }
+.preview-strip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 18px; background: var(--graph-preview-bg); scrollbar-width: thin; }
 .preview-slide { flex: 0 0 100%; width: 100%; margin: 0; scroll-snap-align: start; }
 .preview-slide img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: contain; }
-.preview-slide figcaption { padding: 0 20px 18px; color: #d2d2d7; font-size: 14px; }
+.preview-slide figcaption { padding: 0 20px 18px; color: var(--graph-preview-caption); font-size: 14px; }
 .gallery-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 12px; }
 .gallery-footer p { color: var(--muted); font-size: 14px; margin: 0; }
 .gallery-controls { display: flex; gap: 8px; }

@@ -16,6 +16,7 @@
   <meta name="twitter:image" content="https://sshorg.com/og.jpg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23181818'/%3E%3Ctext x='32' y='43' font-family='system-ui' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css?v=dev">
+  <link rel="stylesheet" href="enhancements.css?v=dev">
 </head>
 <body>
 
@@ -132,6 +133,20 @@
     </div>
   </section>
 
+  <section class="band build-band" aria-labelledby="buildTitle">
+    <div class="band-inner band-narrow">
+      <figure class="build-comparison reveal">
+        <figcaption id="buildTitle" data-i18n="build_title">Меньше ожидания. Больше разработки.</figcaption>
+        <div class="build-row"><span data-i18n="build_before">Раньше</span><strong data-i18n="build_old">10–15 минут</strong></div>
+        <div class="build-track" aria-hidden="true"><span class="build-bar build-bar-before"></span></div>
+        <div class="build-row"><span data-i18n="build_after">Теперь</span><strong data-i18n="build_new">1 минута</strong></div>
+        <div class="build-track" aria-hidden="true"><span class="build-bar build-bar-after"></span></div>
+        <p class="build-note" data-i18n="build_scale">Одна шкала: 15 минут. Штриховка — диапазон от 10 до 15 минут.</p>
+        <details class="build-details"><summary data-i18n="build_details">Что изменилось в сборке</summary><p data-i18n="build_work">Модернизировал Gradle: buildSrc → build-logic, convention plugins и non-transitive R. Время сборки проекта сократилось с 10–15 минут до 1 минуты.</p></details>
+      </figure>
+    </div>
+  </section>
+
   <section class="band band-alt" id="leadership" aria-labelledby="leadershipTitle">
     <div class="band-inner">
       <h2 id="leadershipTitle" class="band-title reveal" data-i18n="impact_title">Лидерство и команда</h2>
@@ -178,22 +193,24 @@
     <div class="band-inner">
       <h2 id="projectsTitle" class="band-title reveal" data-i18n="projects_title">Проекты</h2>
       <div class="bento">
-        <article class="card reveal">
+        <article class="card project-feature reveal">
           <div class="card-head">
-            <h3>compose-graph</h3>
+            <h3 id="graphCardTitle">compose-graph</h3>
             <span class="tag" data-i18n="tag_oss">опенсорс</span>
           </div>
-          <canvas class="card-graph" aria-hidden="true"></canvas>
+          <img class="project-preview" src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 240">
           <p data-i18n="p_graph">Первый force-directed граф для Compose Multiplatform (Android · iOS · Desktop): ядро физики без единой зависимости с Barnes-Hut O(n log n), Compose-рендерер и парсер Obsidian-вольтов. Apache-2.0, опубликована в Maven.</p>
           <a class="card-link" href="https://github.com/saburjonsafarov/compose-graph">GitHub&nbsp;›</a>
+          <button class="case-open" type="button" data-case="graphCase" aria-haspopup="dialog" aria-labelledby="graphOpenLabel graphCardTitle" hidden><span id="graphOpenLabel" data-i18n="case_open">Разобрать кейс</span><span aria-hidden="true">＋</span></button>
         </article>
         <article class="card reveal">
           <div class="card-head">
-            <h3>Eskhata Online</h3>
+            <h3 id="bankCardTitle">Eskhata Online</h3>
             <span class="tag" data-i18n="tag_work">работа</span>
           </div>
           <p data-i18n="p_eskhata">Суперприложение Eskhata Bank в Google Play: платежи и переводы, карты, рассрочка, сбережения. Мои зоны: модули переводов и платежей, миграции сборки (Version Catalog, производительность Gradle), архитектурные ревью и общий KMP-код для Android и iOS.</p>
           <a class="card-link" href="https://play.google.com/store/apps/details?id=com.eskhata.online">Google&nbsp;Play&nbsp;›</a>
+          <button class="case-open" type="button" data-case="bankCase" aria-haspopup="dialog" aria-labelledby="bankOpenLabel bankCardTitle" hidden><span id="bankOpenLabel" data-i18n="case_open">Разобрать кейс</span><span aria-hidden="true">＋</span></button>
         </article>
         <article class="card reveal">
           <div class="card-head">
@@ -303,6 +320,55 @@
   <p class="footer-note" data-i18n="footer_note">Без фреймворков: HTML + CSS + капля JS.</p>
 </footer>
 
+<nav class="mobile-island" aria-label="Разделы · Бахшҳо · Sections">
+  <span class="island-indicator" aria-hidden="true"></span>
+  <a class="island-link" href="#exp" data-i18n="nav_exp">Опыт</a>
+  <a class="island-link" href="#projects" data-i18n="nav_projects">Проекты</a>
+  <a class="island-link" href="#contacts" data-i18n="nav_connect">Связаться</a>
+</nav>
+
+<dialog class="case-dialog" id="graphCase" aria-labelledby="graphCaseTitle">
+  <form method="dialog" class="case-toolbar"><button class="case-back" autofocus data-i18n="case_back">← К проектам</button><span class="tag">OPEN SOURCE</span></form>
+  <div class="case-content">
+    <h2 id="graphCaseTitle">compose-graph</h2>
+    <p class="case-lede" data-i18n="graph_lede">Физика связей. На общем Kotlin.</p>
+    <div class="case-facts"><span>Android · iOS · Desktop</span><span>Apache-2.0</span></div>
+    <section class="preview-gallery" aria-labelledby="previewTitle">
+      <h3 id="previewTitle" data-i18n="preview_title">Граф в работе</h3>
+      <div class="preview-strip" tabindex="0" role="region" aria-labelledby="previewTitle">
+        <figure class="preview-slide"><img src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 240"><figcaption data-i18n="preview_settled">01 / Устоявшаяся раскладка · кадр 240</figcaption></figure>
+        <figure class="preview-slide"><img src="graph-frame-30.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 30"><figcaption data-i18n="preview_early">02 / Начало раскладки · кадр 30</figcaption></figure>
+        <figure class="preview-slide"><img src="graph-frame-90.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 90"><figcaption data-i18n="preview_middle">03 / Сближение связей · кадр 90</figcaption></figure>
+      </div>
+      <div class="gallery-footer"><p data-i18n="preview_note">Реальные кадры демо: три состояния одного графа.</p><div class="gallery-controls"><button type="button" class="gallery-control" data-direction="-1" aria-label="Назад · Қафо · Previous">‹</button><button type="button" class="gallery-control" data-direction="1" aria-label="Вперёд · Пеш · Next">›</button></div></div>
+      <a class="preview-source" href="https://github.com/saburjonsafarov/compose-graph/actions/runs/29076171876" data-i18n="preview_source">Источник: compose-graph · Apache-2.0</a>
+    </section>
+    <h3 data-i18n="case_problem">Задача</h3><p data-i18n="graph_problem">Показывать связанные данные как интерактивный граф в Compose Multiplatform, отделив физику от интерфейса.</p>
+    <h3 data-i18n="case_contribution">Мой вклад</h3><p data-i18n="graph_work">Разработал ядро физики без внешних зависимостей, Compose-рендерер и парсер Obsidian-вольтов. Добавил перетаскивание узлов, управление камерой, мини-карту и поиск.</p>
+    <div class="case-architecture"><span>graph-core</span><span>graph-compose</span><span>graph-obsidian</span></div>
+    <canvas class="card-graph" aria-hidden="true"></canvas>
+    <h3 data-i18n="case_result">Результат</h3><p data-i18n="graph_result">Открытая библиотека с разделёнными модулями. Barnes–Hut ускоряет расчёт отталкивания до O(n log n); физику и парсер можно использовать независимо от UI.</p>
+    <a class="btn btn-primary" href="https://github.com/saburjonsafarov/compose-graph" data-i18n="case_source">Исходники и документация</a>
+  </div>
+</dialog>
+
+<dialog class="case-dialog" id="bankCase" aria-labelledby="bankCaseTitle">
+  <form method="dialog" class="case-toolbar"><button class="case-back" autofocus data-i18n="case_back">← К проектам</button><span class="tag">MOBILE PLATFORM</span></form>
+  <div class="case-content">
+    <h2 id="bankCaseTitle">Eskhata Online</h2>
+    <p class="case-lede" data-i18n="bank_lede">Развивать продукт. Усиливать команду.</p>
+    <div class="case-facts"><span>Android · Kotlin Multiplatform</span><span>CI/CD · GitFlow</span></div>
+    <h3 data-i18n="case_problem">Задача</h3><p data-i18n="bank_problem">Развивать мобильное банковское приложение и общую техническую основу, помогая команде выпускать и поддерживать новые функции.</p>
+    <h3 data-i18n="case_contribution">Мой вклад</h3><p data-i18n="bank_work">Работа над модулями переводов и платежей, общим KMP-кодом, навигацией и новой дизайн-системой. Архитектурные решения, аудит SDK вендоров, CI/CD и единый GitFlow для Android и iOS. В core-команде выполняю функции тимлида и техлида.</p>
+    <h3 data-i18n="case_result">Результат</h3>
+    <div class="case-results"><div><strong>10–15 → 1</strong><span data-i18n="bank_build">минут на сборку проекта</span></div><div><strong>10+</strong><span data-i18n="bank_hires">нанятых зарубежных разработчиков при моём участии</span></div></div>
+    <p data-i18n="bank_team">Проводил онбординг и оценку компетенций, выполнял обязанности релиз-менеджера и скрам-мастера, представлял фичи команды на Demo Day.</p>
+    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.eskhata.online">Google Play</a>
+  </div>
+</dialog>
+
+<script src="enhancement-copy.js?v=dev"></script>
 <script src="app.js?v=dev"></script>
+<script src="enhancements.js?v=dev"></script>
 </body>
 </html>

@@ -241,6 +241,10 @@ const translations = {
   },
 };
 
+if (typeof enhancementCopy !== 'undefined') {
+  Object.keys(enhancementCopy).forEach((lang) => Object.assign(translations[lang], enhancementCopy[lang]));
+}
+
 const LANG_KEY = 'sshorg.lang';
 const THEME_KEY = 'sshorg.theme';
 
@@ -307,10 +311,29 @@ function effectiveTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+let themeTransitionPending = false;
 function toggleTheme() {
+  if (themeTransitionPending) return;
   const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = next;
-  localStorage.setItem(THEME_KEY, next);
+  const update = () => {
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem(THEME_KEY, next);
+  };
+  if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    update();
+    return;
+  }
+  const button = document.getElementById('themeToggle').getBoundingClientRect();
+  document.documentElement.style.setProperty('--theme-x', `${button.left + button.width / 2}px`);
+  document.documentElement.style.setProperty('--theme-y', `${button.top + button.height / 2}px`);
+  themeTransitionPending = true;
+  try {
+    const transition = document.startViewTransition(update);
+    transition.finished.catch(() => {}).finally(() => { themeTransitionPending = false; });
+  } catch {
+    themeTransitionPending = false;
+    update();
+  }
 }
 
 function typeGreeting() {
@@ -823,11 +846,14 @@ function initGraphs() {
     interactive: true,
   });
 
+}
+
+function initProjectGraph() {
   const cardCanvas = document.querySelector('.card-graph');
   if (cardCanvas) {
     createForceGraph({
       canvas: cardCanvas,
-      host: cardCanvas.closest('.card'),
+      host: cardCanvas.closest('.case-content'),
       nodes: [
         { id: 'compose-graph', group: 0 },
         { id: 'Android', group: 1 },
@@ -851,26 +877,38 @@ function initGraphs() {
 }
 
 function initScrollSpy() {
-  const links = document.querySelectorAll('.nav-link');
-  if (!links.length || !('IntersectionObserver' in window)) {
-    return;
-  }
-  const sectionToLink = new Map();
-  links.forEach((link) => {
-    const section = document.querySelector(link.getAttribute('href'));
-    if (section) {
-      sectionToLink.set(section, link);
-    }
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        links.forEach((link) => link.classList.remove('active'));
-        sectionToLink.get(entry.target).classList.add('active');
+  const groups = ['.nav-link', '.island-link'].map((selector) =>
+    Array.from(document.querySelectorAll(selector)).map((link) => ({
+      link, section: document.querySelector(link.getAttribute('href')),
+    })).filter(({ section }) => section)
+  );
+  const island = document.querySelector('.mobile-island');
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+    groups.forEach((items) => {
+      let selected = atBottom ? items[items.length - 1] : null;
+      if (!atBottom) items.forEach((item) => {
+        if (item.section.getBoundingClientRect().top <= window.innerHeight * 0.4) selected = item;
+      });
+      items.forEach(({ link }) => {
+        const active = link === selected?.link;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+      if (items[0]?.link.classList.contains('island-link') && island) {
+        island.classList.toggle('has-active', Boolean(selected));
+        if (selected) island.style.setProperty('--active-index', String(items.indexOf(selected)));
       }
     });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  sectionToLink.forEach((link, section) => observer.observe(section));
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 }
 
 function initScrollProgress() {

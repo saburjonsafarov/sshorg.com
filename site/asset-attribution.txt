@@ -1,0 +1,6 @@
+graph-frame-240.png, graph-frame-30.png, graph-frame-90.png
+Unmodified renders of the compose-graph sample (1200 x 800), by Saburjon Safarov.
+These are successive animation frames of one graph, not different product screens.
+Source: https://github.com/saburjonsafarov/compose-graph/actions/runs/29076171876
+Source commit: 71c7077ea315dfd9908b6858aee0f3ebc3d2a28c
+Repository license: Apache-2.0; see compose-graph-LICENSE.txt.

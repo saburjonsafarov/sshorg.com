@@ -65,7 +65,8 @@ function initIslandScrollMotion() {
   const links = island.querySelector('.island-links');
   const current = island.querySelector('.island-current');
   const label = island.querySelector('.island-current-label');
-  if (!links || !current || !label) return;
+  const measure = island.querySelector('.island-current-measure');
+  if (!links || !current || !label || !measure) return;
   const mobile = window.matchMedia('(max-width: 760px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const sections = Array.from(document.querySelectorAll('.page > section[aria-labelledby], .hero'));
@@ -93,6 +94,17 @@ function initIslandScrollMotion() {
     current.setAttribute('aria-expanded', String(!next));
   };
 
+  const updateWidth = () => {
+    if (!mobile.matches) return;
+    measure.textContent = label.textContent;
+    const buttonStyle = window.getComputedStyle(current);
+    const islandStyle = window.getComputedStyle(island);
+    const spacing = [buttonStyle.paddingLeft, buttonStyle.paddingRight, islandStyle.paddingLeft, islandStyle.paddingRight, islandStyle.borderLeftWidth, islandStyle.borderRightWidth]
+      .reduce((total, value) => total + (parseFloat(value) || 0), 0);
+    const width = Math.max(44, Math.ceil(measure.getBoundingClientRect().width + spacing));
+    island.style.setProperty('--island-compact-width', `${width}px`);
+  };
+
   const updateLabel = () => {
     let section = sections[0];
     const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
@@ -106,6 +118,7 @@ function initIslandScrollMotion() {
     labelAnimation?.cancel();
     label.textContent = text;
     current.title = text;
+    updateWidth();
     if (compact && !reducedMotion.matches && label.animate) {
       labelAnimation = label.animate([
         { opacity: 0, transform: 'translateY(6px)' },
@@ -134,11 +147,12 @@ function initIslandScrollMotion() {
   }, { passive: true });
   current.addEventListener('click', expand);
   links.addEventListener('focusin', expand);
-  window.addEventListener('resize', () => { expand(); updateLabel(); });
+  window.addEventListener('resize', () => { expand(); updateLabel(); updateWidth(); });
   document.addEventListener('visibilitychange', expand);
   reducedMotion.addEventListener('change', () => { labelAnimation?.cancel(); });
   new MutationObserver(updateLabel).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   updateLabel();
+  updateWidth();
 }
 
 initIslandScrollMotion();

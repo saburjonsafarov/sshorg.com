@@ -311,28 +311,21 @@ function effectiveTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-let themeTransitionPending = false;
+let themeTransitionTimer = null;
 function toggleTheme() {
-  if (themeTransitionPending) return;
+  const root = document.documentElement;
   const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-  const update = () => {
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem(THEME_KEY, next);
-  };
-  if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    update();
-    return;
-  }
-  const button = document.getElementById('themeToggle').getBoundingClientRect();
-  document.documentElement.style.setProperty('--theme-x', `${button.left + button.width / 2}px`);
-  document.documentElement.style.setProperty('--theme-y', `${button.top + button.height / 2}px`);
-  themeTransitionPending = true;
-  try {
-    const transition = document.startViewTransition(update);
-    transition.finished.catch(() => {}).finally(() => { themeTransitionPending = false; });
-  } catch {
-    themeTransitionPending = false;
-    update();
+  const animate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.clearTimeout(themeTransitionTimer);
+  root.classList.toggle('theme-changing', animate);
+  root.dataset.theme = next;
+  localStorage.setItem(THEME_KEY, next);
+  themeTransitionTimer = null;
+  if (animate) {
+    themeTransitionTimer = window.setTimeout(() => {
+      root.classList.remove('theme-changing');
+      themeTransitionTimer = null;
+    }, 260);
   }
 }
 

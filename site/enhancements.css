@@ -51,10 +51,15 @@ html.case-is-open { overflow: hidden; }
 .gallery-control:disabled { opacity: .35; cursor: default; }
 .preview-source { font-size: 14px; }
 .mobile-island { display: none; }
-.island-current { visibility: hidden; }
-::view-transition-old(root) { animation: none; }
-::view-transition-new(root) { animation: theme-reveal 380ms ease-out both; mix-blend-mode: normal; }
-@keyframes theme-reveal { from { clip-path: circle(0 at var(--theme-x, 95%) var(--theme-y, 30px)); } to { clip-path: circle(150vmax at var(--theme-x, 95%) var(--theme-y, 30px)); } }
+.island-current { visibility: hidden; overflow: hidden; }
+/* Animate painted colors directly: no viewport snapshots around fixed glass surfaces. */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-changing :is(body, .band, .hero, .build-comparison, .case-dialog, .case-results > div) { transition: background-color 240ms ease, color 240ms ease, border-color 240ms ease; }
+  .theme-changing .card { transition: transform 250ms ease, box-shadow 250ms ease, background-color 240ms ease, color 240ms ease; }
+  .theme-changing .topbar { transition: box-shadow 300ms ease, background-color 240ms ease, color 240ms ease; }
+  .theme-changing .mobile-island { transition: width 360ms cubic-bezier(.22,.8,.22,1), right 360ms cubic-bezier(.22,.8,.22,1), background-color 240ms ease, color 240ms ease, border-color 240ms ease; }
+  .theme-changing .island-indicator { transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 160ms, background-color 240ms ease; }
+}
 @media (max-width: 760px) {
   body { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
   .mobile-island { display: block; position: fixed; z-index: 20; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); right: max(16px, calc((100% - 390px) / 2)); width: min(390px, calc(100% - 32px)); padding: 6px; border: 1px solid var(--chip-border); border-radius: 30px; background: var(--bar); backdrop-filter: blur(24px) saturate(160%); box-shadow: 0 8px 32px #0002; transition: width 360ms cubic-bezier(.22,.8,.22,1), right 360ms cubic-bezier(.22,.8,.22,1); }
@@ -63,11 +68,12 @@ html.case-is-open { overflow: hidden; }
   .island-link.active { color: var(--ink); }
   .island-indicator { position: absolute; top: 0; bottom: 0; left: 0; width: calc(100% / 3); border-radius: 24px; background: var(--card); box-shadow: 0 2px 8px #0001; opacity: 0; transform: translateX(calc(var(--active-index, 0) * 100%)); transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 160ms; }
   .has-active .island-indicator { opacity: 1; }
-  .mobile-island.is-compact { right: 16px; width: min(180px, calc(100% - 32px)); }
+  .mobile-island.is-compact { right: 16px; width: min(var(--island-compact-width, 88px), calc(100% - 32px)); }
   .is-compact .island-links { opacity: 0; visibility: hidden; transform: translateX(12px) scale(.96); pointer-events: none; transition: opacity 100ms ease, transform 260ms ease, visibility 0s 100ms; }
   .island-current { position: absolute; inset: 6px; display: flex; align-items: center; gap: 10px; padding: 0 14px; min-height: 44px; border: 0; border-radius: 24px; background: transparent; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; opacity: 0; visibility: hidden; transform: translateX(-10px); transition: opacity 100ms ease, transform 240ms ease, visibility 0s 100ms; }
   .is-compact .island-current { opacity: 1; visibility: visible; transform: none; transition: opacity 180ms ease 100ms, transform 240ms ease 80ms, visibility 0s; }
   .island-current-label { display: block; min-width: 0; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; }
+  .island-current-measure { position: absolute; width: max-content; max-width: none; white-space: nowrap; visibility: hidden; pointer-events: none; }
   .island-current:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   .case-dialog { width: 100%; height: 100dvh; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
   .case-toolbar { padding: calc(12px + env(safe-area-inset-top, 0px)) 24px 12px; }
@@ -80,5 +86,4 @@ html.case-is-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .js .build-comparison:not(.in) .build-bar { transform: none; }
   .build-bar, .mobile-island, .island-links, .island-current, .island-indicator, .case-open > span:last-child { transition: none !important; }
-  ::view-transition-new(root) { animation: none; }
 }

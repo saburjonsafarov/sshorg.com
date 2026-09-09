@@ -321,10 +321,16 @@
 </footer>
 
 <nav class="mobile-island" aria-label="Разделы · Бахшҳо · Sections">
-  <span class="island-indicator" aria-hidden="true"></span>
-  <a class="island-link" href="#exp" data-i18n="nav_exp">Опыт</a>
-  <a class="island-link" href="#projects" data-i18n="nav_projects">Проекты</a>
-  <a class="island-link" href="#contacts" data-i18n="nav_connect">Связаться</a>
+  <div class="island-links" id="islandLinks">
+    <span class="island-indicator" aria-hidden="true"></span>
+    <a class="island-link" href="#exp" data-i18n="nav_exp">Опыт</a>
+    <a class="island-link" href="#projects" data-i18n="nav_projects">Проекты</a>
+    <a class="island-link" href="#contacts" data-i18n="nav_connect">Связаться</a>
+  </div>
+  <button class="island-current" type="button" aria-controls="islandLinks" aria-expanded="true" aria-hidden="true" tabindex="-1">
+    <span class="island-current-label" id="islandCurrentLabel">Saburjon</span>
+    <span class="island-current-icon" aria-hidden="true">≡</span>
+  </button>
 </nav>
 
 <dialog class="case-dialog" id="graphCase" aria-labelledby="graphCaseTitle">

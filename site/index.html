@@ -204,7 +204,7 @@
               <img class="project-preview project-preview-alternate" src="graph-frame-30.png" width="1200" height="800" loading="lazy" alt="">
             </div>
             <figcaption class="project-peek-footer" id="graphPeekCaption">
-              <span class="project-peek-caption"><span data-peek-settled data-i18n="preview_settled">01 / Устоявшаяся раскладка · кадр 240</span><span data-peek-early data-i18n="preview_early" hidden>02 / Начало раскладки · кадр 30</span></span>
+              <span class="project-peek-caption"><span data-peek-settled data-i18n="preview_settled">03 / Устоявшаяся раскладка · кадр 240</span><span data-peek-early data-i18n="preview_early" hidden>01 / Начало раскладки · кадр 30</span></span>
               <button type="button" class="preview-toggle" aria-controls="graphPeekImages" aria-pressed="false" data-i18n="preview_toggle" hidden>Ранний кадр</button>
             </figcaption>
           </figure>
@@ -351,18 +351,33 @@
     <section class="preview-gallery" aria-labelledby="previewTitle">
       <h3 id="previewTitle" data-i18n="preview_title">Граф в работе</h3>
       <div class="preview-strip" tabindex="0" role="region" aria-labelledby="previewTitle">
-        <figure class="preview-slide"><img src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 240"><figcaption data-i18n="preview_settled">01 / Устоявшаяся раскладка · кадр 240</figcaption></figure>
-        <figure class="preview-slide"><img src="graph-frame-30.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 30"><figcaption data-i18n="preview_early">02 / Начало раскладки · кадр 30</figcaption></figure>
-        <figure class="preview-slide"><img src="graph-frame-90.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 90"><figcaption data-i18n="preview_middle">03 / Сближение связей · кадр 90</figcaption></figure>
+        <figure class="preview-slide"><img src="graph-frame-30.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 30"><figcaption><strong data-i18n="preview_early">01 / Начало раскладки · кадр 30</strong><span data-i18n="graph_stage_early">Узлы расходятся: отталкивание освобождает пространство, связи удерживают соседей.</span></figcaption></figure>
+        <figure class="preview-slide"><img src="graph-frame-90.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 90"><figcaption><strong data-i18n="preview_middle">02 / Сближение связей · кадр 90</strong><span data-i18n="graph_stage_middle">Пружины и отталкивание формируют раскладку. Движение постепенно затухает.</span></figcaption></figure>
+        <figure class="preview-slide"><img src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 240"><figcaption><strong data-i18n="preview_settled">03 / Устоявшаяся раскладка · кадр 240</strong><span data-i18n="graph_stage_settled">Граф успокаивается. Перетаскивание узла снова запускает симуляцию.</span></figcaption></figure>
       </div>
-      <div class="gallery-footer"><p data-i18n="preview_note">Реальные кадры демо: три состояния одного графа.</p><div class="gallery-controls"><button type="button" class="gallery-control" data-direction="-1" aria-label="Назад · Қафо · Previous">‹</button><button type="button" class="gallery-control" data-direction="1" aria-label="Вперёд · Пеш · Next">›</button></div></div>
+      <div class="gallery-footer"><p data-i18n="preview_note">Три PNG-кадра настоящего Compose-демо, не видеозапись. Листайте, чтобы увидеть этапы раскладки.</p><div class="gallery-controls"><button type="button" class="gallery-control" data-direction="-1" aria-label="Назад · Қафо · Previous">‹</button><button type="button" class="gallery-control" data-direction="1" aria-label="Вперёд · Пеш · Next">›</button></div></div>
       <a class="preview-source" href="https://github.com/saburjonsafarov/compose-graph/actions/runs/29076171876" data-i18n="preview_source">Источник: compose-graph · Apache-2.0</a>
     </section>
+    <h3 data-i18n="graph_capabilities">От раскладки к исследованию</h3>
+    <div class="graph-capabilities">
+      <article><h4 data-i18n="graph_gestures_title">Двигать и приближать</h4><p data-i18n="graph_gestures">Перетаскивание узлов, панорамирование, pinch и колесо мыши. Выбранный узел подсвечивает своих соседей.</p></article>
+      <article><h4 data-i18n="graph_minimap_title">Видеть целое</h4><p data-i18n="graph_minimap">Мини-карта показывает весь граф и текущую область просмотра. Нажатие переносит камеру в нужную точку.</p></article>
+      <article><h4 data-i18n="graph_search_title">Находить нужное</h4><p data-i18n="graph_search">API поиска находит узлы по запросу; focusOn плавно перемещает камеру к выбранному узлу.</p></article>
+      <article><h4 data-i18n="graph_vault_title">Связать свои заметки</h4><p data-i18n="graph_vault">Парсер превращает Markdown-файлы и [[wikilinks]] из Obsidian в граф. Физика и парсер работают независимо от интерфейса.</p></article>
+    </div>
+    <aside class="graph-try" aria-labelledby="graphTryTitle">
+      <h3 id="graphTryTitle" data-i18n="graph_try_title">Попробовать настоящий Compose-рендерер</h3>
+      <p data-i18n="graph_try_text">Клонируйте репозиторий и запустите desktop-демо. В нём доступны перетаскивание, зум и мини-карта.</p>
+      <pre><code>./gradlew :sample:run</code></pre>
+      <div class="graph-source-links"><a href="https://github.com/saburjonsafarov/compose-graph/tree/71c7077ea315dfd9908b6858aee0f3ebc3d2a28c/sample" data-i18n="graph_sample_link">Исходники демо</a><a href="https://github.com/saburjonsafarov/compose-graph/blob/71c7077ea315dfd9908b6858aee0f3ebc3d2a28c/README.md" data-i18n="graph_guide_link">Запуск и подключение</a></div>
+    </aside>
     <h3 data-i18n="case_problem">Задача</h3><p data-i18n="graph_problem">Показывать связанные данные как интерактивный граф в Compose Multiplatform, отделив физику от интерфейса.</p>
     <h3 data-i18n="case_contribution">Мой вклад</h3><p data-i18n="graph_work">Разработал ядро физики без внешних зависимостей, Compose-рендерер и парсер Obsidian-вольтов. Добавил перетаскивание узлов, управление камерой, мини-карту и поиск.</p>
-    <div class="case-architecture"><span>graph-core</span><span>graph-compose</span><span>graph-obsidian</span></div>
+    <div class="case-architecture"><a href="https://github.com/saburjonsafarov/compose-graph/tree/71c7077ea315dfd9908b6858aee0f3ebc3d2a28c/graph-core">graph-core</a><a href="https://github.com/saburjonsafarov/compose-graph/tree/71c7077ea315dfd9908b6858aee0f3ebc3d2a28c/graph-compose">graph-compose</a><a href="https://github.com/saburjonsafarov/compose-graph/tree/71c7077ea315dfd9908b6858aee0f3ebc3d2a28c/graph-obsidian">graph-obsidian</a></div>
+    <p class="graph-web-note" data-i18n="graph_web_note">Ниже — веб-иллюстрация физики связей. Настоящий Compose-рендерер показан в кадрах выше и доступен в desktop-демо.</p>
     <canvas class="card-graph" aria-hidden="true"></canvas>
     <h3 data-i18n="case_result">Результат</h3><p data-i18n="graph_result">Открытая библиотека с разделёнными модулями. Barnes–Hut ускоряет расчёт отталкивания до O(n log n); физику и парсер можно использовать независимо от UI.</p>
+    <div class="graph-verification"><a href="https://github.com/saburjonsafarov/compose-graph/actions/runs/29076171876" data-i18n="graph_ci_link">Посмотреть проверку в CI</a><p data-i18n="graph_verified">В этом прогоне прошли тесты ядра, парсера и камеры, компиляция Android и offscreen-рендер sample. iOS-таргеты объявлены, но этот CI их не проверяет.</p></div>
     <a class="btn btn-primary" href="https://github.com/saburjonsafarov/compose-graph" data-i18n="case_source">Исходники и документация</a>
   </div>
 </dialog>

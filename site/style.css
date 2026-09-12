@@ -204,13 +204,16 @@ section[id] { scroll-margin-top: 64px; }
   position: absolute;
   inset: -20%;
   background:
-    radial-gradient(38% 45% at 30% 38%, rgba(41, 151, 255, 0.22), transparent 70%),
-    radial-gradient(34% 42% at 70% 55%, rgba(169, 114, 255, 0.18), transparent 70%),
-    radial-gradient(28% 36% at 52% 75%, rgba(255, 100, 130, 0.12), transparent 70%);
+    radial-gradient(38% 45% at 30% 38%, color-mix(in srgb, var(--hero-ink) 10%, transparent), transparent 70%),
+    radial-gradient(34% 42% at 70% 55%, color-mix(in srgb, var(--hero-ink) 8%, transparent), transparent 70%),
+    radial-gradient(28% 36% at 52% 75%, color-mix(in srgb, var(--hero-ink) 5%, transparent), transparent 70%);
   filter: blur(40px);
-  animation: aurora-drift 14s ease-in-out infinite alternate;
+  animation: aurora-drift 18s ease-in-out infinite alternate paused;
   pointer-events: none;
 }
+
+.hero.ambient-running::before { animation-play-state: running; }
+.hero:not(.ambient-running) .hero-title { animation-play-state: paused, running; }
 
 @keyframes aurora-drift {
   from { transform: translate3d(-3%, -2%, 0) scale(1); }
@@ -224,7 +227,7 @@ section[id] { scroll-margin-top: 64px; }
   inset: 0;
   background: radial-gradient(
     320px circle at var(--gx, 50%) var(--gy, 45%),
-    rgba(41, 151, 255, 0.12),
+    color-mix(in srgb, var(--hero-ink) 7%, transparent),
     transparent 60%
   );
   opacity: 0;
@@ -657,7 +660,7 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   border-radius: inherit;
   background: radial-gradient(
     220px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(41, 151, 255, 0.10),
+    color-mix(in srgb, var(--ink) 7%, transparent),
     transparent 65%
   );
   opacity: 0;
@@ -665,11 +668,37 @@ html.js .hero-actions { animation: hero-enter 0.8s 0.45s cubic-bezier(0.22, 1, 0
   pointer-events: none;
 }
 
-.card:hover::after { opacity: 1; }
+.card.spotlight-on::after { opacity: 1; }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--ink) 35%, transparent), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card.spotlight-on::before { opacity: 1; }
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .card.spotlight-on::after { opacity: 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -795,8 +824,10 @@ html.js .reveal {
 
 html.js .reveal:not(.in) {
   opacity: 0;
-  transform: translateY(24px) scale(0.96);
+  transform: translateY(16px);
 }
+
+html.js .reveal:focus-within { opacity: 1; transform: none; transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

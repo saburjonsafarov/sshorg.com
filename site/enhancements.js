@@ -155,6 +155,58 @@ function initIslandScrollMotion() {
   updateWidth();
 }
 
+function initAmbientMotion() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  let visible = false;
+  const update = () => hero.classList.toggle('ambient-running', visible && !document.hidden && !motionPreference.matches);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
+      update();
+    }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', update);
+  motionPreference.addEventListener('change', update);
+  update();
+}
+
+function initProjectPeeks() {
+  document.querySelectorAll('.project-peek').forEach((preview) => {
+    const images = preview.querySelector('.project-peek-images');
+    const alternate = preview.querySelector('.project-preview-alternate');
+    const button = preview.querySelector('.preview-toggle');
+    let selected = false;
+    let hovering = false;
+    let ready = false;
+    const update = () => {
+      const showAlternate = ready && (selected || hovering);
+      preview.classList.toggle('is-alternate', showAlternate);
+      preview.querySelector('[data-peek-settled]').hidden = showAlternate;
+      preview.querySelector('[data-peek-early]').hidden = !showAlternate;
+      button.setAttribute('aria-pressed', String(selected));
+    };
+    const enable = () => {
+      ready = alternate.naturalWidth > 0;
+      button.hidden = !ready;
+      update();
+    };
+    alternate.addEventListener('load', enable);
+    alternate.addEventListener('error', () => { ready = false; selected = false; button.hidden = true; update(); });
+    if (alternate.complete) enable();
+    images.addEventListener('pointerenter', (event) => {
+      hovering = isFinePointer() && event.pointerType !== 'touch' && !motionPreference.matches;
+      update();
+    });
+    images.addEventListener('pointerleave', () => { hovering = false; update(); });
+    images.addEventListener('pointercancel', () => { hovering = false; update(); });
+    button.addEventListener('click', () => { selected = !selected; update(); });
+    motionPreference.addEventListener('change', () => { hovering = false; update(); });
+  });
+}
+
+initAmbientMotion();
+initProjectPeeks();
 initIslandScrollMotion();
 initProjectCases();
 initPreviewGalleries();

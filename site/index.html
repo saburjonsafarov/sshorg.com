@@ -198,7 +198,16 @@
             <h3 id="graphCardTitle">compose-graph</h3>
             <span class="tag" data-i18n="tag_oss">опенсорс</span>
           </div>
-          <img class="project-preview" src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="compose-graph: Kotlin / Compose, frame 240">
+          <figure class="project-peek" aria-labelledby="graphPeekCaption">
+            <div class="project-peek-images" id="graphPeekImages">
+              <img class="project-preview" src="graph-frame-240.png" width="1200" height="800" loading="lazy" alt="">
+              <img class="project-preview project-preview-alternate" src="graph-frame-30.png" width="1200" height="800" loading="lazy" alt="">
+            </div>
+            <figcaption class="project-peek-footer" id="graphPeekCaption">
+              <span class="project-peek-caption"><span data-peek-settled data-i18n="preview_settled">01 / Устоявшаяся раскладка · кадр 240</span><span data-peek-early data-i18n="preview_early" hidden>02 / Начало раскладки · кадр 30</span></span>
+              <button type="button" class="preview-toggle" aria-controls="graphPeekImages" aria-pressed="false" data-i18n="preview_toggle" hidden>Ранний кадр</button>
+            </figcaption>
+          </figure>
           <p data-i18n="p_graph">Первый force-directed граф для Compose Multiplatform (Android · iOS · Desktop): ядро физики без единой зависимости с Barnes-Hut O(n log n), Compose-рендерер и парсер Obsidian-вольтов. Apache-2.0, опубликована в Maven.</p>
           <a class="card-link" href="https://github.com/saburjonsafarov/compose-graph">GitHub&nbsp;›</a>
           <button class="case-open" type="button" data-case="graphCase" aria-haspopup="dialog" aria-labelledby="graphOpenLabel graphCardTitle" hidden><span id="graphOpenLabel" data-i18n="case_open">Разобрать кейс</span><span aria-hidden="true">＋</span></button>

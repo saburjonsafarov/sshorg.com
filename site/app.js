@@ -247,6 +247,7 @@ if (typeof enhancementCopy !== 'undefined') {
 
 const LANG_KEY = 'sshorg.lang';
 const THEME_KEY = 'sshorg.theme';
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 let typingTimer = null;
 
@@ -311,21 +312,40 @@ function effectiveTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-let themeTransitionTimer = null;
-function toggleTheme() {
+let themeTransition = null;
+async function toggleTheme() {
+  if (themeTransition) return;
   const root = document.documentElement;
   const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-  const animate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.clearTimeout(themeTransitionTimer);
-  root.classList.toggle('theme-changing', animate);
-  root.dataset.theme = next;
-  localStorage.setItem(THEME_KEY, next);
-  themeTransitionTimer = null;
-  if (animate) {
-    themeTransitionTimer = window.setTimeout(() => {
-      root.classList.remove('theme-changing');
-      themeTransitionTimer = null;
-    }, 260);
+  const apply = () => {
+    root.dataset.theme = next;
+    localStorage.setItem(THEME_KEY, next);
+  };
+  if (motionPreference.matches || !document.startViewTransition) {
+    apply();
+    return;
+  }
+  const button = document.getElementById('themeToggle');
+  const bounds = button.getBoundingClientRect();
+  const x = bounds.left + bounds.width / 2;
+  const y = bounds.top + bounds.height / 2;
+  const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  root.style.setProperty('--theme-x', `${x}px`);
+  root.style.setProperty('--theme-y', `${y}px`);
+  root.style.setProperty('--theme-radius', `${Math.ceil(radius)}px`);
+  root.classList.add('theme-reveal');
+  button.setAttribute('aria-busy', 'true');
+  try {
+    themeTransition = document.startViewTransition(apply);
+    // A skipped snapshot rejects ready even though the DOM update still runs.
+    themeTransition.ready.catch(() => {});
+    await themeTransition.finished;
+  } catch {
+    apply();
+  } finally {
+    themeTransition = null;
+    root.classList.remove('theme-reveal');
+    button.removeAttribute('aria-busy');
   }
 }
 
@@ -340,6 +360,11 @@ function typeGreeting() {
   target.classList.add('typing-caret');
   let index = 0;
   typingTimer = setInterval(() => {
+    if (motionPreference.matches) {
+      target.textContent = fullText;
+      stopTyping();
+      return;
+    }
     index += 1;
     target.textContent = fullText.slice(0, index);
     if (index >= fullText.length) {
@@ -366,13 +391,17 @@ window.addEventListener('pageshow', (event) => {
 function initHeroParallax() {
   const hero = document.querySelector('.hero');
   const inner = document.querySelector('.hero-inner');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!hero || !inner || reducedMotion) {
+  if (!hero || !inner) {
     return;
   }
   let ticking = false;
   const update = () => {
     ticking = false;
+    if (motionPreference.matches || inner.contains(document.activeElement)) {
+      inner.style.opacity = '';
+      inner.style.transform = '';
+      return;
+    }
     const heroHeight = hero.offsetHeight;
     if (heroHeight === 0) {
       return;
@@ -389,6 +418,9 @@ function initHeroParallax() {
       window.requestAnimationFrame(update);
     }
   }, { passive: true });
+  motionPreference.addEventListener('change', update);
+  inner.addEventListener('focusin', update);
+  inner.addEventListener('focusout', () => requestAnimationFrame(update));
   update();
 }
 
@@ -407,43 +439,58 @@ function isFinePointer() {
 }
 
 function initCardSpotlight() {
-  if (!isFinePointer()) {
-    return;
-  }
   document.querySelectorAll('.card').forEach((card) => {
+    let frame = null;
+    let point = null;
+    const clear = () => {
+      cancelAnimationFrame(frame);
+      frame = null;
+      card.classList.remove('spotlight-on');
+    };
     card.addEventListener('pointermove', (event) => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${(((event.clientX - rect.left) / rect.width) * 100).toFixed(1)}%`);
-      card.style.setProperty('--my', `${(((event.clientY - rect.top) / rect.height) * 100).toFixed(1)}%`);
+      if (!isFinePointer() || motionPreference.matches || event.pointerType === 'touch') return;
+      point = { x: event.clientX, y: event.clientY };
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${point.x - rect.left}px`);
+        card.style.setProperty('--my', `${point.y - rect.top}px`);
+        card.classList.add('spotlight-on');
+      });
     });
+    card.addEventListener('pointerleave', clear);
+    card.addEventListener('pointercancel', clear);
+    motionPreference.addEventListener('change', clear);
   });
 }
 
 function initHeroGlow() {
   const hero = document.querySelector('.hero');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!hero || !isFinePointer() || reducedMotion) {
+  if (!hero) {
     return;
   }
   hero.addEventListener('pointermove', (event) => {
+    if (!isFinePointer() || motionPreference.matches || event.pointerType === 'touch') return;
     const rect = hero.getBoundingClientRect();
     hero.style.setProperty('--gx', `${(((event.clientX - rect.left) / rect.width) * 100).toFixed(1)}%`);
     hero.style.setProperty('--gy', `${(((event.clientY - rect.top) / rect.height) * 100).toFixed(1)}%`);
     hero.classList.add('glow-on');
   });
   hero.addEventListener('pointerleave', () => hero.classList.remove('glow-on'));
+  motionPreference.addEventListener('change', () => hero.classList.remove('glow-on'));
 }
 
 function initMagneticCta() {
   const zone = document.querySelector('.hero-actions');
   const button = zone ? zone.querySelector('.btn-primary') : null;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!zone || !button || !isFinePointer() || reducedMotion) {
+  if (!zone || !button) {
     return;
   }
   const MAGNET_RANGE = 120;
   const MAGNET_PULL = 0.3;
   zone.addEventListener('pointermove', (event) => {
+    if (!isFinePointer() || motionPreference.matches || event.pointerType === 'touch') return;
     const rect = button.getBoundingClientRect();
     const dx = event.clientX - (rect.left + rect.width / 2);
     const dy = event.clientY - (rect.top + rect.height / 2);
@@ -458,6 +505,7 @@ function initMagneticCta() {
   zone.addEventListener('pointerleave', () => {
     button.style.transform = '';
   });
+  motionPreference.addEventListener('change', () => { button.style.transform = ''; });
 }
 
 function initCountUp() {
@@ -481,6 +529,10 @@ function initCountUp() {
         const started = performance.now();
         const DURATION_MS = 1200;
         const tick = (now) => {
+          if (motionPreference.matches) {
+            element.textContent = `${prefix}${target}${suffix}`;
+            return;
+          }
           const progress = Math.min((now - started) / DURATION_MS, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
           element.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
@@ -508,7 +560,6 @@ function createForceGraph(config) {
     return;
   }
   const ctx = canvas.getContext('2d');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nodes = config.nodes.map((node) => ({ ...node, x: 0, y: 0, vx: 0, vy: 0 }));
   const edges = config.edges;
   const pointer = { x: -1e4, y: -1e4 };
@@ -518,6 +569,7 @@ function createForceGraph(config) {
   let height = 0;
   let rafId = null;
   let running = false;
+  let visible = false;
 
   const neighbors = nodes.map(() => new Set());
   edges.forEach(([a, b]) => {
@@ -663,7 +715,7 @@ function createForceGraph(config) {
   };
 
   const start = () => {
-    if (!running && !reducedMotion) {
+    if (!running && !motionPreference.matches && visible && !document.hidden) {
       running = true;
       rafId = window.requestAnimationFrame(frame);
     }
@@ -694,15 +746,8 @@ function createForceGraph(config) {
     step();
   }
   draw();
-  if (reducedMotion) {
-    for (let i = 0; i < 100; i += 1) {
-      step();
-    }
-    draw();
-    return;
-  }
-
   host.addEventListener('pointermove', (event) => {
+    if (motionPreference.matches) return;
     const point = localPoint(event);
     pointer.x = point.x;
     pointer.y = point.y;
@@ -720,7 +765,7 @@ function createForceGraph(config) {
 
   if (config.interactive) {
     host.addEventListener('pointerdown', (event) => {
-      if (event.target.closest('a, button')) {
+      if (motionPreference.matches || event.target.closest('a, button')) {
         return;
       }
       const point = localPoint(event);
@@ -774,12 +819,15 @@ function createForceGraph(config) {
     });
   }
 
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', () => { resize(); draw(); });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver((entries) => {
-      entries.forEach((entry) => (entry.isIntersecting ? start() : stop()));
+      visible = entries.some((entry) => entry.isIntersecting);
+      if (visible) start();
+      else stop();
     }).observe(host);
   } else {
+    visible = true;
     start();
   }
   document.addEventListener('visibilitychange', () => {
@@ -789,6 +837,17 @@ function createForceGraph(config) {
       start();
     }
   });
+  motionPreference.addEventListener('change', () => {
+    if (motionPreference.matches) {
+      stop();
+      drag.node = null;
+      drag.pointerId = null;
+      host.style.cursor = '';
+      draw();
+    } else start();
+  });
+  new MutationObserver(() => { if (!running) draw(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 }
 
 function initGraphs() {
@@ -927,24 +986,43 @@ function initScrollProgress() {
 
 function revealOnScroll() {
   const blocks = document.querySelectorAll('.reveal');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!('IntersectionObserver' in window) || reducedMotion) {
+  if (!('IntersectionObserver' in window) || motionPreference.matches) {
     blocks.forEach((block) => block.classList.add('in'));
     return;
   }
-  const STAGGER_MS = 80;
+  const timers = new Set();
   const observer = new IntersectionObserver((entries) => {
     // батч, попавший во вьюпорт одновременно, появляется каскадом сверху вниз
     const visible = entries
       .filter((entry) => entry.isIntersecting)
       .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
     visible.forEach((entry, index) => {
-      window.setTimeout(() => entry.target.classList.add('in'), index * STAGGER_MS);
+      const timer = window.setTimeout(() => {
+        entry.target.classList.add('in');
+        timers.delete(timer);
+      }, Math.min(index * 65, 195));
+      timers.add(timer);
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: '0px 0px -10% 0px' });
+  }, { rootMargin: '0px 0px 24px 0px' });
   blocks.forEach((block) => observer.observe(block));
+  document.addEventListener('focusin', (event) => {
+    event.target.closest('.reveal')?.classList.add('in');
+  });
+  motionPreference.addEventListener('change', () => {
+    if (!motionPreference.matches) return;
+    timers.forEach(clearTimeout);
+    timers.clear();
+    observer.disconnect();
+    blocks.forEach((block) => block.classList.add('in'));
+  });
 }
+
+motionPreference.addEventListener('change', () => {
+  if (!motionPreference.matches) return;
+  themeTransition?.skipTransition();
+  document.getAnimations?.().forEach((animation) => animation.cancel());
+});
 
 const savedTheme = localStorage.getItem(THEME_KEY);
 if (savedTheme === 'dark' || savedTheme === 'light') {

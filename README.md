@@ -20,6 +20,12 @@ The site is served by Caddy on a VPS as plain static files.
 - **Automatic**: pushing to `main` runs `.github/workflows/deploy.yml`, which copies `site/` to the server over SSH (requires the `DEPLOY_KEY`, `DEPLOY_HOST`, `DEPLOY_PATH` repository secrets).
 - **Manual**: `./deploy.sh` does the same from a local machine.
 
+## Visual effects
+
+Card spotlights use fine pointers only. The hero light field pauses offscreen and in hidden tabs. Theme changes use a circular View Transition when supported, with an immediate fallback. The compose-graph preview uses the existing, attributed demo frames; its “Early frame” button also works with touch and keyboard. All decorative motion respects `prefers-reduced-motion`, including changes during a visit.
+
+Run dependency-free interaction checks with `node --test tests/visual-effects.test.cjs`. These use a simulated DOM and do not replace browser checks of layout, focus, contrast, or animation rendering.
+
 ## License
 
 Code (HTML/CSS/JS) — MIT. Texts and personal content — all rights reserved.

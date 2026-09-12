@@ -58,13 +58,48 @@ html.case-is-open { overflow: hidden; }
 .preview-source { font-size: 14px; }
 .mobile-island { display: none; }
 .island-current { visibility: hidden; overflow: hidden; }
-/* Animate painted colors directly: no viewport snapshots around fixed glass surfaces. */
+/* Keep both viewport snapshots opaque while the new theme expands from its control. */
+.theme-reveal::view-transition-group(root) { animation-duration: 420ms; }
+.theme-reveal::view-transition-image-pair(root) { isolation: isolate; }
+.theme-reveal::view-transition-old(root),
+.theme-reveal::view-transition-new(root) { mix-blend-mode: normal; animation: none; }
+.theme-reveal::view-transition-old(root) { z-index: 1; }
+.theme-reveal::view-transition-new(root) { z-index: 2; animation: theme-circle 420ms cubic-bezier(.2,.7,.2,1) both; }
+@keyframes theme-circle {
+  from { clip-path: circle(0px at var(--theme-x) var(--theme-y)); }
+  to { clip-path: circle(var(--theme-radius) at var(--theme-x) var(--theme-y)); }
+}
+
+.project-peek { margin: 24px 0; }
+.project-peek-images { position: relative; overflow: hidden; border-radius: 18px; background: var(--graph-preview-bg); }
+.project-peek .project-preview { margin: 0; border-radius: 0; transition: opacity 220ms ease, transform 400ms cubic-bezier(.2,.8,.2,1); }
+.project-peek .project-preview-alternate { position: absolute; inset: 0; opacity: 0; }
+.project-peek.is-alternate .project-preview-alternate { opacity: 1; }
+.project-peek-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; color: var(--muted); font-size: 14px; }
+.project-peek-caption { flex: 1 1 240px; }
+.preview-toggle { flex: 0 0 auto; min-height: 44px; padding: 10px 16px; border: 1px solid var(--chip-border); border-radius: 24px; background: var(--bg-alt); color: var(--ink); font: inherit; cursor: pointer; }
+.preview-toggle[hidden] { display: none; }
+.preview-toggle[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+.preview-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project-peek-images:hover .project-preview { transform: scale(1.025); }
+}
+
+/* Independent scale composes with the existing magnetic CTA transform. */
 @media (prefers-reduced-motion: no-preference) {
-  .theme-changing :is(body, .band, .hero, .build-comparison, .case-dialog, .case-results > div) { transition: background-color 240ms ease, color 240ms ease, border-color 240ms ease; }
-  .theme-changing .card { transition: transform 250ms ease, box-shadow 250ms ease, background-color 240ms ease, color 240ms ease; }
-  .theme-changing .topbar { transition: box-shadow 300ms ease, background-color 240ms ease, color 240ms ease; }
-  .theme-changing .mobile-island { transition: width 360ms cubic-bezier(.22,.8,.22,1), right 360ms cubic-bezier(.22,.8,.22,1), background-color 240ms ease, color 240ms ease, border-color 240ms ease; }
-  .theme-changing .island-indicator { transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 160ms, background-color 240ms ease; }
+  :is(.btn, .lang-btn, .theme-btn, .case-open, .case-back, .gallery-control, .preview-toggle, .island-current) {
+    transition: scale 240ms cubic-bezier(.2,1.5,.4,1), background-color 200ms ease, color 200ms ease, transform 200ms ease;
+  }
+  :is(.btn, .lang-btn, .theme-btn, .case-open, .case-back, .gallery-control, .preview-toggle, .island-current):not(:disabled):active {
+    scale: .96;
+    transition-duration: 80ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .hero-inner { transform: none !important; opacity: 1 !important; }
+  .project-peek .project-preview { transform: none; }
+  .theme-reveal::view-transition-new(root) { animation: none; }
 }
 @media (max-width: 760px) {
   body { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }

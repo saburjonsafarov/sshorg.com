@@ -1,5 +1,6 @@
 const enhancementCopy = {
   "ru": {
+    "preview_toggle": "Ранний кадр",
     "nav_connect": "Связаться",
     "case_open": "Разобрать кейс",
     "case_back": "← К проектам",
@@ -33,6 +34,7 @@ const enhancementCopy = {
     "preview_source": "Источник: compose-graph · Apache-2.0"
   },
   "tg": {
+    "preview_toggle": "Кадри аввал",
     "nav_connect": "Тамос",
     "case_open": "Тафсилоти лоиҳа",
     "case_back": "← Ба лоиҳаҳо",
@@ -66,6 +68,7 @@ const enhancementCopy = {
     "preview_source": "Манбаъ: compose-graph · Apache-2.0"
   },
   "en": {
+    "preview_toggle": "Early frame",
     "nav_connect": "Contact",
     "case_open": "Explore the case",
     "case_back": "← Back to projects",

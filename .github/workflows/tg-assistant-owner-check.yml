@@ -1,0 +1,37 @@
+name: Check tg-assistant owner chat
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tg-assistant-owner-check.yml"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Set up SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST#*@}" >> ~/.ssh/known_hosts
+
+      - name: Check owner chat
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_HOST" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /opt/tg-assistant
+          token=$(grep '^TELEGRAM_BOT_TOKEN=' .env | cut -d= -f2-)
+          owner=$(grep '^OWNER_TELEGRAM_ID=' .env | cut -d= -f2-)
+          echo "OWNER_ID=$owner"
+          curl -fsS --max-time 10 -X POST "https://api.telegram.org/bot${token}/sendMessage"             -H 'Content-Type: application/json'             -d "{\"chat_id\":$owner,\"text\":\"✅ tg-assistant: проверка управляющего чата. Если ты видишь это сообщение — связь с твоим аккаунтом работает.\"}"             | python3 -c 'import json,sys; d=json.load(sys.stdin); print("ok="+str(d.get("ok"))); r=d.get("result") or {}; print("chat_id="+str((r.get("chat") or {}).get("id"))); print("chat_type="+str((r.get("chat") or {}).get("type"))); print("error="+str(d.get("description")))'
+          REMOTE

@@ -1,0 +1,75 @@
+name: Telegram channel preflight
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tg-channel-preflight.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tg-assistant-maintenance
+  cancel-in-progress: false
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: SSH setup
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          test -n "$DEPLOY_HOST" && test -n "$DEPLOY_KEY"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          ssh-keyscan -T 8 -H "${DEPLOY_HOST#*@}" > ~/.ssh/known_hosts 2>/dev/null
+      - name: Read channel metadata and posting rights (no messages sent)
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 -i ~/.ssh/deploy_key "$DEPLOY_HOST" 'docker exec -i tg-assistant python -' <<'PY'
+          import json, os, pathlib, urllib.request
+          token = os.environ['TELEGRAM_BOT_TOKEN']
+          owner = int(os.environ['OWNER_TELEGRAM_ID'])
+          def api(method, **params):
+              request = urllib.request.Request(
+                  'https://api.telegram.org/bot' + token + '/' + method,
+                  data=json.dumps(params).encode(),
+                  headers={'Content-Type': 'application/json'},
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=12) as response:
+                      body = json.load(response)
+              except Exception:
+                  raise SystemExit('TELEGRAM_READ_FAILED_' + method)
+              if not body.get('ok'):
+                  raise SystemExit('TELEGRAM_READ_REJECTED_' + method)
+              return body['result']
+          me = api('getMe')
+          profile = api('getChat', chat_id=owner)
+          channel = profile.get('personal_chat')
+          if not isinstance(channel, dict) or channel.get('type') != 'channel':
+              print('PERSONAL_CHANNEL_NOT_IN_PROFILE')
+              raise SystemExit(0)
+          chat_id = channel['id']
+          bot_member = api('getChatMember', chat_id=chat_id, user_id=me['id'])
+          owner_member = api('getChatMember', chat_id=chat_id, user_id=owner)
+          def can_post(member):
+              return member.get('status') == 'creator' or (member.get('status') == 'administrator' and member.get('can_post_messages') is True)
+          result = {'channel': channel, 'bot_can_post': can_post(bot_member), 'owner_can_post': can_post(owner_member), 'publishing_enabled': False}
+          path = pathlib.Path(os.environ['BRAIN_REPO_PATH']) / 'telegram' / 'channel_preflight.json'
+          path.parent.mkdir(parents=True, exist_ok=True)
+          fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+          with os.fdopen(fd, 'w') as stream:
+              json.dump(result, stream, ensure_ascii=False)
+          print('PERSONAL_CHANNEL_FOUND')
+          if channel.get('username'):
+              print('PUBLIC_CHANNEL=@' + channel['username'])
+          else:
+              print('PRIVATE_CHANNEL_METADATA_NOT_LOGGED')
+          print('BOT_CAN_POST=' + str(result['bot_can_post']))
+          print('OWNER_CAN_POST=' + str(result['owner_can_post']))
+          print('NO_POST_PUBLISHED')
+          PY

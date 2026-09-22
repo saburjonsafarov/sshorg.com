@@ -1,0 +1,38 @@
+name: Inspect tg-assistant handler
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tg-assistant-inspect-handler.yml"
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Set up SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST#*@}" >> ~/.ssh/known_hosts
+
+      - name: Inspect handler code
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_HOST" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          echo "== owner command area =="
+          grep -n -B 12 -A 28 'parse_owner_command' /opt/tg-assistant/tg_assistant/app.py | tail -80
+          echo "== contacts area =="
+          grep -n -B 8 -A 28 'stripped == "/contacts"' /opt/tg-assistant/tg_assistant/app.py || true
+          echo "== update logging =="
+          grep -n -E 'authorized=|message update|update_type|RAW UPDATE' /opt/tg-assistant/tg_assistant/app.py || true
+          REMOTE

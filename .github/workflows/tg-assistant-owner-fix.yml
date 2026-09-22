@@ -1,0 +1,99 @@
+name: Fix tg-assistant owner chat
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tg-assistant-owner-fix.yml"
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Set up SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST#*@}" >> ~/.ssh/known_hosts
+
+      - name: Patch owner message handling
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_HOST" 'python3 -' <<'PY'
+          from pathlib import Path
+
+          path = Path("/opt/tg-assistant/tg_assistant/app.py")
+          text = path.read_text(encoding="utf-8")
+
+          old = '''        command = parse_owner_command(update, self._config.owner_id)
+          if command is not None:
+              await self._on_owner_message(command.text)
+          '''
+          new = '''        message = update.get("message")
+          if isinstance(message, dict):
+              sender = message.get("from")
+              chat = message.get("chat")
+              sender_id = sender.get("id") if isinstance(sender, dict) else None
+              chat_id = chat.get("id") if isinstance(chat, dict) else None
+              log.info(
+                  "обычный message update: sender_id=%s chat_id=%s authorized=%s",
+                  sender_id,
+                  chat_id,
+                  sender_id == self._config.owner_id,
+              )
+
+          command = parse_owner_command(update, self._config.owner_id)
+          if command is not None:
+              await self._on_owner_message(command.text)
+          '''
+          if old not in text and "обычный message update" not in text:
+              raise SystemExit("owner message insertion point not found")
+          if old in text:
+              text = text.replace(old, new, 1)
+
+          old_contacts = '''        elif stripped == "/contacts":
+              contacts = self._store.contacts()
+              if not contacts:
+                  await self._tell_owner("Пока нет известных контактов.")
+                  return
+              lines = []
+              for item in contacts[:30]:
+                  suffix = f" (@{item.username})" if item.username else ""
+                  state = "🟢" if item.reply_window_open() else "⚪️"
+                  lines.append(f"{state} {item.display_name}{suffix}")
+              await self._tell_owner("Контакты:\\n" + "\\n".join(lines))
+          '''
+          new_contacts = old_contacts + '''        else:
+              await self._tell_owner(
+                  "Не понял команду. Напиши /help — покажу доступные команды."
+              )
+          '''
+          if old_contacts in text and "Не понял команду." not in text:
+              text = text.replace(old_contacts, new_contacts, 1)
+
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Rebuild and verify
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_HOST" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /opt/tg-assistant
+          BRAIN_HOST_PATH=/opt/brain docker compose up -d --build tg-assistant
+          sleep 8
+          test "$(docker inspect -f '{{.State.Running}}' tg-assistant)" = "true"
+          grep -q 'обычный message update' tg_assistant/app.py
+          grep -q 'Не понял команду' tg_assistant/app.py
+          echo "OWNER_CHAT_FIX_DEPLOYED"
+          REMOTE

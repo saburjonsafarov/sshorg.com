@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ru" data-runtime="preview">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10101a">
+<meta name="color-scheme" content="dark">
+<title>Lumi — интерактивный проводник · 1.0.1</title>
+<style>
+:root{--bg:#10101a;--card:#181823;--line:rgba(229,225,255,.10);--text:#f2f0fb;--muted:#9491a9;--violet:#b1a0ff;--mint:#a0e1cb;--focus:#d6c8ff;--radius:26px}
+*{box-sizing:border-box}html{min-height:100%;background:var(--bg)}body{margin:0;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased;background:radial-gradient(ellipse at 18% 0%,#201b33 0,transparent 48%),var(--bg)}button,input{font:inherit}button{color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{cursor:default;opacity:.5}button,input{outline:none}button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:5px}button{touch-action:manipulation}svg{display:block}.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.app{max-width:1168px;margin:0 auto;padding:30px 34px 24px}.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:12px}.brand{display:flex;gap:12px;align-items:center}.brandmark{width:43px;height:43px;display:grid;place-items:center;background:#c9baff;border-radius:15px;color:#29213e;box-shadow:0 6px 25px #b7a1f714}.brandmark svg{width:28px;height:28px}.brand-name{font-weight:750;font-size:23px;letter-spacing:-.8px;line-height:1.1}.brand-desc{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.2px}.toolbar{display:flex;gap:8px;align-items:center}.icon-btn{position:relative;border:1px solid var(--line);border-radius:13px;width:40px;height:40px;display:grid;place-items:center;background:#ffffff03;color:#b4aecb;transition:background .16s,color .16s}.icon-btn:hover{background:#ffffff09;color:white}.icon-btn[aria-pressed="true"]{border-color:#b1a0ff55;background:#b1a0ff17;color:#d6cbff}.icon-btn .tooltip{display:none}.intro{margin-bottom:24px;display:flex;justify-content:space-between;gap:16px;align-items:flex-end}.eyebrow{margin:0 0 9px;color:#bbb0dc;font-size:10px;letter-spacing:2.1px;text-transform:uppercase;font-weight:600}.intro h1{font-size:clamp(25px,3.2vw,36px);letter-spacing:-1.25px;font-weight:620;line-height:1.12;margin:0}.intro h1 span{color:#b2a1ec}.intro p{margin:11px 0 0;color:var(--muted);font-size:13px;line-height:1.55}.local-badge{white-space:nowrap;display:flex;gap:7px;align-items:center;color:#a69eba;font-size:11px;padding-bottom:4px}.local-badge i{width:6px;height:6px;border-radius:50%;background:#9ddfc5;box-shadow:0 0 11px #9ddfc555}.workspace{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(295px,1fr);gap:20px;align-items:stretch}.scene-wrap{min-width:0}.stage{position:relative;isolation:isolate;min-height:510px;height:100%;overflow:hidden;border:1px solid #aea0df23;border-radius:var(--radius);background:radial-gradient(ellipse at 50% 65%,#3a2e552c 0%,transparent 64%),linear-gradient(145deg,#222031 0%,#1b1b2a 43%,#1e1b2d 100%)}.stage:before{content:"";position:absolute;inset:0;opacity:.19;background-image:radial-gradient(#afa0de4a .65px,transparent .65px);background-size:23px 23px;mask-image:linear-gradient(transparent,#000 75%);pointer-events:none}.stage:after{content:"";position:absolute;width:70%;height:52%;left:15%;top:26%;border-radius:50%;background:#aa88ee0a;filter:blur(48px);z-index:-1;pointer-events:none}.scene-top{position:absolute;top:21px;left:23px;right:23px;display:flex;justify-content:space-between;align-items:center;z-index:3;pointer-events:none}.status{display:flex;align-items:center;gap:7px;font-size:11px;color:#c3bcd8;background:#14131d57;border:1px solid #ffffff09;padding:7px 10px;border-radius:100px}.status-dot{width:5px;height:5px;border-radius:50%;background:#a4dfc8;transition:background .2s}.stage.is-paused .status-dot{background:#f0ca8e}.text-btn{display:flex;gap:6px;align-items:center;pointer-events:auto;font-size:11px;color:#aaa0c3;border:0;background:none;padding:5px}.text-btn:hover{color:#ede7ff}.text-btn .icon{width:14px;height:14px}.scene-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;user-select:none;-webkit-user-select:none}.ground-glow{position:absolute;width:50%;height:19%;left:25%;bottom:8%;background:#ae86f70d;filter:blur(28px);border-radius:50%;pointer-events:none}.floor-orbit{position:absolute;width:67%;height:13%;bottom:4.9%;left:16.5%;border:1px solid #b6a3e719;border-radius:50%;pointer-events:none;transform:rotate(-5deg)}.floor-orbit:after{content:"";position:absolute;inset:12%;border:1px solid #b6a3e70b;border-radius:50%}.scene-hint{position:absolute;bottom:17px;width:100%;text-align:center;pointer-events:none;font-size:10px;letter-spacing:.25px;color:#8f85a4;z-index:2}.scene-hint span{padding:0 7px;color:#5c546f}.ambient-star{position:absolute;color:#b7a0db;opacity:.44;pointer-events:none;font-size:13px}.star-a{top:33%;left:12%;font-size:18px;transform:rotate(12deg)}.star-b{top:24%;right:18%;font-size:10px}.star-c{top:60%;right:11%;font-size:20px;opacity:.26}.star-d{top:75%;left:15%;font-size:8px;opacity:.23}.bubble{position:absolute;z-index:4;top:65px;left:50%;max-width:calc(100% - 66px);width:max-content;transform:translate(-50%,0);border:1px solid #c7b2ec27;border-radius:16px 16px 16px 5px;padding:11px 15px;background:#332c44e8;box-shadow:0 8px 24px #00000012;font-size:12px;line-height:1.5;color:#e3dcef;text-align:center;pointer-events:none;opacity:1;transition:opacity .25s,transform .25s;backdrop-filter:blur(12px)}.bubble.is-hidden{opacity:0;transform:translate(-50%,5px)}.pet-hit{cursor:grab;touch-action:none}.pet-hit:active{cursor:grabbing}.pet-hit:focus-visible{outline:none;filter:drop-shadow(0 0 6px #baa3ff80)}.panel{padding:24px;border-radius:var(--radius);border:1px solid var(--line);background:linear-gradient(145deg,#1b1926,#171721);display:flex;flex-direction:column;min-width:0}.panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.panel h2{margin:0;font-size:16px;letter-spacing:-.3px;font-weight:600}.mini-label{font-size:9px;letter-spacing:1.2px;color:#8c829e;border:1px solid #ffffff0d;border-radius:5px;padding:4px 6px}.panel-sub{font-size:11px;line-height:1.5;color:var(--muted);margin:0 0 20px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.action{position:relative;border:1px solid #ffffff0a;background:#ffffff03;border-radius:14px;min-height:62px;display:flex;gap:10px;align-items:center;text-align:left;padding:13px 12px;transition:background .16s,border-color .16s,transform .16s}.action:hover{background:#b29aee0c;border-color:#b6a0ee32;transform:translateY(-1px)}.action:active{transform:translateY(1px)}.action.is-active{background:#af95f318;border-color:#b9a1ff65}.action .icon{width:21px;height:21px;color:#bbaed7}.action.is-active .icon{color:#d4c6ff}.action-label{font-size:12px;font-weight:500;letter-spacing:.05px}.action-key{position:absolute;right:9px;top:6px;font-size:8px;color:#736985;opacity:.65}.extra-actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.small-btn{display:flex;align-items:center;gap:6px;border:1px solid #ffffff0a;border-radius:9px;background:transparent;padding:7px 10px;color:#aaa0be;font-size:10px;transition:background .16s}.small-btn:hover{background:#ffffff06;color:#ddd4ee}.small-btn .icon{width:13px;height:13px}.panel-bottom{border-top:1px solid var(--line);margin-top:auto;padding-top:17px;display:flex;gap:10px;align-items:flex-start;padding-bottom:0}.tip-icon{color:#ad9bd0;margin-top:2px}.tip-icon .icon{width:16px;height:16px}.panel-bottom p{margin:0;color:#91879f;font-size:10px;line-height:1.65}.panel-bottom strong{font-weight:500;color:#bfb3d0}.spacer{min-height:20px;flex-grow:1}.composer{margin-top:20px;border:1px solid var(--line);border-radius:20px;padding:18px 20px;background:#1a1824}.composer-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}.composer-label label{font-size:12px;color:#cbc2df;font-weight:550}.queue-info{font-size:10px;color:#b9a2ec;min-height:13px}.input-row{display:flex;align-items:center;gap:12px;background:#10101883;border:1px solid #ffffff0c;border-radius:13px;padding:7px 8px 7px 14px;transition:border-color .2s}.input-row:focus-within{border-color:#b8a1ff66}.input-row>.icon{width:17px;height:17px;color:#8b7da3}.input-row input{flex:1;min-width:0;width:100%;border:0;background:transparent;color:#e9e1f7;height:34px;font-size:13px}.input-row input::placeholder{color:#716780}.input-row input:focus-visible{outline:none}.send{width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:10px;background:#c7b4f7;color:#2b203e;flex-shrink:0;transition:background .16s,transform .16s}.send:hover{background:#dacbff}.send:active{transform:scale(.95)}.send .icon{width:19px;height:19px}.examples{display:flex;align-items:center;gap:7px;margin-top:11px;flex-wrap:wrap}.examples>span{font-size:10px;color:#80758e;margin-right:1px}.example{border:0;background:#b6a0df0b;border-radius:6px;padding:5px 8px;font-size:10px;color:#a69ab9;transition:color .16s,background .16s}.example:hover{background:#b6a0df18;color:#dac9f1}.command-log{font-size:10px;color:#aaa0b9;margin-top:10px;min-height:0;line-height:1.4;overflow-wrap:anywhere}.command-log:empty{display:none}.footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:18px;color:#6e657e;font-size:10px;line-height:1.6}.footer span+span{text-align:right}.footer kbd{font-family:inherit;font-size:9px;padding:2px 4px;border:1px solid #ffffff13;border-radius:4px;color:#9a8eaf;margin:0 3px}.reduced-btn{border:0;background:none;padding:2px 0;color:#887b9d;font-size:10px;display:flex;align-items:center;gap:5px}.reduced-btn[aria-pressed="true"]{color:#d3bee9}.guide-card{position:fixed;z-index:40;right:max(24px,calc((100vw - 1100px)/2));bottom:24px;width:320px;max-width:calc(100vw - 32px);padding:19px;border:1px solid #bda5f566;background:#252031f5;border-radius:20px;box-shadow:0 15px 70px #0008;backdrop-filter:blur(24px)}.guide-card[hidden]{display:none}.guide-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#bba6db;margin-bottom:10px}.guide-top button{background:none;border:0;color:#b5a9c5;font-size:19px;line-height:1}.guide-card h3{font-size:16px;margin:0 0 8px;letter-spacing:-.3px}.guide-card p{font-size:12px;color:#beb2cf;line-height:1.6;margin:0 0 16px}.guide-next{background:#c6b0f1;border:0;border-radius:10px;color:#30213f;font-size:12px;padding:9px 14px;float:right}.guide-card:after{content:"";display:block;clear:both}.tour-focus{box-shadow:0 0 0 2px #b49be9,0 0 32px #b49be91c;transition:box-shadow .3s}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}noscript{display:block;margin:24px;padding:20px;background:#442333;color:white;border-radius:16px}.offline-note{max-width:1168px;margin:0 auto;color:#92859e;padding:0 34px 20px;font-size:11px}
+@media(min-width:1000px){.stage{min-height:555px}.action{min-height:68px}}
+@media(max-width:760px){.app{padding:20px 18px 24px}.header{margin-bottom:25px}.brand-name{font-size:22px}.intro{margin-bottom:18px}.intro h1{font-size:28px}.intro p{max-width:300px;font-size:12px}.local-badge{display:none}.workspace{grid-template-columns:1fr;gap:14px}.stage{height:430px;min-height:430px}.panel{padding:18px;border-radius:22px}.panel-title{margin-bottom:7px}.panel-sub{margin-bottom:14px}.actions{grid-template-columns:repeat(4,1fr);gap:7px}.action{min-height:75px;flex-direction:column;justify-content:center;gap:9px;padding:13px 5px 11px;border-radius:12px}.action-label{font-size:10px}.action-key{display:none}.extra-actions{margin-top:12px}.spacer,.panel-bottom{display:none}.composer{margin-top:14px;padding:15px;border-radius:18px}.composer-label{margin-bottom:10px}.input-row{gap:8px;padding-left:10px}.input-row input{font-size:16px;letter-spacing:-.4px}.input-row input::placeholder{font-size:12px;letter-spacing:0}.footer{align-items:flex-start;font-size:9px;margin-top:15px}.desktop-hint{display:none}.scene-top{left:18px;right:18px;top:17px}.bubble{top:58px;font-size:11px;padding:9px 12px;max-width:calc(100% - 48px)}.guide-card{right:16px;bottom:16px}.eyebrow{font-size:9px;letter-spacing:1.6px}.brand-desc{font-size:10px}.icon-btn{width:36px;height:36px;border-radius:11px}.toolbar{gap:6px}.scene-hint{font-size:9px;bottom:14px}.offline-note{padding:0 18px 20px}}
+@media(max-width:374px){.app{padding:16px 12px}.brand-desc{display:none}.stage{min-height:394px;height:394px}.panel{padding:14px}.action-label{font-size:9px}.actions{gap:6px}.example{font-size:9px}.intro h1{font-size:25px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+.stage.is-jumping .bubble{opacity:0;transform:translate(-50%,-4px)}
+@media(max-width:760px){
+ .app{padding:14px 14px 18px}.header{margin-bottom:14px}.intro{display:none}
+ .workspace{gap:12px}.stage{height:clamp(300px,43svh,380px);min-height:300px;border-radius:23px}
+ .scene-top{top:13px;left:14px;right:14px}.bubble{top:49px;max-width:calc(100% - 38px);font-size:10px;padding:8px 11px}.scene-hint{font-size:8px;bottom:14px}.scene-hint span{padding:0 3px}
+ .panel{padding:14px;border-radius:19px}.panel-title{margin-bottom:11px}.panel h2{font-size:14px}.mini-label{font-size:8px;letter-spacing:.7px;padding:3px 5px}.panel-sub{display:none}
+ .actions{gap:7px}.action{min-height:61px;gap:7px;padding:10px 3px}.action .icon{width:19px;height:19px}.action-label{font-size:10px}.extra-actions{display:none}
+ .composer{margin-top:12px;padding:12px;border-radius:17px}.composer-label{margin-bottom:9px}.composer-label label{font-size:11px}.queue-info{max-width:47%;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.input-row{padding:5px 6px 5px 10px}.examples{gap:5px;margin-top:9px}.example{font-size:9px;padding:5px 6px}.examples>span{font-size:9px}
+ .footer{margin-top:10px;font-size:8px;gap:8px}.reduced-btn{font-size:9px;flex-shrink:0}.brand-desc{display:block}
+}
+@media(max-width:360px){.mini-label{display:none}.brand-desc{font-size:8px}.brandmark{width:36px;height:36px;border-radius:12px}.brand{gap:9px}.brand-name{font-size:21px}.toolbar{gap:5px}.icon-btn{width:33px;height:33px}.scene-hint{font-size:7px}.example{font-size:8px}}
+
+/* A valid first paint does not depend on JavaScript or on noscript rendering. */
+.runtime-note{margin:0 0 16px;padding:13px 15px;display:flex;gap:11px;align-items:flex-start;border:1px solid #d1b47c38;border-radius:15px;background:#d1b47c0a;color:#d6c7ad;font-size:12px;line-height:1.5}
+.runtime-note .icon{color:#d9bc8b;width:18px;height:18px;margin-top:2px}
+.runtime-note strong{display:block;color:#eddbb9;font-size:12px;margin-bottom:3px;font-weight:600}
+.runtime-note p{margin:0;font-size:11px;color:#b9ab95}
+.runtime-check{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:#a4dfc8;font-size:9px;letter-spacing:.1px}
+.runtime-check::before{content:"";width:4px;height:4px;flex-shrink:0;border-radius:50%;background:currentColor}
+html[data-runtime="ready"] .runtime-note{display:none}
+html:not([data-runtime="ready"]) .runtime-check{color:#d4b681}
+html:not([data-runtime="ready"]) .status-dot{background:#d4b681}
+html:not([data-runtime="ready"]) .scene-hint{display:none}
+html:not([data-runtime="ready"]) .pet-hit{cursor:default;touch-action:auto}
+html:not([data-runtime="ready"]) .action:hover{transform:none;background:#ffffff03;border-color:#ffffff0a}
+@media(max-width:760px){.runtime-note{padding:11px 12px;margin-bottom:12px;gap:8px}.runtime-note strong{font-size:11px}.runtime-note p{font-size:10px}.brand-desc{font-size:9px}.runtime-check{font-size:8px;margin-top:5px}.header{min-height:48px}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2c0 7-3 10-10 10 7 0 10 3 10 10 0-7 3-10 10-10C15 12 12 9 12 2Z"/><path d="M20 2v4M18 4h4"/></symbol>
+<symbol id="i-jump" viewBox="0 0 24 24"><path d="M12 17V3m-4 4 4-4 4 4M6 15c-2 1-3 2-3 3 0 2 4 3 9 3s9-1 9-3c0-1-1-2-3-3"/></symbol>
+<symbol id="i-happy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M7 10q1.5-3 3 0m4 0q1.5-3 3 0M7.5 14q4.5 5 9 0"/></symbol>
+<symbol id="i-sad" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m7 8 3 1m4 0 3-1M8 17q4-4 8 0M8 11v1m8-1v1"/></symbol>
+<symbol id="i-laugh" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m7 8 3 2-3 1m10-3-3 2 3 1M7 14h10q-1 6-5 6t-5-6Z"/></symbol>
+<symbol id="i-scared" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="16" rx="2" ry="3"/><path d="M8 9v2m8-2v2M6.5 6.5l3 1m5 0 3-1"/></symbol>
+<symbol id="i-blink" viewBox="0 0 24 24"><path d="M3 10q9 10 18 0M5 12l-2 3m6-1-1 4m7-4 1 4m3-6 2 3"/></symbol>
+<symbol id="i-dance" viewBox="0 0 24 24"><path d="M10 17V5l10-2v12M10 8l10-2"/><ellipse cx="7" cy="18" rx="3" ry="2.5"/><ellipse cx="17" cy="16" rx="3" ry="2.5"/><path d="M3 4v4M1 6h4"/></symbol>
+<symbol id="i-sleep" viewBox="0 0 24 24"><path d="M20 15A9 9 0 0 1 9 4a9 9 0 1 0 11 11Z"/><path d="M15 3h6l-6 6h6"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="m6 12-1-4q0-2 2-1l2 4-1-7q1-2 2 0l2 7V3q2-2 3 0v8l1-6q2-1 2 1l-1 8 2-3q2-1 2 1l-4 7q-2 3-6 2-4-1-5-5l-3-4q-1-2 1-2Z"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21 3.5 12A5.5 5.5 0 0 1 12 5a5.5 5.5 0 0 1 8.5 7Z"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8Z"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM16 8q4 4 0 8m3-11q7 7 0 14"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5Zm5 5 6 6m0-6-6 6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.2"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 20q-4-15 15-16 0 18-12 14m-3 3 10-10"/></symbol>
+</defs></svg>
+
+<div class="app">
+<header class="header">
+ <div class="brand"><div class="brandmark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2c1.5 8 5.5 12 14 14-8.5 2-12.5 6-14 14C14.5 22 10.5 18 2 16 10.5 14 14.5 10 16 2Z" fill="currentColor"/><circle cx="12.8" cy="15.4" r="1.7" fill="#dbcfff"/><circle cx="19.2" cy="15.4" r="1.7" fill="#dbcfff"/></svg></div><div><div class="brand-name">lumi<span style="color:#b59aef">.</span></div><div class="brand-desc">Твой маленький проводник</div><div class="runtime-check" id="runtime-check" role="status">Предпросмотр · 1.0.1</div></div></div>
+ <div class="toolbar">
+  <button disabled data-runtime-control class="icon-btn" id="sound-btn" title="Включить звук" aria-label="Включить звук" aria-pressed="false"><svg class="icon"><use href="#i-mute"/></svg></button>
+  <button disabled data-runtime-control class="icon-btn" id="pause-btn" title="Пауза" aria-label="Приостановить анимацию" aria-pressed="false"><svg class="icon"><use href="#i-pause"/></svg></button>
+  <button disabled data-runtime-control class="icon-btn" id="reset-btn" title="Вернуть Люми домой" aria-label="Сбросить команды и вернуть Люми в центр"><svg class="icon"><use href="#i-reset"/></svg></button>
+ </div>
+</header>
+<div class="runtime-note" id="runtime-note" role="status" aria-live="polite">
+ <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+ <div><strong id="runtime-title">Управление ещё не запущено</strong><p id="runtime-copy">Если эта надпись остаётся, JavaScript не запустился. Предпросмотр файла может показывать только страницу. Для команд нужна страница в браузере с JavaScript, а не предпросмотр вложения.</p></div>
+</div>
+
+<section class="intro" aria-labelledby="page-title"><div><p class="eyebrow">Не существует в природе. Живёт здесь.</p><h1>Маленький. <span>Но уже с характером.</span></h1><p>Это Люми. Он чувствует, двигается и немного шалит.</p></div><div class="local-badge"><i></i> Без интернета и сервера</div></section>
+<main>
+ <div class="workspace">
+ <section class="scene-wrap" aria-label="Люми и его мир">
+ <div class="stage" id="stage">
+  <div class="scene-top"><div class="status"><span class="status-dot"></span><span id="state-label">Предпросмотр</span></div><button disabled data-runtime-control class="text-btn" id="guide-btn">Познакомиться <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+  <div class="ground-glow"></div><div class="floor-orbit"></div>
+  <span class="ambient-star star-a">✧</span><span class="ambient-star star-b">✦</span><span class="ambient-star star-c">✧</span><span class="ambient-star star-d">✦</span>
+  <div class="bubble" id="bubble" role="status" aria-live="polite">Я здесь ✨ Жду запуска управления.</div>
+  <svg class="scene-svg" id="world" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 555" aria-labelledby="pet-title">
+  <title id="pet-title">Люми — волшебный зверёк с большими ушами, маленькими рогами и пушистым хвостом</title>
+  <defs>
+   <linearGradient id="fur" x1=".17" y1="0" x2=".83" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#fff8ee"/><stop offset=".43" stop-color="#f2eafb"/><stop offset=".82" stop-color="#c6bee9"/><stop offset="1" stop-color="#a69acc"/></linearGradient>
+   <radialGradient id="face" cx=".35" cy=".27" r=".83"><stop stop-color="#fffcf5"/><stop offset=".67" stop-color="#f4edf8"/><stop offset="1" stop-color="#d0c6e9"/></radialGradient>
+   <linearGradient id="chest" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf1"/><stop offset="1" stop-color="#e4dbee"/></linearGradient>
+   <linearGradient id="earOuter" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bca1fb"/><stop offset=".45" stop-color="#8e86d5"/><stop offset="1" stop-color="#c8c9f4"/></linearGradient>
+   <linearGradient id="earInner" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#7971c8"/><stop offset=".46" stop-color="#d5a8dc"/><stop offset=".73" stop-color="#f5cadf"/><stop offset="1" stop-color="#ebd3ed"/></linearGradient>
+   <linearGradient id="horn" x1="0" y1="1" x2=".7" y2="0"><stop stop-color="#8173ae"/><stop offset=".45" stop-color="#bdadf2"/><stop offset=".8" stop-color="#98d2f8"/><stop offset="1" stop-color="#e0fbff"/></linearGradient>
+   <linearGradient id="tailGrad" x1=".3" y1="1" x2=".8" y2="0"><stop stop-color="#c2b9ec"/><stop offset=".46" stop-color="#bcb5ed"/><stop offset=".7" stop-color="#a69af1"/><stop offset="1" stop-color="#a8dcf8"/></linearGradient>
+   <radialGradient id="eyeWhite" cx=".45" cy=".52" r=".7"><stop stop-color="#ffffff"/><stop offset=".76" stop-color="#f9f4ff"/><stop offset="1" stop-color="#cabfe0"/></radialGradient>
+   <linearGradient id="iris" x1="0" y1="0" x2=".25" y2="1"><stop stop-color="#34336b"/><stop offset=".45" stop-color="#6560be"/><stop offset=".78" stop-color="#80bff2"/><stop offset="1" stop-color="#b0edff"/></linearGradient>
+   <radialGradient id="cheek"><stop stop-color="#edaec9" stop-opacity=".63"/><stop offset="1" stop-color="#edaec9" stop-opacity="0"/></radialGradient>
+   <linearGradient id="paw" x1="0" y1="0" x2=".5" y2="1"><stop stop-color="#dcd4f5"/><stop offset="1" stop-color="#9186b9"/></linearGradient>
+   <radialGradient id="gem" cx=".38" cy=".3" r=".8"><stop stop-color="#e8ffff"/><stop offset=".24" stop-color="#b3e6ff"/><stop offset=".6" stop-color="#b2a2fb"/><stop offset="1" stop-color="#6961ad"/></radialGradient>
+   <radialGradient id="groundShadow"><stop stop-color="#060611" stop-opacity=".65"/><stop offset="1" stop-color="#0b081a" stop-opacity="0"/></radialGradient>
+   <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"/></filter>
+   <filter id="petShadow" x="-35%" y="-25%" width="170%" height="170%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#080615" flood-opacity=".23"/></filter>
+   <g id="earShape"><path d="M4 12C-24 9-81-27-99-99C-105-127-96-139-80-122C-56-107-13-88 9-47C24-22 22-3 4 12Z" fill="url(#earOuter)" stroke="#b3a4e1" stroke-width="1.5"/><path d="M-1-1C-33-16-77-57-85-108C-80-117-30-83-12-53C1-32 6-14-1-1Z" fill="url(#earInner)"/><path d="M-83-116C-53-81-42-43-7-13" fill="none" stroke="#eed5fc" stroke-opacity=".37" stroke-width="2"/><path d="m-43-68 6 17 14 10-14-2-7 9 1-15-10-11Z" fill="#f7d6ef" fill-opacity=".6"/><path d="M-8 6-28-13-11-9-19-24 3-10 7-31 18-10 10 7Z" fill="url(#face)"/></g>
+   <g id="armShape"><path d="M-3-9C-17-7-27 11-28 35C-30 54-20 62-7 61C9 61 15 46 14 30L14 10C13-2 5-10-3-9Z" fill="url(#fur)" stroke="#bcb0d9" stroke-width="1"/><path d="M-25 39C-25 56-19 61-8 59C2 58 9 49 10 38" fill="url(#paw)"/><path d="M-17 46v7m9-8v9m8-11v7" stroke="#8f81b2" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="-7" cy="38" rx="7" ry="6" fill="#c7a5d6" fill-opacity=".7"/></g>
+   <g id="footShape"><path d="M-28-6C-27-27-11-33 5-29C21-26 30-12 29-1C29 12-31 15-28-6Z" fill="url(#paw)" stroke="#9e91c0" stroke-width="1"/><path d="M-17-2v9M-5-3v11M7-1v9" fill="none" stroke="#9283b2" stroke-width="1.5" stroke-linecap="round"/><path d="M-20-16Q-10-24 0-22" stroke="#e9e2fd" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/></g>
+  </defs>
+  <ellipse id="shadow" cx="300" cy="500" rx="125" ry="24" fill="url(#groundShadow)"/>
+  <g id="position-root" transform="translate(300 500) scale(0.9)">
+   <g id="pet-hit" class="pet-hit" role="button" tabindex="-1" aria-disabled="true" aria-label="Погладить Люми. Можно перетащить зверька, двойное нажатие — прыжок.">
+    <ellipse cx="0" cy="-177" rx="172" ry="203" fill="transparent"/>
+    <g id="rig" pointer-events="none">
+     <g id="tail" transform="translate(55 -67)">
+      <path d="M-4 10C29-5 42-5 36-36C33-64 54-108 104-113C93-94 101-82 111-73C135-45 127-5 101 14C75 35 46 26 29 32C12 33 1 24-4 10Z" fill="url(#tailGrad)" stroke="#afa2d9" stroke-width="1.4"/>
+      <path d="M104-113C78-96 63-62 70-39L60-46 56-24 45-36 36-21C42-55 34-68 64-94C80-107 91-111 104-113Z" fill="#dfeaff"/>
+      <path d="M109-73C123-45 109-8 80 6L96-17 78-11 96-40 81-33 97-59Z" fill="#d7d3fc" opacity=".6"/>
+      <path d="M36 12Q77 13 98-23" stroke="#f1eaff" stroke-opacity=".28" stroke-width="3" fill="none" stroke-linecap="round"/>
+     </g>
+     <g id="body">
+      <path d="M0-159C-46-166-71-126-68-83C-84-56-72-20-50-11C-26 2 34 1 55-15C76-33 74-63 65-88C69-121 41-158 0-159Z" fill="url(#fur)" stroke="#bcaed3" stroke-width="1.4"/>
+      <ellipse cx="0" cy="-68" rx="40" ry="50" fill="#eee5f4" opacity=".64"/>
+      <path d="M-47-141C-28-154 20-155 45-140L40-112 28-121 28-91 16-102 5-73-8-98-18-83-24-112-36-102-36-124-46-120Z" fill="url(#chest)"/>
+      <path d="m-41-60-7 11 7 11 7-11Zm79 0-7 11 7 11 7-11Z" fill="none" stroke="#aecef3" stroke-width="3" stroke-linejoin="round" opacity=".9"/>
+      <g id="foot-left" transform="translate(-40 -2)"><use href="#footShape"/></g>
+      <g id="foot-right" transform="translate(40 -2)"><use href="#footShape"/></g>
+      <g id="arm-left" transform="translate(-57 -110)"><use href="#armShape"/></g>
+      <g id="arm-right" transform="translate(57 -110)"><g transform="scale(-1 1)"><use href="#armShape"/></g></g>
+      <path d="M-57-155Q0-132 57-155L51-137Q0-119-51-139Z" fill="#514563" stroke="#7c6e92" stroke-width="1.6"/>
+      <path d="M-48-150Q0-130 48-150" fill="none" stroke="#b3a2d2" stroke-opacity=".7" stroke-width="1.4"/>
+      <circle cx="0" cy="-134" r="21" fill="#252237" stroke="#9784be" stroke-width="2"/>
+      <circle cx="0" cy="-134" r="16" fill="url(#gem)" stroke="#e0dbff" stroke-width="1.7"/>
+      <circle id="gem-glow" cx="0" cy="-134" r="16" fill="#c8b2ff" filter="url(#softGlow)" opacity=".25"/>
+      <path d="m0-145 3 8 7 3-7 3-3 8-3-8-7-3 7-3Z" fill="#f1ffff" opacity=".92"/>
+     </g>
+     <g id="head" transform="translate(0 -220)">
+      <g id="ear-left" transform="translate(-61 -48)"><use href="#earShape"/></g>
+      <g id="ear-right" transform="translate(61 -48)"><g transform="scale(-1 1)"><use href="#earShape"/></g></g>
+      <g id="horns">
+       <path d="M-61-60C-77-74-71-91-59-99L-56-129C-42-115-43-99-49-89C-57-79-55-67-49-63Z" fill="url(#horn)" stroke="#b7a9e4" stroke-width="1.3"/>
+       <path d="M61-60C77-74 71-91 59-99L56-129C42-115 43-99 49-89C57-79 55-67 49-63Z" fill="url(#horn)" stroke="#b7a9e4" stroke-width="1.3"/>
+       <path d="m-69-83 15 8m-7-25 15 7M69-83l-15 8m7-25-15 7" fill="none" stroke="#706297" stroke-opacity=".4" stroke-width="2"/>
+       <path d="m-56-129-2 27M56-129l2 27" stroke="#f0ffff" stroke-width="2" opacity=".8"/>
+      </g>
+      <path d="M-90-9C-96-36-78-66-62-72L-67-82-40-78-44-91-20-84-3-104 9-85 26-95 31-80 51-87 48-76C85-65 99-39 91-12L103 1 94 12 108 24 95 30 103 40 89 44C78 70 42 78 0 79C-43 78-77 69-89 47L-105 39-95 28-108 19-94 10Z" fill="url(#face)" stroke="#d2c5df" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M-76-52Q-62-68-46-65m26-17-14 15M2-98l1 21 13-6M-87 35l13-5m161 5-13-5" fill="none" stroke="#fffefa" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <path d="m0-71 7 12-7 16-7-16Z" fill="#aaade8"/><path d="m-15-58 5 10-1 12-9-14Zm30 0-5 10 1 12 9-14Z" fill="#b3c7ed"/><path d="m0-69 2 11-2 11-2-11Z" fill="#d9f2ff"/>
+      <ellipse cx="-63" cy="30" rx="24" ry="17" fill="url(#cheek)"/><ellipse cx="63" cy="30" rx="24" ry="17" fill="url(#cheek)"/>
+      <path id="brow-left" d="M-66-42Q-47-52-29-43" fill="none" stroke="#a497b7" stroke-width="4" stroke-linecap="round"/>
+      <path id="brow-right" d="M29-43Q47-52 66-42" fill="none" stroke="#a497b7" stroke-width="4" stroke-linecap="round"/>
+      <g id="eye-left" transform="translate(-42 -1)">
+       <ellipse rx="28" ry="33" fill="url(#eyeWhite)" stroke="#857396" stroke-width="1.2"/>
+       <g id="iris-left"><ellipse cy="3" rx="20.2" ry="27" fill="url(#iris)"/><ellipse cy="1" rx="10.5" ry="21" fill="#242038"/><path d="M-15 17Q0 33 15 17" fill="none" stroke="#beedff" stroke-width="3" opacity=".75"/><ellipse cx="-7" cy="-12" rx="7.4" ry="8.3" fill="#fff"/><circle cx="9" cy="9" r="3.7" fill="#fff" opacity=".95"/><circle cx="-9" cy="17" r="1.8" fill="#e5f8ff"/></g>
+       <path d="M-28-3C-30-31-7-43 14-29" fill="none" stroke="#51415f" stroke-width="3.6" stroke-linecap="round"/>
+      </g>
+      <g id="eye-right" transform="translate(42 -1)">
+       <ellipse rx="28" ry="33" fill="url(#eyeWhite)" stroke="#857396" stroke-width="1.2"/>
+       <g id="iris-right"><ellipse cy="3" rx="20.2" ry="27" fill="url(#iris)"/><ellipse cy="1" rx="10.5" ry="21" fill="#242038"/><path d="M-15 17Q0 33 15 17" fill="none" stroke="#beedff" stroke-width="3" opacity=".75"/><ellipse cx="-7" cy="-12" rx="7.4" ry="8.3" fill="#fff"/><circle cx="9" cy="9" r="3.7" fill="#fff" opacity=".95"/><circle cx="-9" cy="17" r="1.8" fill="#e5f8ff"/></g>
+       <path d="M28-3C30-31 7-43-14-29" fill="none" stroke="#51415f" stroke-width="3.6" stroke-linecap="round"/>
+      </g>
+      <path id="closed-left" d="M-64 3Q-42-15-20 3" fill="none" stroke="#655077" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
+      <path id="closed-right" d="M20 3Q42-15 64 3" fill="none" stroke="#655077" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
+      <ellipse cx="-17" cy="40" rx="25" ry="18" fill="#fff8f4" opacity=".47"/><ellipse cx="17" cy="40" rx="25" ry="18" fill="#fff8f4" opacity=".47"/>
+      <path d="M-7 28Q0 24 7 28Q9 31 0 36Q-9 31-7 28Z" fill="#776185"/><ellipse cx="-1" cy="28" rx="3" ry="1" fill="#cab4ce"/>
+      <path id="mouth-smile" d="M-16 43Q-8 51 0 43Q8 51 16 43" fill="none" stroke="#7c6182" stroke-width="2.5" stroke-linecap="round"/>
+      <g id="mouth-open" opacity="0"><path d="M-21 42Q0 49 21 42Q19 72 0 71Q-19 72-21 42Z" fill="#70465e" stroke="#674357" stroke-width="1.5"/><path d="M-12 65Q0 52 12 65Q0 75-12 65Z" fill="#efa2b8"/><path d="M-13 45Q0 49 13 45L10 51Q0 53-10 51Z" fill="#fff9f1"/></g>
+      <path id="mouth-sad" d="M-14 53Q0 39 14 53" fill="none" stroke="#806489" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+      <g id="mouth-scared" opacity="0"><ellipse cx="0" cy="52" rx="11" ry="15" fill="#795067" stroke="#674658" stroke-width="1.5"/><ellipse cx="0" cy="62" rx="6" ry="3" fill="#e8a0b8"/></g>
+      <ellipse id="mouth-sleep" cx="0" cy="47" rx="4" ry="3" fill="#b098b5" opacity="0"/>
+      <g id="tears" opacity="0" fill="#acd5ff"><path id="tear-left" d="M-65 22q-9 14 0 16 9-2 0-16Z"/><path id="tear-right" d="M65 22q-9 14 0 16 9-2 0-16Z"/></g>
+      <g id="surprise" opacity="0" stroke="#e9d4a4" stroke-width="4" stroke-linecap="round"><path d="M-102-94l-10-5M-92-113l-7-10M102-94l10-5M92-113l7-10"/><path d="M0-127v-13m0 23v-1"/></g>
+     </g>
+    </g>
+   </g>
+  </g>
+  <g id="particles" aria-hidden="true" pointer-events="none"></g>
+  </svg>
+  <div class="scene-hint">Погладь нажатием <span>·</span> Перетащи за ушко <span>·</span> Двойное нажатие — прыжок</div>
+ </div>
+ </section>
+ <section class="panel" id="control-panel" aria-labelledby="controls-title">
+  <div class="panel-title"><h2 id="controls-title">Попроси меня…</h2><span class="mini-label">ЭМОЦИИ И ДВИЖЕНИЯ</span></div>
+  <p class="panel-sub">Одно нажатие — и я всё покажу.</p>
+  <div class="actions" id="actions">
+   <button disabled data-runtime-control class="action" data-action="jump" aria-pressed="false"><svg class="icon"><use href="#i-jump"/></svg><span class="action-label">Прыгнуть</span><span class="action-key">1</span></button>
+   <button disabled data-runtime-control class="action" data-action="happy" aria-pressed="false"><svg class="icon"><use href="#i-happy"/></svg><span class="action-label">Радоваться</span><span class="action-key">2</span></button>
+   <button disabled data-runtime-control class="action" data-action="sad" aria-pressed="false"><svg class="icon"><use href="#i-sad"/></svg><span class="action-label">Грустить</span><span class="action-key">3</span></button>
+   <button disabled data-runtime-control class="action" data-action="laugh" aria-pressed="false"><svg class="icon"><use href="#i-laugh"/></svg><span class="action-label">Смеяться</span><span class="action-key">4</span></button>
+   <button disabled data-runtime-control class="action" data-action="scared" aria-pressed="false"><svg class="icon"><use href="#i-scared"/></svg><span class="action-label">Испугаться</span><span class="action-key">5</span></button>
+   <button disabled data-runtime-control class="action" data-action="blink" aria-pressed="false"><svg class="icon"><use href="#i-blink"/></svg><span class="action-label">Поморгать</span><span class="action-key">6</span></button>
+   <button disabled data-runtime-control class="action" data-action="dance" aria-pressed="false"><svg class="icon"><use href="#i-dance"/></svg><span class="action-label">Танцевать</span><span class="action-key">7</span></button>
+   <button disabled data-runtime-control class="action" data-action="sleep" aria-pressed="false"><svg class="icon"><use href="#i-sleep"/></svg><span class="action-label">Подремать</span><span class="action-key">8</span></button>
+  </div>
+  <div class="extra-actions"><button disabled data-runtime-control class="small-btn" data-action="wave"><svg class="icon"><use href="#i-wave"/></svg>Привет</button><button disabled data-runtime-control class="small-btn" data-action="love"><svg class="icon"><use href="#i-heart"/></svg>Погладить</button><button disabled data-runtime-control class="small-btn" data-action="idle"><svg class="icon"><use href="#i-home"/></svg>Ко мне</button></div>
+  <div class="spacer"></div>
+  <div class="panel-bottom"><span class="tip-icon"><svg class="icon"><use href="#i-info"/></svg></span><p><strong>Я живой даже без команд.</strong><br>Дышу, моргаю, шевелю ушами и смотрю на курсор. А ещё люблю, когда меня гладят.</p></div>
+ </section>
+ </div>
+ <section class="composer" id="composer" aria-label="Текстовое управление">
+  <form id="command-form" autocomplete="off">
+   <div class="composer-label"><label for="command-input">Или скажи своими словами</label><span class="queue-info" id="queue-info" aria-live="polite"></span></div>
+   <div class="input-row"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg><input disabled data-runtime-control id="command-input" name="command" type="text" maxlength="180" placeholder="Прыгни три раза, потом радуйся…" enterkeyhint="send" aria-describedby="command-note"><button disabled data-runtime-control type="submit" class="send" aria-label="Выполнить команду"><svg class="icon"><use href="#i-arrow"/></svg></button></div>
+   <div class="examples"><span>Попробуй:</span><button disabled data-runtime-control type="button" class="example" data-command="Прыгни три раза">прыгни 3 раза</button><button disabled data-runtime-control type="button" class="example" data-command="Танцуй, потом помаши">танцуй и помаши</button><button disabled data-runtime-control type="button" class="example" data-command="Влево, поморгай, вправо">влево и вправо</button></div>
+   <div class="command-log" id="command-log" role="status" aria-live="polite"></div>
+  </form>
+ </section>
+</main>
+<footer class="footer"><span id="command-note">Команды распознаются локально. Это не ИИ-чат.<span class="desktop-hint"><br><kbd>1–8</kbd> эмоции <kbd>← →</kbd> шаги <kbd>Пробел</kbd> прыжок</span></span><button disabled data-runtime-control class="reduced-btn" id="motion-btn" aria-pressed="false"><svg class="icon" style="width:13px;height:13px"><use href="#i-leaf"/></svg>Меньше движения</button></footer>
+</div>
+<aside class="guide-card" id="guide-card" hidden aria-labelledby="guide-title"><div class="guide-top"><span id="guide-progress">Знакомство · 1 / 3</span><button disabled data-runtime-control id="guide-close" aria-label="Закрыть знакомство">×</button></div><h3 id="guide-title"></h3><p id="guide-copy"></p><button disabled data-runtime-control id="guide-next" class="guide-next">Дальше →</button></aside>
+<script>
+/* Lumi: a dependency-free SVG rig, a time-based animator, and a local command parser.
+ * All user messages use textContent. No network, microphone, analytics or external assets.
+ * Public integration API: window.Lumi (defined at the end of this script).
+ */
+(() => {
+'use strict';
+try {
+const $ = id => document.getElementById(id);
+const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+const lerp = (a,b,t) => a+(b-a)*t;
+const TAU = Math.PI*2;
+const svgNS='http://www.w3.org/2000/svg';
+const rigIds=['position-root','rig','body','head','ear-left','ear-right','tail','arm-left','arm-right','foot-left','foot-right','eye-left','eye-right','iris-left','iris-right','closed-left','closed-right','brow-left','brow-right','mouth-smile','mouth-open','mouth-sad','mouth-scared','mouth-sleep','tears','tear-left','tear-right','surprise','shadow','gem-glow'];
+const dom=Object.fromEntries(rigIds.map(id=>[id,$(id)]));
+const stage=$('stage'), world=$('world'), pet=$('pet-hit');
+const ACTIONS={
+ idle:{duration:Infinity,label:'Рядом с тобой',phrase:['Я здесь. И никуда не спешу.']},
+ jump:{duration:1.2,label:'Прыгаю!',phrase:['До самой луны!','Смотри, как я умею!','Выше облаков!']},
+ happy:{duration:3.0,label:'Радуюсь',phrase:['Ура-а! Вот это хороший день!','Маленькое счастье — быть рядом.','Радость не помещается в лапки!']},
+ sad:{duration:4.1,label:'Немножко грущу',phrase:['Можно просто немного побыть рядом?','Даже волшебным зверькам бывает грустно.']},
+ laugh:{duration:3.0,label:'Не могу перестать смеяться',phrase:['Хи-хи-хи! Ну всё, щекотно!','Ахаха! Ушки тоже смеются!']},
+ scared:{duration:2.2,label:'Ой! Что это было?',phrase:['А-а! …Ой, это всего лишь тень.','Ты тоже это слышал?!']},
+ blink:{duration:.85,label:'Моргаю',phrase:['Морг-морг. Я тебя вижу.','Глазам тоже нужна маленькая пауза.']},
+ dance:{duration:5.2,label:'Танцую свой танец',phrase:['У меня свой ритм!','Этот танец я только что придумал.']},
+ sleep:{duration:7.0,label:'Тихонько дремлю',phrase:['Я прикрою глаза. Совсем ненадолго…','Если что — я просто проверяю сны.']},
+ wave:{duration:2.6,label:'Машу тебе лапкой',phrase:['Привет! Я Люми. Очень рад тебе.','Эй! Я здесь!']},
+ love:{duration:2.8,label:'Мне очень приятно',phrase:['Мр-р… вот тут, за ушком!','Кажется, мы уже друзья.','Твоё внимание делает меня счастливее.']},
+ left:{duration:1.5,label:'Иду налево',phrase:['Топ-топ. Что там слева?']},
+ right:{duration:1.5,label:'Иду направо',phrase:['Топ-топ. А что справа?']}
+};
+const aliases={joy:'happy',fear:'scared',pet:'love',greet:'wave',walkLeft:'left',walkRight:'right',wake:'idle'};
+const prefs={reduced:window.matchMedia('(prefers-reduced-motion: reduce)').matches,sound:false};
+const state={action:'idle',age:0,phase:0,paused:false,queue:[],x:0,y:0,targetX:0,targetY:0,dragging:false,gazeX:0,gazeY:0,gazeTargetX:0,gazeTargetY:0,gazeUntil:0,nextBlink:2.8,blinkAge:10,bubbleUntil:6,particleClock:0,runCount:0,ready:false};
+const layout={width:600,height:555,scale:.9,floor:500,bound:100};
+const mood={happy:0,sad:0,laugh:0,scared:0,sleep:0,love:0,wave:0,dance:0};
+const smoothed={head:0,headY:0,earL:0,earR:0,armL:0,armR:0,rot:0};
+let particles=[], audioCtx=null,lastFrame=null,raf=0,destroyed=false,tapTimer=null,guideStep=-1,restoreGuideFocus=null;
+const listeners=[];
+function on(el,type,fn,opts){el.addEventListener(type,fn,opts);listeners.push(()=>el.removeEventListener(type,fn,opts));}
+function transform(id,text){dom[id].setAttribute('transform',text)}
+function opacity(id,n){dom[id].setAttribute('opacity',String(clamp(n,0,1)))}
+function announceEvent(type,detail){window.dispatchEvent(new CustomEvent('lumi:'+type,{detail}));}
+function snapshot(){return {action:state.action,paused:state.paused,queue:[...state.queue],position:{x:state.x,y:state.y},reducedMotion:prefs.reduced,sound:prefs.sound,commandsPerformed:state.runCount};}
+function say(text,{duration=4.6}={}){
+ const safeText=String(text).slice(0,500);
+ $('bubble').textContent=safeText;
+ $('bubble').classList.remove('is-hidden');
+ state.bubbleUntil=state.phase+clamp(Number(duration)||4.6,.5,120);
+ announceEvent('speech',{text:safeText});
+}
+function updateQueue(){
+ $('queue-info').textContent=state.queue.length ? 'Дальше: '+state.queue.map(a=>({jump:'прыжок',happy:'радость',sad:'грусть',laugh:'смех',scared:'испуг',blink:'моргание',dance:'танец',sleep:'сон',wave:'привет',love:'ласка',left:'влево',right:'вправо',idle:'покой'}[a])).slice(0,3).join(' · ')+(state.queue.length>3?' …':'') : '';
+}
+function updateButtons(){
+ document.querySelectorAll('.action[data-action]').forEach(button=>{const active=button.dataset.action===state.action;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active));});
+ $('state-label').textContent=state.paused?'На паузе':ACTIONS[state.action].label;
+ stage.classList.toggle('is-jumping',state.action==='jump');
+}
+function beep(action){
+ if(!prefs.sound)return;
+ try{
+  const Context=window.AudioContext||window.webkitAudioContext;
+  if(!Context)return;
+  audioCtx=audioCtx||new Context();
+  audioCtx.resume().catch(()=>{});
+  const notes={jump:[520,890],happy:[660,830,990],sad:[390,310],laugh:[740,660,850],scared:[920,390],blink:[800],dance:[520,660,780],sleep:[430,340],wave:[530,740],love:[650,850],left:[400,480],right:[480,560]};
+  (notes[action]||[600]).forEach((freq,i)=>{
+   const oscillator=audioCtx.createOscillator(),gain=audioCtx.createGain();
+   const start=audioCtx.currentTime+i*.105;
+   oscillator.type='sine';oscillator.frequency.setValueAtTime(freq,start);oscillator.frequency.exponentialRampToValueAtTime(freq*1.12,start+.11);
+   gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(.035,start+.012);gain.gain.exponentialRampToValueAtTime(.001,start+.15);
+   oscillator.connect(gain);gain.connect(audioCtx.destination);oscillator.start(start);oscillator.stop(start+.16);
+   oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
+  });
+ }catch(_){/* Visual interaction still works when audio is unavailable. */}
+}
+function makeParticle(kind,x,y,vx,vy,life=1.7){
+ if(prefs.reduced||particles.length>=48)return;
+ let node;
+ if(kind==='heart'||kind==='star'){
+  node=document.createElementNS(svgNS,'path');
+  node.setAttribute('d',kind==='heart'?'M0 6C-20-7-12-21 0-11C12-21 20-7 0 6Z':'M0-11 3-3 11 0 3 3 0 11-3 3-11 0-3-3Z');
+  node.setAttribute('fill',kind==='heart'?(Math.random()>.5?'#f0b2d1':'#d1adf8'):(Math.random()>.5?'#d4c2ff':'#f0dba8'));
+ }else if(kind==='sleep'||kind==='note'){
+  node=document.createElementNS(svgNS,'text');node.textContent=kind==='sleep'?'z':'♪';node.setAttribute('font-size',kind==='sleep'?'21':'24');node.setAttribute('font-family','sans-serif');node.setAttribute('font-weight','600');node.setAttribute('fill',kind==='sleep'?'#c3b4e5':'#c5bcf6');
+ }else{node=document.createElementNS(svgNS,'circle');node.setAttribute('r','3');node.setAttribute('fill','#d0baf2');}
+ $('particles').appendChild(node);
+ particles.push({node,kind,x,y,vx,vy,life,age:0,rot:(Math.random()-.5)*35,scale:.5+Math.random()*.45});
+}
+function burst(kind,count=7){
+ const x=layout.width/2+state.x,y=layout.floor+state.y-225*layout.scale;
+ for(let i=0;i<count;i++)makeParticle(kind,x+(Math.random()-.5)*170*layout.scale,y+(Math.random()-.5)*90*layout.scale,(Math.random()-.5)*85,-35-Math.random()*75,1.3+Math.random()*.9);
+}
+function beginAction(name,{speak=true}={}){
+ state.action=name;state.age=0;state.particleClock=0;
+ if(name!=='idle')state.runCount++;
+ if(name==='idle'){state.targetX=0;state.targetY=0;state.gazeTargetX=0;state.gazeTargetY=0;}
+ if(name==='left')state.targetX=clamp(state.targetX-layout.width*.24,-layout.bound,layout.bound);
+ if(name==='right')state.targetX=clamp(state.targetX+layout.width*.24,-layout.bound,layout.bound);
+ if(speak){const phrases=ACTIONS[name].phrase;say(phrases[Math.floor(Math.random()*phrases.length)]);}
+ if(name==='happy')burst('star',9);
+ if(name==='love')burst('heart',8);
+ beep(name);updateButtons();updateQueue();announceEvent('state',snapshot());
+}
+function resolveAction(name){const key=String(name);return aliases[key]||key;}
+function perform(actions,{enqueue=false}={}){
+ if(destroyed)throw new Error('Lumi has been destroyed. Reload the page to recreate it.');
+ if(!Array.isArray(actions)||actions.length===0)throw new TypeError('Expected a non-empty array of action names.');
+ const items=actions.slice(0,24).map(resolveAction);
+ for(const item of items)if(!Object.prototype.hasOwnProperty.call(ACTIONS,item))throw new RangeError('Unknown Lumi action: '+item);
+ setPaused(false);
+ if(enqueue&&state.action!=='idle'){state.queue.push(...items);state.queue=state.queue.slice(0,24);updateQueue();}
+ else{state.queue=items.slice(1);beginAction(items[0]);}
+ return snapshot();
+}
+function act(name,{repeat=1,enqueue=false}={}){
+ const count=clamp(Math.floor(Number(repeat)||1),1,8);
+ return perform(Array(count).fill(name),{enqueue});
+}
+function stop({center=false,speak=true}={}){
+ state.queue=[];
+ state.action='idle';state.age=0;
+ if(center){state.targetX=0;state.targetY=0;}else{state.targetX=state.x;state.targetY=0;}
+ if(speak)say('Хорошо. Я просто побуду рядом.');
+ updateQueue();updateButtons();announceEvent('state',snapshot());
+ return snapshot();
+}
+function setPaused(value){
+ const next=Boolean(value),changed=state.paused!==next;
+ state.paused=next;
+ stage.classList.toggle('is-paused',next);
+ $('pause-btn').setAttribute('aria-pressed',String(next));
+ $('pause-btn').setAttribute('aria-label',next?'Продолжить анимацию':'Приостановить анимацию');
+ $('pause-btn').title=next?'Продолжить':'Пауза';
+ $('pause-btn').querySelector('use').setAttribute('href',next?'#i-play':'#i-pause');
+ updateButtons();
+ if(changed)announceEvent('pause',{paused:next});
+ return snapshot();
+}
+function setReduced(value){prefs.reduced=Boolean(value);$('motion-btn').setAttribute('aria-pressed',String(prefs.reduced));if(prefs.reduced){particles.forEach(p=>p.node.remove());particles=[];}return snapshot();}
+function setSound(value){prefs.sound=Boolean(value);const button=$('sound-btn');button.setAttribute('aria-pressed',String(prefs.sound));button.setAttribute('aria-label',prefs.sound?'Выключить звук':'Включить звук');button.title=prefs.sound?'Выключить звук':'Включить звук';button.querySelector('use').setAttribute('href',prefs.sound?'#i-sound':'#i-mute');if(prefs.sound)beep('wave');return snapshot();}
+function resize(){
+ const box=stage.getBoundingClientRect(),oldBound=layout.bound;
+ if(box.width<=0||box.height<=0)return;
+ layout.width=box.width;layout.height=box.height;
+ layout.scale=Math.min((box.width-40)/345,(box.height-(window.innerWidth<=760?143:172))/410);
+ layout.scale=clamp(layout.scale,.38,1.3);
+ layout.floor=box.height-51;
+ layout.bound=Math.max(12,(box.width-345*layout.scale)/2-12);
+ if(oldBound>0){state.x=state.x/oldBound*layout.bound;state.targetX=state.targetX/oldBound*layout.bound;}
+ state.targetY=0;
+ world.setAttribute('viewBox',`0 0 ${layout.width} ${layout.height}`);
+}
+function blinkValue(){
+ let auto=1;
+ if(state.blinkAge<.26)auto=1-Math.sin(state.blinkAge/.26*Math.PI);
+ if(state.action==='blink'){
+  const a=state.age;
+  if(a<.29)auto=1-Math.sin(a/.29*Math.PI);
+  else if(a>.43&&a<.75)auto=1-Math.sin((a-.43)/.32*Math.PI);
+ }
+ return clamp(auto,.015,1);
+}
+function render(dt){
+ const t=state.phase,a=state.age,action=state.action,amplitude=prefs.reduced?.15:1;
+ const smoothing=1-Math.exp(-dt*10);
+ Object.keys(mood).forEach(key=>mood[key]=lerp(mood[key],action===key?1:0,smoothing));
+ const m=mood;
+ if(state.phase>state.gazeUntil&&!state.dragging){state.gazeTargetX=0;state.gazeTargetY=0;}
+ state.gazeX=lerp(state.gazeX,state.gazeTargetX,1-Math.exp(-dt*8));state.gazeY=lerp(state.gazeY,state.gazeTargetY,1-Math.exp(-dt*8));
+ if(!state.dragging){state.x=lerp(state.x,state.targetX,1-Math.exp(-dt*4.2));state.y=lerp(state.y,state.targetY,1-Math.exp(-dt*7));}
+ const breathing=Math.sin(t*2.3);
+ let lift=0,sx=1,sy=1+breathing*.013*amplitude;
+ let rot=(Math.sin(t*.9)*.7 + m.dance*Math.sin(t*6.5)*11 + m.scared*Math.sin(t*43)*1.9)*amplitude;
+ let headRot=(m.sad*-8+m.love*6+m.sleep*9+m.wave*-5+m.laugh*Math.sin(t*18)*4-m.dance*Math.sin(t*6.5)*10+state.gazeX*.25)*amplitude;
+ let headY=(m.sad*6+m.sleep*9+m.laugh*Math.sin(t*23)*2)*amplitude;
+ let armL=(m.happy*125+m.scared*65+m.love*27+m.laugh*37+m.dance*(57+Math.sin(t*8)*45))*amplitude;
+ let armR=(-m.happy*125-m.scared*65-m.love*32-m.laugh*40+m.dance*(-57+Math.sin(t*8)*45)+m.wave*(-143+Math.sin(a*12)*18))*amplitude;
+ let earL=(-m.sad*32-m.sleep*25-m.love*8+m.scared*13+m.dance*Math.sin(t*8)*9+Math.sin(t*2.5)*2.3)*amplitude;
+ let earR=(m.sad*32+m.sleep*25+m.love*8-m.scared*13+m.dance*Math.sin(t*8+1)*9+Math.sin(t*2.5+.8)*2.3)*amplitude;
+ let footL=0,footR=0;
+ sy-=m.sad*.03+m.sleep*.035;
+ lift+=m.happy*Math.abs(Math.sin(a*8))*17*amplitude;
+ lift+=m.dance*Math.abs(Math.sin(a*6.5))*10*amplitude;
+ sx+=m.laugh*Math.sin(t*20)*.012*amplitude;
+ if(action==='jump'){
+  const p=a/ACTIONS.jump.duration;
+  if(p<.17){const e=Math.sin(p/.17*Math.PI/2);sx+=.16*e*amplitude;sy-=.16*e*amplitude;}
+  else if(p<.79){const u=(p-.17)/.62;const jumpHeight=Math.min(108,Math.max(24,(layout.floor-20)/layout.scale-438));lift+=Math.sin(u*Math.PI)*jumpHeight*amplitude;sx-=.055*Math.sin(u*Math.PI)*amplitude;sy+=.07*Math.sin(u*Math.PI)*amplitude;armL+=100*Math.sin(u*Math.PI)*amplitude;armR-=100*Math.sin(u*Math.PI)*amplitude;earL+=15*Math.sin(u*Math.PI)*amplitude;earR-=15*Math.sin(u*Math.PI)*amplitude;footL=footR=-9*Math.sin(u*Math.PI)*amplitude;}
+  else{const e=Math.sin((p-.79)/.21*Math.PI);sx+=.13*e*amplitude;sy-=.13*e*amplitude;}
+ }
+ if(action==='left'||action==='right'){
+  footL=-Math.max(0,Math.sin(a*15))*12*amplitude;footR=-Math.max(0,-Math.sin(a*15))*12*amplitude;
+  lift+=Math.abs(Math.sin(a*15))*3*amplitude;headRot+=(action==='left'?-5:5)*amplitude;
+  armL+=Math.sin(a*15)*17*amplitude;armR+=Math.sin(a*15)*17*amplitude;
+ }
+ footL-=m.dance*Math.max(0,Math.sin(t*6.5))*13*amplitude;footR-=m.dance*Math.max(0,-Math.sin(t*6.5))*13*amplitude;
+ if(state.dragging){rot+=clamp((state.targetX-state.x)*.1,-12,12);armL+=30*amplitude;armR-=30*amplitude;}
+ const smoothTargets={head:headRot,headY,earL,earR,armL,armR,rot};
+ Object.keys(smoothed).forEach(key=>smoothed[key]=lerp(smoothed[key],smoothTargets[key],1-Math.exp(-dt*15)));
+ const centerX=layout.width/2+state.x,floor=layout.floor+state.y;
+ transform('position-root',`translate(${centerX.toFixed(2)} ${floor.toFixed(2)}) scale(${layout.scale})`);
+ transform('rig',`translate(0 ${(-lift).toFixed(2)}) rotate(${smoothed.rot.toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)})`);
+ transform('head',`translate(0 ${(-220+smoothed.headY).toFixed(2)}) rotate(${smoothed.head.toFixed(2)})`);
+ transform('ear-left',`translate(-61 -48) rotate(${smoothed.earL.toFixed(2)})`);
+ transform('ear-right',`translate(61 -48) rotate(${smoothed.earR.toFixed(2)})`);
+ transform('tail',`translate(55 -67) rotate(${((Math.sin(t*(2.3+m.happy*6+m.love*5))*7-m.sad*12+m.dance*Math.sin(t*8)*12)*amplitude).toFixed(2)})`);
+ transform('arm-left',`translate(-57 -110) rotate(${smoothed.armL.toFixed(2)})`);transform('arm-right',`translate(57 -110) rotate(${smoothed.armR.toFixed(2)})`);
+ transform('foot-left',`translate(-40 ${(-2+footL).toFixed(2)})`);transform('foot-right',`translate(40 ${(-2+footR).toFixed(2)})`);
+ dom.shadow.setAttribute('cx',centerX.toFixed(2));dom.shadow.setAttribute('cy',(layout.floor+5).toFixed(2));dom.shadow.setAttribute('rx',(125*layout.scale*(1-lift*.003)).toFixed(2));dom.shadow.setAttribute('ry',(22*layout.scale*(1-lift*.002)).toFixed(2));opacity('shadow',1-lift*.003);
+ const joyful=clamp(m.happy+m.laugh+m.love*.25,0,1);
+ const eyeOpen=clamp((1-joyful*.94-m.sleep*.99-m.sad*.13+m.scared*.15)*blinkValue(),.01,1.18);
+ const eyeSlant=m.sad*10;
+ transform('eye-left',`translate(-42 -1) rotate(${-eyeSlant}) scale(1 ${eyeOpen.toFixed(3)})`);transform('eye-right',`translate(42 -1) rotate(${eyeSlant}) scale(1 ${eyeOpen.toFixed(3)})`);
+ opacity('eye-left',clamp((eyeOpen-.05)*8,0,1));opacity('eye-right',clamp((eyeOpen-.05)*8,0,1));
+ const closeAlpha=clamp((.24-eyeOpen)*7,0,1),curve=joyful>.25?-15:11;
+ dom['closed-left'].setAttribute('d',`M-64 3Q-42 ${curve} -20 3`);dom['closed-right'].setAttribute('d',`M20 3Q42 ${curve} 64 3`);
+ opacity('closed-left',closeAlpha);opacity('closed-right',closeAlpha);
+ const irisScale=1-m.scared*.15,eyeX=state.gazeX*(1-m.sleep),eyeY=state.gazeY+m.sad*4;
+ transform('iris-left',`translate(${eyeX.toFixed(2)} ${eyeY.toFixed(2)}) scale(${irisScale.toFixed(3)})`);transform('iris-right',`translate(${eyeX.toFixed(2)} ${eyeY.toFixed(2)}) scale(${irisScale.toFixed(3)})`);
+ const browOuter=-42-m.scared*12+m.sad*2,browInner=-43-m.sad*12-m.scared*10,browMiddle=-52-m.scared*12;
+ dom['brow-left'].setAttribute('d',`M-66 ${browOuter.toFixed(2)}Q-47 ${browMiddle.toFixed(2)} -29 ${browInner.toFixed(2)}`);dom['brow-right'].setAttribute('d',`M29 ${browInner.toFixed(2)}Q47 ${browMiddle.toFixed(2)} 66 ${browOuter.toFixed(2)}`);
+ const mouthOpen=clamp(m.happy+m.laugh+m.dance*.65,0,1);
+ opacity('mouth-open',mouthOpen);opacity('mouth-sad',m.sad);opacity('mouth-scared',m.scared);opacity('mouth-sleep',m.sleep);opacity('mouth-smile',1-clamp(mouthOpen+m.sad+m.scared+m.sleep,0,1));
+ opacity('tears',m.sad*.85);transform('tear-left',`translate(0 ${((t*12)%18).toFixed(2)})`);transform('tear-right',`translate(0 ${((t*12+8)%18).toFixed(2)})`);
+ opacity('surprise',m.scared);opacity('gem-glow',.16+(1+Math.sin(t*3))*.1+(m.happy+m.love)*.2);
+}
+function renderParticles(dt){
+ for(let i=particles.length-1;i>=0;i--){
+  const p=particles[i];p.age+=dt;
+  if(p.age>=p.life){p.node.remove();particles.splice(i,1);continue;}
+  p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy-=(p.kind==='sleep'?3:7)*dt;
+  const progress=p.age/p.life,alpha=Math.min(1,p.age/.13)*(1-progress)**.7;
+  p.node.setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${p.rot+Math.sin(p.age*3)*12}) scale(${p.scale*(.7+Math.sin(Math.min(1,progress*3)*Math.PI/2)*.3)})`);p.node.setAttribute('opacity',alpha.toFixed(3));
+ }
+}
+function frame(now){
+ if(destroyed)return;
+ const dt=lastFrame===null?0:Math.min((now-lastFrame)/1000,.05);lastFrame=now;
+ if(!state.paused&&!document.hidden){
+  state.phase+=dt;state.age+=dt;state.blinkAge+=dt;
+  if(state.phase>state.nextBlink&&state.action!=='sleep'){state.blinkAge=0;state.nextBlink=state.phase+2.5+Math.random()*4;}
+  if(state.age>=ACTIONS[state.action].duration){
+   const finished=state.action;announceEvent('complete',{action:finished});
+   if(state.queue.length){beginAction(state.queue.shift());}
+   else{state.action='idle';state.age=0;updateButtons();updateQueue();announceEvent('state',snapshot());}
+  }
+  if(state.action==='idle'&&state.queue.length)beginAction(state.queue.shift());
+  state.particleClock+=dt;
+  if(state.action==='sleep'&&state.particleClock>1){state.particleClock=0;makeParticle('sleep',layout.width/2+state.x+72*layout.scale,layout.floor+state.y-272*layout.scale,16,-27,2.8);}
+  if(state.action==='dance'&&state.particleClock>.42){state.particleClock=0;makeParticle('note',layout.width/2+state.x+(Math.random()>.5?110:-110)*layout.scale,layout.floor-180*layout.scale,(Math.random()-.5)*35,-50,1.8);}
+  if(state.action==='love'&&state.particleClock>.65){state.particleClock=0;burst('heart',2);}
+  if(state.action==='happy'&&state.particleClock>.7){state.particleClock=0;burst('star',3);}
+  render(dt);renderParticles(dt);
+  if(state.phase>state.bubbleUntil)$('bubble').classList.add('is-hidden');
+ }
+ raf=requestAnimationFrame(frame);
+}
+/* Keywords intentionally remain local and predictable: this is not an LLM/chat backend. */
+const patterns=[
+ ['idle',/просни|разбуд|успокой|ко мне|домой|вернись|центр|wake|idle/i],
+ ['left',/влево|налево|left/i],['right',/вправо|направо|right/i],
+ ['jump',/пры[гж]|скачи|jump/i],['happy',/раду|радос|радова|порад|счаст|весел|улыб|(?:^|\s)ура(?:\s|$)|happy|celebrat/i],
+ ['sad',/груст|печал|плач|sad/i],['laugh',/смей|сме[её]т|смеят|рассме|смех|хаха|ха-ха|laugh/i],
+ ['scared',/испуг|пугай|напуга|страш|scared|fear|boo/i],['blink',/м[оа]рг|мигн|мигай|blink/i],
+ ['dance',/танц|станц|пляш|dance/i],['sleep',/усни|засып|дрем|спать|(?:^|\s)спи(?:\s|$)|(?:^|\s)сон(?:\s|$)|sleep/i],
+ ['wave',/привет|помаш|махни|поздоров|hello|wave/i],['love',/любл|поглад|обним|почеш|love|сердеч/i]
+];
+function parseCommand(text){
+ let normalized=String(text).toLowerCase().replace(/ё/g,'е').trim().slice(0,180);
+ if(!normalized)return {type:'empty'};
+ if(/^(?:люми[,! ]*)?(?:стоп|хватит|отмена|отмени|stop)[.!\s]*$/.test(normalized))return {type:'stop'};
+ if(/^(?:люми[,! ]*)?(?:пауза|замри|pause|freeze)[.!\s]*$/.test(normalized))return {type:'pause'};
+ if(/^(?:люми[,! ]*)?(?:продолжи|продолжай|resume|оживи)[.!\s]*$/.test(normalized))return {type:'resume'};
+ if(/помощь|список команд|что ты умеешь|покажи управление|проведи|(?:^|\s)гид(?:\s|$)|help|guide/.test(normalized))return {type:'guide'};
+ normalized=normalized.replace(/не\s+(?:грусти|плачь|бойся|пугайся)/g,'успокойся');
+ const clauses=normalized.split(/[,.;!]+|\s+(?:и(?:\s+потом)?|а\s+потом|потом|затем|после\s+этого)\s+/).filter(Boolean);
+ const actions=[],unknown=[];
+ for(const clause of clauses){
+  if(/(?:^|\s)не\s+/.test(clause)){unknown.push(clause);continue;}
+  const found=patterns.map(([name,re])=>({name,index:clause.search(re)})).filter(v=>v.index>=0).sort((a,b)=>a.index-b.index);
+  if(!found.length){if(clause.replace(/люми|пожалуйста|плиз|давай|сначала|теперь|а потом|потом|затем|\s|[?]/g,''))unknown.push(clause);continue;}
+  let repeat=1;const digits=clause.match(/\d+/);
+  if(digits)repeat=clamp(parseInt(digits[0],10),1,8);
+  else if(/дважды|два раза/.test(clause))repeat=2;
+  else if(/трижды|три раза/.test(clause))repeat=3;
+  else if(/четыре раза/.test(clause))repeat=4;
+  else if(/пять раз/.test(clause))repeat=5;
+  else if(/шесть раз/.test(clause))repeat=6;
+  else if(/семь раз/.test(clause))repeat=7;
+  else if(/восемь раз/.test(clause))repeat=8;
+  for(const item of found)for(let i=0;i<repeat;i++)actions.push(item.name);
+ }
+ return actions.length?{type:'actions',actions:actions.slice(0,24),partial:unknown.length>0}:{type:'unknown'};
+}
+function command(text){
+ const parsed=parseCommand(text),log=$('command-log');
+ if(parsed.type==='empty')return parsed;
+ if(parsed.type==='actions'){
+  perform(parsed.actions);log.textContent='↳ '+String(text).trim().slice(0,180)+(parsed.partial?' · Выполню только знакомые команды.':'');
+ }else if(parsed.type==='pause'){setPaused(true);say('Замер. Продолжим, когда скажешь.');log.textContent='Анимация на паузе.';}
+ else if(parsed.type==='resume'){setPaused(false);say('Я снова с тобой!');log.textContent='Анимация продолжается.';}
+ else if(parsed.type==='stop'){setPaused(false);stop();log.textContent='Очередь команд очищена.';}
+ else if(parsed.type==='guide'){startGuide();log.textContent='Покажу, как со мной общаться.';}
+ else{say('Пока не понял. Попробуй «прыгни», «поморгай» или «танцуй».',{duration:6});log.textContent='Не нашёл знакомую команду. Попробуй: «прыгни 3 раза и радуйся».';}
+ announceEvent('command',{text:String(text),result:parsed});return parsed;
+}
+// Lightweight guided onboarding. It does not require a modal, login or network.
+const guideSteps=[
+ {target:'stage',title:'Привет. Я Люми!',copy:'Нажми на меня — я почувствую ласку. Потяни за ушко или за лапку, чтобы переместить. Двойное нажатие отправит меня в прыжок.',action:'wave'},
+ {target:'control-panel',title:'У меня есть характер',copy:'Восемь кнопок — восемь настроений и движений. В любой момент можно дать новую команду. Необязательно ждать окончания анимации.',action:'happy'},
+ {target:'composer',title:'А ещё я понимаю команды',copy:'Напиши «прыгни три раза, потом радуйся». Я сделаю всё по порядку. «Стоп» отменяет очередь, а «пауза» останавливает движение.',action:'blink'}
+];
+function showGuideStep(){
+ document.querySelectorAll('.tour-focus').forEach(el=>el.classList.remove('tour-focus'));
+ const step=guideSteps[guideStep];
+ $(step.target).classList.add('tour-focus');
+ $('guide-title').textContent=step.title;$('guide-copy').textContent=step.copy;$('guide-progress').textContent=`Знакомство · ${guideStep+1} / ${guideSteps.length}`;$('guide-next').textContent=guideStep===2?'Мы подружились ✓':'Дальше →';
+ $('guide-card').hidden=false;act(step.action);
+ $(step.target).scrollIntoView({behavior:prefs.reduced?'auto':'smooth',block:'nearest'});
+}
+function startGuide(){restoreGuideFocus=document.activeElement;guideStep=0;showGuideStep();$('guide-next').focus({preventScroll:true});}
+function closeGuide(){guideStep=-1;$('guide-card').hidden=true;document.querySelectorAll('.tour-focus').forEach(el=>el.classList.remove('tour-focus'));if(restoreGuideFocus?.isConnected)restoreGuideFocus.focus({preventScroll:true});}
+on($('guide-btn'),'click',startGuide);on($('guide-close'),'click',closeGuide);on($('guide-next'),'click',()=>{guideStep++;if(guideStep>=guideSteps.length){closeGuide();act('love');}else showGuideStep();});
+document.querySelectorAll('[data-action]').forEach(button=>on(button,'click',()=>act(button.dataset.action)));
+on($('command-form'),'submit',event=>{event.preventDefault();command($('command-input').value);$('command-input').value='';});
+document.querySelectorAll('[data-command]').forEach(button=>on(button,'click',()=>command(button.dataset.command)));
+on($('pause-btn'),'click',()=>setPaused(!state.paused));on($('reset-btn'),'click',()=>{setPaused(false);stop({center:true,speak:false});particles.forEach(p=>p.node.remove());particles=[];say('Я дома. Начнём с чистого листа?');$('command-log').textContent='';});
+on($('sound-btn'),'click',()=>setSound(!prefs.sound));on($('motion-btn'),'click',()=>{setReduced(!prefs.reduced);say(prefs.reduced?'Буду двигаться спокойнее.':'Можно снова немножко пошалить!');});
+// Pointer tracking and dragging work with a mouse, stylus or touch.
+let drag=null,lastTap=-1000;
+on(stage,'pointermove',event=>{
+ const box=stage.getBoundingClientRect(),localX=event.clientX-box.left,localY=event.clientY-box.top;
+ state.gazeTargetX=clamp((localX-layout.width/2-state.x)/28,-5.8,5.8);state.gazeTargetY=clamp((localY-(layout.floor-220*layout.scale))/40,-3.3,4.2);state.gazeUntil=state.phase+2.5;
+});
+on(stage,'pointerleave',()=>{if(!state.dragging){state.gazeTargetX=0;state.gazeTargetY=0;}});
+on(pet,'pointerdown',event=>{
+ if(event.button!==0||drag)return;
+ drag={id:event.pointerId,startX:event.clientX,startY:event.clientY,x:state.x,y:state.y,moved:false};
+ try{pet.setPointerCapture(event.pointerId);}catch(_){}
+});
+on(pet,'pointermove',event=>{
+ if(!drag||drag.id!==event.pointerId)return;
+ const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;
+ if(!drag.moved&&Math.hypot(dx,dy)>7){drag.moved=true;state.dragging=true;if(tapTimer){clearTimeout(tapTimer);tapTimer=null;}setPaused(false);stop({speak:false});}
+ if(drag.moved){event.preventDefault();state.targetX=clamp(drag.x+dx,-layout.bound,layout.bound);state.targetY=clamp(drag.y+dy,-45,14);state.x=state.targetX;state.y=state.targetY;}
+});
+function releasePointer(event,cancelled=false){
+ if(!drag||drag.id!==event.pointerId)return;
+ const wasMoved=drag.moved;drag=null;state.dragging=false;state.targetY=0;
+ try{if(pet.hasPointerCapture(event.pointerId))pet.releasePointerCapture(event.pointerId);}catch(_){}
+ if(cancelled)return;
+ if(wasMoved){say('О, новое место! Мне нравится.');return;}
+ const now=performance.now();
+ if(now-lastTap<320){if(tapTimer)clearTimeout(tapTimer);tapTimer=null;lastTap=-1000;act('jump');}
+ else{lastTap=now;tapTimer=setTimeout(()=>{tapTimer=null;act('love');},260);}
+}
+on(pet,'pointerup',event=>releasePointer(event));on(pet,'pointercancel',event=>releasePointer(event,true));on(pet,'lostpointercapture',event=>{if(drag&&drag.id===event.pointerId)releasePointer(event,true);});
+on(pet,'keydown',event=>{if(event.code==='Enter'){event.preventDefault();act('love');}});
+on(document,'keydown',event=>{
+ if(event.key==='Escape'){closeGuide();setPaused(false);stop();return;}
+ if(event.target instanceof HTMLElement&&(event.target.matches('input,textarea,select')||event.target.isContentEditable))return;
+ if(event.ctrlKey||event.altKey||event.metaKey)return;
+ const keys={Digit1:'jump',Digit2:'happy',Digit3:'sad',Digit4:'laugh',Digit5:'scared',Digit6:'blink',Digit7:'dance',Digit8:'sleep',ArrowLeft:'left',ArrowRight:'right'};
+ if(keys[event.code]){event.preventDefault();act(keys[event.code]);}
+ else if(event.code==='Space'&&!(event.target instanceof HTMLButtonElement)){event.preventDefault();act('jump');}
+});
+on(document,'visibilitychange',()=>{lastFrame=null;});
+const observer=typeof ResizeObserver==='function'?new ResizeObserver(resize):null;
+if(observer)observer.observe(stage);else on(window,'resize',resize);
+resize();setReduced(prefs.reduced);render(1/60);
+/** Public API for a WebView / application shell. No untrusted postMessage listener is installed.
+ * Lumi.act('jump', {repeat: 3});
+ * Lumi.perform(['wave','jump','happy']);
+ * Lumi.command('прыгни три раза, потом радуйся');
+ * Lumi.say('Нажми «Продолжить», чтобы перейти к следующему шагу.');
+ * window.addEventListener('lumi:complete', ({detail}) => console.log(detail.action));
+ */
+window.Lumi=Object.freeze({version:'1.0.1',actions:Object.freeze(Object.keys(ACTIONS)),act,perform,command,parse:parseCommand,say,pause:setPaused,stop,guide:startGuide,getState:snapshot,setReducedMotion:setReduced,setSound,destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(raf);observer?.disconnect();listeners.forEach(remove=>remove());clearTimeout(tapTimer);particles.forEach(p=>p.node.remove());particles=[];audioCtx?.close().catch(()=>{});}});
+// Expose controls only after geometry, handlers and the public API exist.
+state.ready=true;
+document.querySelectorAll('[data-runtime-control]').forEach(control=>{control.disabled=false;});
+pet.setAttribute('tabindex','0');
+pet.setAttribute('aria-disabled','false');
+document.documentElement.setAttribute('data-runtime','ready');
+$('runtime-check').textContent='Интерактив запущен · 1.0.1';
+say('Привет! Я Люми. Погладь меня ✨',{duration:6});
+updateButtons();
+raf=requestAnimationFrame(frame);
+announceEvent('ready',snapshot());
+} catch(error) {
+ // The static SVG and always-present message survive a failed startup.
+ document.documentElement.setAttribute('data-runtime','error');
+ document.querySelectorAll('[data-runtime-control]').forEach(control=>{control.disabled=true;});
+ document.getElementById('pet-hit').setAttribute('tabindex','-1');
+ document.getElementById('pet-hit').setAttribute('aria-disabled','true');
+ document.getElementById('runtime-title').textContent='Не удалось запустить управление';
+ document.getElementById('runtime-copy').textContent='Люми виден, но команды сейчас недоступны. Открой страницу в браузере с JavaScript и перезагрузи её.';
+ document.getElementById('runtime-check').textContent='Ошибка запуска · 1.0.1';
+ document.getElementById('state-label').textContent='Управление недоступно';
+ document.getElementById('bubble').textContent='Я здесь. Управление пока не работает.';
+ console.error('Lumi startup failed:',error);
+}
+})();
+</script>
+</body>
+</html>

@@ -59,7 +59,8 @@ uniform vec2 uResolution,uLook,uArms,uEars;
 uniform vec4 uBody,uFace;
 uniform vec3 uHead;
 uniform float uTime,uTurn,uX;
-const float PI=3.14159265;
+float sq(float x){return x*x;}
+float fourth(float x){float q=x*x;return q*q;}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
 float ell(vec3 p,vec3 r){float a=length(p/r),b=length(p/(r*r));return a*(a-1.)/max(b,.0001);}
 float capsule(vec3 p,vec3 a,vec3 b,float r){vec3 q=p-a,v=b-a;return length(q-v*clamp(dot(q,v)/dot(v,v),0.,1.))-r;}
@@ -82,10 +83,10 @@ float foot=ell(p-vec3(s*.32,.105,.21),vec3(.30,.19,.37));d.x=sm(d.x,foot,.10);
 vec3 e=h-vec3(s*.62,.47,-.065);e.x*=s;e.xy=rot(-(i==0?uEars.x:uEars.y))*e.xy;e.y-=.39;e.x-=.085*e.y*e.y;
 float ear=ell(e,vec3(.31,.65,.195));d=nearD(d,vec2(ear,2.));
 float inner=ell(e-vec3(-.017,.025,.184),vec3(.223,.49,.050));d=nearD(d,vec2(inner,3.));
-vec3 eye=h-vec3(s*.397,.032,.579);float close=clamp(uFace.x,0.,1.);eye.y-=close*.07*(1.-pow(clamp(eye.x/.25,-1.,1.),2.));
+vec3 eye=h-vec3(s*.397,.032,.579);float close=clamp(uFace.x,0.,1.);eye.y-=close*.07*(1.-sq(clamp(eye.x/.25,-1.,1.)));
 float ey=ell(eye,vec3(.247,mix(.302,.019,close),.163));d=nearD(d,vec2(ey,5.));
 vec3 brow=h-vec3(s*.40,.389,.501);brow.xy=rot(s*(uFace.z*.32-uFace.w*.16))*brow.xy;
-float bx=clamp(brow.x,-.11,.11);float bw=length(brow-vec3(bx,.025*(1.-pow(bx/.11,2.)),0.))-.021;d=nearD(d,vec2(bw,8.));
+float bx=clamp(brow.x,-.11,.11);float bw=length(brow-vec3(bx,.025*(1.-sq(bx/.11)),0.))-.021;d=nearD(d,vec2(bw,8.));
 }
 vec3 t=p-vec3(.62,.60,-.37);t.xy=rot(-.48+.05*sin(uTime*1.7))*t.xy;
 float tail=ell(t-vec3(.23,.02,0.),vec3(.34,.53,.32));tail=sm(tail,ell(t-vec3(.20,.47,0.),vec3(.19,.35,.21)),.16);d=nearD(d,vec2(tail,4.));
@@ -93,7 +94,7 @@ vec3 horn=h-vec3(.11,.79,-.07);horn.xy=rot(-.30)*horn.xy;d=nearD(d,vec2(ell(horn
 vec3 tuft=h-vec3(-.085,.726,.02);tuft.xy=rot(.35)*tuft.xy;d=nearD(d,vec2(ell(tuft,vec3(.12,.18,.12)),1.));
 float nose=ell(h-vec3(0.,-.202,.668),vec3(.064,.042,.041));d=nearD(d,vec2(nose,6.));
 vec3 m=h-vec3(0.,-.346,.597);float smile=1.-uFace.z*2.;
-float cx=clamp(m.x,-.133,.133);float cy=.037*smile*(pow(cx/.133,2.)-1.);float mouth=length(m-vec3(cx,cy,.032))-.014;
+float cx=clamp(m.x,-.133,.133);float cy=.037*smile*(sq(cx/.133)-1.);float mouth=length(m-vec3(cx,cy,.032))-.014;
 if(uFace.y>.06){mouth=ell(m-vec3(0.,-.025,.088),vec3(.135+uFace.w*.033,.030+uFace.y*.115,.046));if(uFace.w>.1)mouth=max(mouth,m.y-.022);}
 d=nearD(d,vec2(mouth,9.));
 return vec2(d.x*min(uBody.y,1.)*.82,d.y);
@@ -104,17 +105,17 @@ float ao(vec3 p,vec3 n){float o=0.;for(int i=1;i<=3;i++){float h=.045*float(i);o
 vec3 paint(vec3 w,float id,vec3 n,vec3 rd){
 vec3 p=localP(w),h=headP(p);vec3 col=vec3(.89,.81,.77);float rough=.85;
 float lilac=1.-smoothstep(.12,.51,p.y);col=mix(col,vec3(.40,.29,.59),lilac*.55);
-float tummy=exp(-pow(p.x/.33,4.)-pow((p.y-.67)/.46,4.))*smoothstep(.20,.42,p.z);col=mix(col,vec3(.98,.86,.79),tummy*.6);
-float blush=exp(-pow((abs(h.x)-.58)/.19,2.)-pow((h.y+.20)/.105,2.))*smoothstep(.40,.60,h.z);col=mix(col,vec3(.91,.46,.53),blush*(.23+uBody.w*.3));
+float tummy=exp(-fourth(p.x/.33)-fourth((p.y-.67)/.46))*smoothstep(.20,.42,p.z);col=mix(col,vec3(.98,.86,.79),tummy*.6);
+float blush=exp(-sq((abs(h.x)-.58)/.19)-sq((h.y+.20)/.105))*smoothstep(.40,.60,h.z);col=mix(col,vec3(.91,.46,.53),blush*(.23+uBody.w*.3));
 float mark=(1.-smoothstep(.8,1.,abs(h.x)/.044+abs(h.y-.435)/.09))*smoothstep(.42,.53,h.z);if(id<1.5)col=mix(col,vec3(.49,.83,.80),mark*.8);
 if(id>1.5&&id<2.5){col=vec3(.49,.35,.67);col=mix(col,vec3(.77,.69,.84),clamp(h.y-.4,0.,1.));}
 if(id>2.5&&id<3.5){col=mix(vec3(.59,.30,.45),vec3(.94,.62,.62),clamp(h.y-.4,0.,1.));}
 if(id>3.5&&id<4.5){col=mix(vec3(.42,.28,.64),vec3(.70,.89,.87),smoothstep(.55,1.42,p.y));}
 if(id>4.5&&id<5.5){
 vec2 uv=vec2((abs(h.x)-.397)/.247,(h.y-.032)/.302);uv.x-=uLook.x*.09*sign(h.x);uv.y-=uLook.y*.07;
-float iris=exp(-pow(length(uv-vec2(0.,-.32))/.63,4.));float pupil=1.-smoothstep(.26,.40,length(uv*vec2(1.,.9)-vec2(0.,-.01)));
+float iris=exp(-fourth(length(uv-vec2(0.,-.32))/.63));float pupil=1.-smoothstep(.26,.40,length(uv*vec2(1.,.9)-vec2(0.,-.01)));
 col=mix(vec3(.008,.005,.020),vec3(.20,.20,.51),iris);col=mix(col,vec3(.004,.002,.012),pupil*.91);
-float lower=exp(-pow((uv.y+.67)/.10,2.))*exp(-pow(uv.x/.72,4.));col+=lower*vec3(.15,.31,.44);
+float lower=exp(-sq((uv.y+.67)/.10))*exp(-fourth(uv.x/.72));col+=lower*vec3(.15,.31,.44);
 float glint=1.-smoothstep(.10,.21,length((uv-vec2(-.30*sign(h.x),.39))*vec2(1.05,.83)));col=mix(col,vec3(1.,.96,.92),glint*.94);
 float glint2=1.-smoothstep(.025,.074,length(uv-vec2(.30*sign(h.x),-.40)));col+=glint2*.56;rough=.17;
 }
@@ -123,11 +124,11 @@ if(id>6.5&&id<7.5){col=mix(vec3(.37,.58,.59),vec3(.78,.93,.91),clamp(h.y-.7,0.,1
 if(id>7.5&&id<8.5){col=vec3(.20,.12,.28);}
 if(id>8.5){col=vec3(.13,.035,.073);if(uFace.y>.2){float tongue=1.-smoothstep(-.42,-.38,h.y);col=mix(col,vec3(.87,.37,.45),tongue);}rough=.7;}
 vec3 l=normalize(vec3(-3.,5.,5.)),fill=normalize(vec3(3.,1.,2.)),rim=normalize(vec3(1.,3.,-3.));
-float diff=max(0.,dot(n,l)),f=max(0.,dot(n,fill)),r=pow(max(0.,dot(n,rim)),2.);float occ=ao(w,n);
+float diff=max(0.,dot(n,l)),f=max(0.,dot(n,fill)),r=sq(max(0.,dot(n,rim)));float occ=ao(w,n);
 vec3 light=col*(vec3(.28,.25,.36)+diff*vec3(.89,.78,.70)+f*vec3(.23,.22,.35))*occ;
 light+=r*vec3(.18,.21,.31)*.72;
 float spec=pow(max(dot(n,normalize(l-rd)),0.),mix(95.,12.,rough));light+=spec*mix(.46,.045,rough)*vec3(1.,.94,.90);
-if(id<4.5){float grain=hash(floor(w*430.))-.5;light+=grain*.016;light+=pow(1.-max(0.,dot(n,-rd)),3.)*.06*vec3(.88,.80,1.);}
+if(id<4.5){float grain=hash(floor(w*430.))-.5;light+=grain*.016;light+=pow(clamp(1.-dot(n,-rd),0.,1.),3.)*.06*vec3(.88,.80,1.);}
 return pow(clamp(light,0.,1.),vec3(.454545));
 }
 void main(){
@@ -137,7 +138,7 @@ vec3 rd=normalize(fw+uv.x*rt*.40+uv.y*up*.40);
 float travel=3.4;vec2 hit=vec2(1.,0.);bool found=false;
 for(int i=0;i<82;i++){vec3 pos=ro+rd*travel;hit=map(pos);if(hit.x<.0018){found=true;break;}travel+=max(hit.x,.001);if(travel>9.2)break;}
 if(found){vec3 pos=ro+rd*travel;vec3 n=normalAt(pos);gl_FragColor=vec4(paint(pos,hit.y,n,rd),1.);}
-else {float ground=-ro.y/rd.y;float shadow=0.;if(ground>0.){vec3 p=ro+rd*ground;shadow=exp(-pow((p.x-uX)/.89,2.)-pow(p.z/.57,2.))*.40*exp(-uBody.x*.7);}gl_FragColor=vec4(.035,.018,.06,shadow);}
+else {float ground=-ro.y/rd.y;float shadow=0.;if(ground>0.){vec3 p=ro+rd*ground;shadow=exp(-sq((p.x-uX)/.89)-sq(p.z/.57))*.40*exp(-uBody.x*.7);}gl_FragColor=vec4(.035,.018,.06,shadow);}
 }
 </script>
 <script>

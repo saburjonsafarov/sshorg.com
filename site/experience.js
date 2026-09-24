@@ -1,303 +1,400 @@
-
+/* A single inverse camera transform; device roots never move during scrolling. */
 (() => {
+  'use strict';
+  const clamp = (n, min = 0, max = 1) => Math.min(max, Math.max(min, n));
+  const mix = (a, b, t) => a + (b - a) * t;
+  const ease = n => { const t = clamp(n); return t * t * t * (t * (t * 6 - 15) + 10); };
+  const ramp = (p, a, b) => ease((p - a) / (b - a));
+  const damp = (value, target, dt, tau = 115) => mix(value, target, 1 - Math.exp(-Math.max(0, dt) / tau));
+  const radians = degrees => degrees * Math.PI / 180;
+
+  function makeLayout(width, height) {
+    const mobile = width < 920;
+    const perspective = mobile ? 1100 : 1500;
+    const gap = mobile ? 900 : Math.max(1450, width * 1.06);
+    const scale = mobile ? Math.min(width * .90 / 690, height * .32 / 460) : Math.min(1.10, width * .43 / 690, height * .64 / 460);
+    const devices = [
+      { name: 'laptop', x: 0, z: 0, width: 660, height: 416, scale, rx: 3, ry: -12, rz: -2 },
+      { name: 'phone', x: gap, z: 90, width: 216, height: 448, scale: mobile ? Math.min(scale * 1.52, height * .36 / 448) : scale * 1.13, rx: -3, ry: 14, rz: -5 },
+      { name: 'tablet', x: gap * 2, z: -70, width: 520, height: 355, scale: scale * 1.10, rx: 5, ry: -13, rz: 2 },
+      { name: 'monitor', x: gap * 3, z: 0, width: 690, height: 460, scale, rx: 0, ry: 10, rz: 0 },
+    ].map(Object.freeze);
+    const sceneY = mobile ? height * .655 : height * .53;
+    const poses = devices.map((d, i) => {
+      const z = i === 1 ? 100 : 30;
+      const side = i % 2 === 0 ? 1 : -1;
+      const offset = mobile ? 0 : side * width * .24;
+      return { x: d.x - offset * (perspective + z - d.z) / perspective, y: 0, z, yaw: 0 };
+    });
+    const finalZ = perspective * ((gap * 3 + 800 * scale) / (width * .87) - 1);
+    const final = { x: gap * 1.5, y: mobile ? 0 : -height * .05, z: finalZ, yaw: 0 };
+    const keys = [
+      [0, { ...poses[0], z: 180 }], [.14, poses[0]], [.225, poses[0]],
+      [.365, poses[1]], [.465, poses[1]], [.605, poses[2]], [.705, poses[2]],
+      [.845, poses[3]], [.902, poses[3]], [1, final],
+    ];
+    return Object.freeze({ width, height, mobile, perspective, gap, sceneY, scale, devices: Object.freeze(devices), keys });
+  }
+
+  function cameraAt(progress, layout) {
+    const p = clamp(progress);
+    let index = layout.keys.findIndex(([at]) => at >= p);
+    if (index <= 0) return { ...layout.keys[0][1] };
+    const [a, from] = layout.keys[index - 1];
+    const [b, to] = layout.keys[index];
+    const t = ease((p - a) / (b - a));
+    const camera = {};
+    for (const key of ['x', 'y', 'z', 'yaw']) camera[key] = mix(from[key], to[key], t);
+    // A restrained pan during transit, zero at both stations and the wide shot.
+    if (index > 1 && index < 9 && from.x !== to.x) camera.yaw += Math.sin(t * Math.PI) * .75;
+    return camera;
+  }
+
+  function project(point, camera, layout) {
+    const angle = radians(camera.yaw);
+    const x = point.x - camera.x;
+    const z = point.z - camera.z;
+    const viewX = x * Math.cos(angle) + z * Math.sin(angle);
+    const viewZ = -x * Math.sin(angle) + z * Math.cos(angle);
+    const scale = layout.perspective / Math.max(1, layout.perspective - viewZ);
+    return { x: layout.width / 2 + viewX * scale, y: layout.sceneY + (point.y - camera.y) * scale, scale, z: viewZ };
+  }
+
+  function deviceBounds(d, camera, layout) {
+    const corners = [];
+    for (const dx of [-.5, .5]) for (const dy of [-.5, .5]) {
+      let x = dx * d.width * d.scale, y = dy * d.height * d.scale, z = 0;
+      const rz = radians(d.rz), ry = radians(d.ry), rx = radians(d.rx);
+      [x, y] = [x * Math.cos(rz) - y * Math.sin(rz), x * Math.sin(rz) + y * Math.cos(rz)];
+      [x, z] = [x * Math.cos(ry) + z * Math.sin(ry), -x * Math.sin(ry) + z * Math.cos(ry)];
+      [y, z] = [y * Math.cos(rx) - z * Math.sin(rx), y * Math.sin(rx) + z * Math.cos(rx)];
+      corners.push(project({ x: x + d.x, y, z: z + d.z }, camera, layout));
+    }
+    return { left: Math.min(...corners.map(p => p.x)), right: Math.max(...corners.map(p => p.x)), top: Math.min(...corners.map(p => p.y)), bottom: Math.max(...corners.map(p => p.y)) };
+  }
+
+  function copyOpacity(p, index) {
+    const windows = [[-.04, .102], [.126, .218], [.367, .46], [.607, .70], [.847, .90]];
+    const [a, b] = windows[index];
+    return ramp(p, a, a + .018) * (1 - ramp(p, b - .018, b));
+  }
+
+  const overlaps = (a, b, padding = 12) => a.left < b.right + padding && a.right > b.left - padding && a.top < b.bottom + padding && a.bottom > b.top - padding;
+  const api = { clamp, ease, damp, makeLayout, cameraAt, project, deviceBounds, copyOpacity };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  if (typeof document === 'undefined') return;
   const story = document.querySelector('[data-tech-story]');
   if (!story) return;
-
   const stage = story.querySelector('.tech-stage');
   const world = story.querySelector('.tech-world');
-  const stars = story.querySelector('.tech-stars');
-  const laptop = story.querySelector('[data-device="laptop"]');
-  const phone = story.querySelector('[data-device="phone"]');
-  const tablet = story.querySelector('[data-device="tablet"]');
-  const monitor = story.querySelector('[data-device="monitor"]');
-  const ring = story.querySelector('.tech-ring');
-  const finalCaption = story.querySelector('.tech-final-caption');
-  const copies = Array.from(story.querySelectorAll('[data-tech-copy]'));
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const ctx = stars && stars.getContext ? stars.getContext('2d', { alpha: true }) : null;
+  if (!stage || !world) return;
 
-  const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-  const lerp = (from, to, amount) => from + (to - from) * amount;
-  const smooth = (value) => {
-    const t = clamp(value);
-    return t * t * (3 - 2 * t);
-  };
-  const segment = (value, from, to) => smooth((value - from) / (to - from));
-  const mix = (from, to, amount) => lerp(from, to, clamp(amount));
+  // Keep the existing content, language switcher, analytics and project dialogs.
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const copies = [...story.querySelectorAll('[data-tech-copy]')];
+  const devices = [...story.querySelectorAll('[data-device]')];
+  const finale = story.querySelector('.tech-final-caption');
+  const viewport = document.createElement('div');
+  viewport.className = 'tech-viewport';
+  world.before(viewport);
+  viewport.append(world);
+  const canvas = story.querySelector('.tech-stars');
+  if (canvas) { canvas.className = 'tech-space'; canvas.setAttribute('aria-hidden', 'true'); }
+  story.querySelector('.tech-ambient-graph')?.remove();
+  story.querySelector('.tech-floor')?.remove();
+  story.querySelector('.tech-ring')?.remove();
+  story.querySelector('.tech-progress-rail')?.remove();
+  story.querySelector('.tech-scroll-cue')?.remove();
+  const veil = document.createElement('div');
+  veil.className = 'tech-atmosphere'; veil.setAttribute('aria-hidden', 'true');
+  stage.append(veil);
 
-  let progress = 0;
-  let targetProgress = 0;
-  let raf = 0;
-  let pointerX = 0;
-  let pointerY = 0;
-  let targetPointerX = 0;
-  let targetPointerY = 0;
-  let starsData = [];
+  if (typeof stopTyping === 'function') stopTyping();
+  const greeting = story.querySelector('#typedGreeting');
+  if (greeting) {
+    greeting.removeAttribute('data-i18n');
+    greeting.classList.remove('typing-caret');
+    greeting.innerHTML = 'Saburjon<span class="tech-name-line">Safarov.</span>';
+  }
+  copies.forEach((copy, i) => { copy.dataset.copySide = i === 2 || i === 4 ? 'right' : 'left'; });
 
-  const setDevice = (element, state) => {
-    if (!element) return;
-    element.style.opacity = String(state.opacity == null ? 1 : state.opacity);
-    element.style.transform = [
-      'translate3d(-50%, -50%, 0)',
-      'translate3d(' + state.x.toFixed(2) + 'px,' + state.y.toFixed(2) + 'px,' + state.z.toFixed(2) + 'px)',
-      'rotateX(' + state.rx.toFixed(2) + 'deg)',
-      'rotateY(' + state.ry.toFixed(2) + 'deg)',
-      'rotateZ(' + state.rz.toFixed(2) + 'deg)',
-      'scale(' + state.scale.toFixed(4) + ')',
-    ].join(' ');
-  };
+  const hud = document.createElement('nav');
+  hud.className = 'tech-chapters';
+  hud.innerHTML = ['01', '02', '03', '04'].map((n, i) => `<button type="button" data-station="${i}"><span>${n}</span><i></i></button>`).join('');
+  const skip = document.createElement('a');
+  skip.className = 'tech-skip'; skip.href = '#projects';
+  const coordinates = document.createElement('div');
+  coordinates.className = 'tech-coordinates'; coordinates.setAttribute('aria-hidden', 'true');
+  stage.append(hud, skip, coordinates);
 
-  const stateBetween = (a, b, amount) => ({
-    x: mix(a.x, b.x, amount),
-    y: mix(a.y, b.y, amount),
-    z: mix(a.z, b.z, amount),
-    rx: mix(a.rx, b.rx, amount),
-    ry: mix(a.ry, b.ry, amount),
-    rz: mix(a.rz, b.rz, amount),
-    scale: mix(a.scale, b.scale, amount),
-    opacity: mix(a.opacity == null ? 1 : a.opacity, b.opacity == null ? 1 : b.opacity, amount),
-  });
+  const laptopScreen = story.querySelector('.tech-laptop-screen');
+  if (laptopScreen) laptopScreen.innerHTML = `<div class="tech-windowbar"><i></i><i></i><i></i><span>sshorg.com</span><b>↗</b></div><div class="screen-site"><div class="screen-nav"><b>S.</b><span>WORK / ABOUT / CONTACT</span></div><span class="screen-kicker">ENGINEERING, BEYOND BOUNDARIES.</span><strong>One idea.<br><em>Every screen.</em></strong><p>Saburjon Safarov · Kotlin Multiplatform</p><div class="screen-pills"><span>Android</span><span>iOS</span><span>Desktop</span></div><div class="screen-orbit"><i></i><i></i><i></i><b>K</b></div><div class="screen-code"><span>sharedMain / Product.kt</span><code>product {<br>&nbsp; android()<br>&nbsp; ios()<br>&nbsp; desktop()<br>}</code></div></div>`;
+  const graph = story.querySelector('.tech-graph-grid');
+  if (graph) graph.insertAdjacentHTML('afterbegin', `<div class="screen-graph-label">compose-graph <span>CONNECTED SYSTEMS</span></div><svg class="screen-edges" viewBox="0 0 520 355" aria-hidden="true"><path d="M260 176L110 94M260 176L397 91M260 176L124 272M260 176L389 271M110 94L124 272M397 91L389 271" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>`);
+  const pipeline = story.querySelector('.tech-pipeline');
+  if (pipeline) pipeline.insertAdjacentHTML('beforeend', `<div class="screen-telemetry"><div><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>BUILD → VERIFY → RELEASE<br><b>One continuous delivery system.</b></span></div>`);
+  const mobileKicker = story.querySelector('.tech-mobile-kicker');
+  if (mobileKicker) mobileKicker.textContent = 'PRODUCT PREVIEW · DEMO';
 
-  const phaseOpacity = (value, start, end, fade = .055) => {
-    const fadeIn = segment(value, start - fade, start);
-    const fadeOut = 1 - segment(value, end, end + fade);
-    return clamp(Math.min(fadeIn, fadeOut));
+  const text = {
+    ru: { skip: 'Сразу к проектам ↗', chapters: 'Сцены портфолио', names: ['Разработка', 'Мобильные продукты', 'Архитектура', 'Продакшен'], end: 'Один код. Целая экосистема.', sub: 'Android · iOS · Desktop · Web', intro: 'ИНЖЕНЕР · СОЗДАТЕЛЬ ПРОДУКТОВ' },
+    tg: { skip: 'Ба лоиҳаҳо ↗', chapters: 'Саҳнаҳои портфолио', names: ['Таҳия', 'Маҳсулоти мобилӣ', 'Меъморӣ', 'Продакшен'], end: 'Як код. Як экосистема.', sub: 'Android · iOS · Desktop · Web', intro: 'МУҲАНДИС · СОЗАНДАИ МАҲСУЛОТ' },
+    en: { skip: 'Skip to projects ↗', chapters: 'Portfolio scenes', names: ['Development', 'Mobile products', 'Architecture', 'Production'], end: 'One codebase. An entire ecosystem.', sub: 'Android · iOS · Desktop · Web', intro: 'ENGINEER · PRODUCT BUILDER' },
   };
 
-  const updateCopy = (value) => {
-    const windows = [
-      [0, .17],
-      [.205, .345],
-      [.395, .535],
-      [.585, .725],
-      [.79, .97],
-    ];
-    copies.forEach((element, index) => {
-      const range = windows[index] || [2, 3];
-      const opacity = phaseOpacity(value, range[0], range[1]);
-      element.style.opacity = opacity.toFixed(3);
-      element.style.transform = 'translate3d(0,' + ((1 - opacity) * 24).toFixed(2) + 'px,0)';
-      element.style.pointerEvents = opacity > .55 ? 'auto' : 'none';
+  let layout, backdrop, copyRects = [], frame = 0, previousTime = 0;
+  let progress = 0, target = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
+  let visible = true, staticMode = false, startY = 0, distance = 1, destroyed = false;
+  const controller = new AbortController();
+  const on = (node, type, fn, options = {}) => node.addEventListener(type, fn, { ...options, signal: controller.signal });
+
+  function localize() {
+    const t = text[document.documentElement.lang] || text.en;
+    skip.textContent = t.skip; hud.setAttribute('aria-label', t.chapters);
+    hud.querySelectorAll('button').forEach((button, i) => { button.setAttribute('aria-label', t.names[i]); button.title = t.names[i]; });
+    const eyebrow = copies[0]?.querySelector('.tech-eyebrow');
+    if (eyebrow) eyebrow.textContent = t.intro;
+    if (finale) { finale.querySelector('strong').textContent = t.end; finale.querySelector('span').textContent = t.sub; }
+  }
+
+  function measureCopy() {
+    const bounds = stage.getBoundingClientRect();
+    copyRects = copies.map(copy => {
+      const r = copy.getBoundingClientRect();
+      return { left: r.left - bounds.left, right: r.right - bounds.left, top: r.top - bounds.top, bottom: r.bottom - bounds.top };
     });
-  };
+  }
 
-  const computeStates = (value) => {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const mobile = vw < 700;
-    const compact = vw < 980;
-
-    const intro = segment(value, .015, .14);
-    const laptopToSide = segment(value, .17, .31);
-    const phoneIn = segment(value, .20, .34);
-    const phoneToSide = segment(value, .38, .50);
-    const tabletIn = segment(value, .40, .54);
-    const tabletToSide = segment(value, .56, .67);
-    const monitorIn = segment(value, .59, .73);
-    const assemble = segment(value, .76, .92);
-    const finale = segment(value, .86, .98);
-
-    const laptopStart = {
-      x: compact ? 0 : vw * .18, y: compact ? -vh * .04 : vh * .03, z: -220,
-      rx: 8, ry: -18, rz: -2, scale: mobile ? .74 : .88, opacity: .25,
-    };
-    const laptopHero = {
-      x: compact ? 0 : vw * .16, y: compact ? -vh * .03 : vh * .03, z: 35,
-      rx: 2, ry: -12, rz: -1, scale: mobile ? .84 : 1, opacity: 1,
-    };
-    const laptopSide = {
-      x: mobile ? -vw * .22 : -vw * .28, y: mobile ? -vh * .10 : -vh * .08, z: -260,
-      rx: 4, ry: 18, rz: -4, scale: mobile ? .48 : .60, opacity: .55,
-    };
-    const laptopFinal = {
-      x: mobile ? -vw * .18 : -vw * .26, y: mobile ? -vh * .13 : -vh * .10, z: -70,
-      rx: 2, ry: 16, rz: -2, scale: mobile ? .42 : .55, opacity: .92,
-    };
-    let laptopState = stateBetween(laptopStart, laptopHero, intro);
-    laptopState = stateBetween(laptopState, laptopSide, laptopToSide);
-    laptopState = stateBetween(laptopState, laptopFinal, assemble);
-
-    const phoneStart = {
-      x: vw * .55, y: vh * .14, z: -380, rx: -5, ry: -32, rz: 12,
-      scale: .58, opacity: 0,
-    };
-    const phoneHero = {
-      x: compact ? vw * .12 : vw * .18, y: compact ? -vh * .05 : 0, z: 110,
-      rx: -3, ry: -12, rz: 7, scale: mobile ? .92 : 1.12, opacity: 1,
-    };
-    const phoneSide = {
-      x: mobile ? -vw * .20 : -vw * .22, y: mobile ? vh * .05 : vh * .03, z: -120,
-      rx: 1, ry: 16, rz: -5, scale: mobile ? .66 : .78, opacity: .72,
-    };
-    const phoneFinal = {
-      x: mobile ? 0 : -vw * .05, y: mobile ? vh * .04 : vh * .06, z: 25,
-      rx: -2, ry: -4, rz: 3, scale: mobile ? .62 : .72, opacity: .98,
-    };
-    let phoneState = stateBetween(phoneStart, phoneHero, phoneIn);
-    phoneState = stateBetween(phoneState, phoneSide, phoneToSide);
-    phoneState = stateBetween(phoneState, phoneFinal, assemble);
-
-    const tabletStart = {
-      x: -vw * .55, y: vh * .12, z: -360, rx: 15, ry: 28, rz: -12,
-      scale: .55, opacity: 0,
-    };
-    const tabletHero = {
-      x: compact ? -vw * .10 : vw * .15, y: compact ? -vh * .02 : vh * .03, z: 70,
-      rx: 4, ry: -14, rz: -4, scale: mobile ? .80 : 1, opacity: 1,
-    };
-    const tabletSide = {
-      x: mobile ? vw * .22 : vw * .26, y: mobile ? -vh * .10 : -vh * .08, z: -180,
-      rx: 4, ry: -20, rz: 4, scale: mobile ? .52 : .66, opacity: .70,
-    };
-    const tabletFinal = {
-      x: vw * .18, y: mobile ? -vh * .14 : -vh * .09, z: -30,
-      rx: 2, ry: -14, rz: 2, scale: mobile ? .48 : .58, opacity: .94,
-    };
-    let tabletState = stateBetween(tabletStart, tabletHero, tabletIn);
-    tabletState = stateBetween(tabletState, tabletSide, tabletToSide);
-    tabletState = stateBetween(tabletState, tabletFinal, assemble);
-
-    const monitorStart = {
-      x: vw * .48, y: -vh * .02, z: -460, rx: 0, ry: -24, rz: 2,
-      scale: .54, opacity: 0,
-    };
-    const monitorHero = {
-      x: compact ? 0 : vw * .15, y: compact ? -vh * .03 : -vh * .01, z: 45,
-      rx: 0, ry: -8, rz: 0, scale: mobile ? .76 : .94, opacity: 1,
-    };
-    const monitorFinal = {
-      x: mobile ? 0 : vw * .28, y: mobile ? -vh * .02 : -vh * .08, z: -95,
-      rx: 0, ry: -10, rz: 0, scale: mobile ? .52 : .58, opacity: .90,
-    };
-    let monitorState = stateBetween(monitorStart, monitorHero, monitorIn);
-    monitorState = stateBetween(monitorState, monitorFinal, assemble);
-
-    const parallaxScale = mobile ? .32 : 1;
-    const px = pointerX * 24 * parallaxScale;
-    const py = pointerY * 18 * parallaxScale;
-    [laptopState, phoneState, tabletState, monitorState].forEach((state, index) => {
-      const depth = 1 - index * .12;
-      state.x += px * depth;
-      state.y += py * depth;
+  function resize() {
+    staticMode = motion.matches || window.innerHeight < 560;
+    story.classList.toggle('is-static', staticMode);
+    layout = makeLayout(stage.clientWidth, stage.clientHeight);
+    world.style.top = layout.sceneY + 'px';
+    viewport.style.perspective = 'none';
+    devices.forEach((element, i) => {
+      const d = layout.devices[i];
+      if (!d) return;
+      element.style.width = d.width + 'px'; element.style.height = d.height + 'px';
+      element.style.transform = `translate3d(${d.x}px,0,${d.z}px) rotateX(${d.rx}deg) rotateY(${d.ry}deg) rotateZ(${d.rz}deg) scale(${d.scale}) translate(-50%,-50%)`;
     });
+    startY = story.getBoundingClientRect().top + window.scrollY;
+    distance = Math.max(1, story.offsetHeight - stage.clientHeight);
+    measureCopy();
+    backdrop?.resize(layout);
+    readScroll();
+    if (staticMode) progress = .16;
+    requestFrame();
+  }
 
-    setDevice(laptop, laptopState);
-    setDevice(phone, phoneState);
-    setDevice(tablet, tabletState);
-    setDevice(monitor, monitorState);
+  function readScroll() { target = staticMode ? .16 : clamp((window.scrollY - startY) / distance); }
+  function requestFrame() {
+    if (!frame && visible && !document.hidden && !destroyed) frame = requestAnimationFrame(tick);
+  }
+  function stopFrame() { cancelAnimationFrame(frame); frame = 0; previousTime = 0; }
 
-    story.style.setProperty('--lid-angle', mix(-86, 0, intro).toFixed(2) + 'deg');
-    story.style.setProperty('--tech-progress', value.toFixed(4));
-
-    if (ring) {
-      ring.style.opacity = (finale * .88).toFixed(3);
-      ring.style.transform = 'translate3d(-50%,-50%,-120px) rotateX(74deg) scale(' + mix(.72, 1, finale).toFixed(3) + ')';
-    }
-    if (finalCaption) {
-      finalCaption.style.opacity = finale.toFixed(3);
-      finalCaption.style.transform = 'translate3d(-50%,' + ((1 - finale) * 18).toFixed(2) + 'px,0)';
-    }
-
-    story.style.setProperty('--tech-glow-x', mix(70, 52, assemble).toFixed(2) + '%');
-    story.style.setProperty('--tech-glow-y', mix(42, 55, finale).toFixed(2) + '%');
-
-    if (world) {
-      world.style.transform = 'translate3d(0,' + mix(0, -vh * .015, finale).toFixed(2) + 'px,0) scale(' + mix(1, .965, finale).toFixed(4) + ')';
-    }
-    updateCopy(value);
-  };
-
-  const resizeStars = () => {
-    if (!stars || !ctx || !stage) return;
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(1, stage.clientWidth);
-    const height = Math.max(1, stage.clientHeight);
-    stars.width = Math.floor(width * ratio);
-    stars.height = Math.floor(height * ratio);
-    stars.style.width = width + 'px';
-    stars.style.height = height + 'px';
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-    const count = Math.round(Math.min(150, Math.max(70, width / 9)));
-    starsData = Array.from({ length: count }, (_, index) => ({
-      x: ((index * 83.17) % width) / width,
-      y: ((index * 47.91 + 17) % height) / height,
-      z: ((index * 29.47) % 100) / 100,
-      r: .45 + ((index * 13) % 11) / 10,
-    }));
-  };
-
-  const drawStars = () => {
-    if (!stars || !ctx || !stage) return;
-    const width = stage.clientWidth;
-    const height = stage.clientHeight;
-    ctx.clearRect(0, 0, width, height);
-    const drift = progress * 120;
-
-    starsData.forEach((star) => {
-      const depth = .25 + star.z * .75;
-      const x = (star.x * width + pointerX * 12 * depth) % width;
-      let y = star.y * height - drift * depth;
-      while (y < 0) y += height;
-      const alpha = .13 + star.z * .47;
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(214,226,255,' + alpha.toFixed(3) + ')';
-      ctx.arc(x, y, star.r * depth, 0, Math.PI * 2);
-      ctx.fill();
+  function render() {
+    const camera = cameraAt(progress, layout);
+    if (!staticMode) { camera.x += pointerX * 12; camera.y += pointerY * 8; camera.yaw += pointerX * .18; }
+    world.style.transform = `perspective(${layout.perspective}px) rotateY(${camera.yaw.toFixed(5)}deg) translate3d(${-camera.x.toFixed(4)}px,${-camera.y.toFixed(4)}px,${-camera.z.toFixed(4)}px)`;
+    story.style.setProperty('--lid-angle', mix(-103, -4, ramp(progress, .006, .145)).toFixed(3) + 'deg');
+    story.style.setProperty('--screen-power', ramp(progress, .015, .115).toFixed(3));
+    story.style.setProperty('--scan', (progress * 230).toFixed(3) + '%');
+    const bounds = layout.devices.map(d => deviceBounds(d, camera, layout));
+    copies.forEach((copy, i) => {
+      let opacity = staticMode ? (i === 0 ? 1 : 0) : copyOpacity(progress, i);
+      if (!staticMode && opacity > 0 && copyRects[i] && bounds.some(b => overlaps(b, copyRects[i]))) opacity = 0;
+      copy.style.opacity = opacity.toFixed(4);
+      const inactive = opacity < .25;
+      copy.inert = inactive;
+      copy.setAttribute('aria-hidden', String(inactive));
     });
-  };
+    const finalOpacity = staticMode ? 0 : ramp(progress, .95, .99);
+    if (finale) { finale.style.opacity = finalOpacity.toFixed(4); finale.setAttribute('aria-hidden', String(finalOpacity < .25)); }
+    const station = progress < .29 ? 0 : progress < .53 ? 1 : progress < .77 ? 2 : 3;
+    hud.querySelectorAll('button').forEach((button, i) => {
+      if (i === station) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
+    });
+    coordinates.textContent = `FIELD NOTES / ${String(station + 1).padStart(2, '0')} — 04`;
+    story.dataset.progress = progress.toFixed(5);
+    backdrop?.draw(camera);
+  }
 
-  const measureTarget = () => {
-    if (reducedMotion.matches) {
-      targetProgress = 1;
-      return;
+  function tick(time) {
+    frame = 0;
+    const dt = previousTime ? Math.min(250, time - previousTime) : 16.667;
+    previousTime = time;
+    progress = staticMode ? .16 : damp(progress, target, dt);
+    pointerX = damp(pointerX, aimX, dt, 190); pointerY = damp(pointerY, aimY, dt, 190);
+    if (Math.abs(progress - target) < .00002) progress = target;
+    render();
+    if (!staticMode && (Math.abs(progress - target) > .00002 || Math.abs(pointerX - aimX) > .002 || Math.abs(pointerY - aimY) > .002)) requestFrame();
+    else previousTime = 0;
+  }
+
+  function createSpace(targetCanvas) {
+    let ctx;
+    try { ctx = targetCanvas?.getContext('2d', { alpha: false }); } catch (_) { return null; }
+    if (!ctx) return null;
+    let view, stars = [], faces = [], sky, planet, grain;
+    const random = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    function noise2(x, y) {
+      const ix = Math.floor(x), iy = Math.floor(y), tx = x - ix, ty = y - iy;
+      const hash = (a, b) => { let n = Math.imul(a, 374761393) + Math.imul(b, 668265263); n = Math.imul(n ^ n >>> 13, 1274126177); return ((n ^ n >>> 16) >>> 0) / 4294967295; };
+      const u = tx * tx * (3 - 2 * tx), v = ty * ty * (3 - 2 * ty);
+      return mix(mix(hash(ix, iy), hash(ix + 1, iy), u), mix(hash(ix, iy + 1), hash(ix + 1, iy + 1), u), v);
     }
-    const rect = story.getBoundingClientRect();
-    const distance = Math.max(1, story.offsetHeight - window.innerHeight);
-    targetProgress = clamp(-rect.top / distance);
-  };
+    function makePlanet() {
+      const image = document.createElement('canvas'); image.width = image.height = 420;
+      const c = image.getContext('2d'); const pixels = c.createImageData(420, 420);
+      for (let y = 0; y < 420; y++) for (let x = 0; x < 420; x++) {
+        const nx = (x - 210) / 206, ny = (y - 210) / 206, r2 = nx * nx + ny * ny;
+        if (r2 > 1) continue;
+        const nz = Math.sqrt(1 - r2);
+        const u = Math.atan2(nx, nz) * 4 + 30, v = Math.asin(ny) * 4 + 30;
+        let surface = 0, weight = .5;
+        for (let octave = 0; octave < 6; octave++) { const f = 2 ** octave; surface += noise2(u * f, v * f) * weight; weight *= .5; }
+        const grain = noise2(x * 1.7, y * 1.7) * 4;
+        const light = Math.max(0, nx * -.42 + ny * -.55 + nz * .50);
+        const rim = Math.pow(1 - nz, 5) * Math.max(.08, light) * 140;
+        const shade = 6 + light * (surface * surface * 290 + grain);
+        const i = (y * 420 + x) * 4;
+        pixels.data[i] = shade * .75 + rim * .4;
+        pixels.data[i + 1] = shade * .88 + rim * .75;
+        pixels.data[i + 2] = shade + rim;
+        pixels.data[i + 3] = clamp((1 - Math.sqrt(r2)) * 206) * 255;
+      }
+      c.putImageData(pixels, 0, 0); return image;
+    }
+    function cliff({ x, z, height, radius, seed }) {
+      const rand = random(seed); const rings = [], count = 10, layers = 11;
+      for (let layer = 0; layer < layers; layer++) {
+        const t = layer / (layers - 1), ring = [];
+        for (let j = 0; j < count; j++) {
+          const angle = j / count * Math.PI * 2;
+          const r = radius * (1 - t * .69) * (.72 + rand() * .51);
+          ring.push({ x: x + Math.cos(angle) * r + t * radius * .15, y: view.height * 1.16 - height * t + (rand() - .5) * height * .06, z: z + Math.sin(angle) * r * .65 });
+        }
+        rings.push(ring);
+      }
+      const add = points => {
+        const [a, b, c] = points;
+        const u = { x: b.x - a.x, y: b.y - a.y, z: b.z - a.z }, v = { x: c.x - a.x, y: c.y - a.y, z: c.z - a.z };
+        const n = { x: u.y * v.z - u.z * v.y, y: u.z * v.x - u.x * v.z, z: u.x * v.y - u.y * v.x };
+        const length = Math.hypot(n.x, n.y, n.z) || 1;
+        const light = Math.abs((n.x * -.48 + n.y * -.70 + n.z * .42) / length);
+        const tone = 6 + light * 18 + rand() * 3;
+        faces.push({ points, depth: (a.z + b.z + c.z) / 3, color: `rgb(${tone * .72},${tone * .83},${tone * 1.15})` });
+      };
+      for (let l = 0; l < layers - 1; l++) for (let j = 0; j < count; j++) {
+        const k = (j + 1) % count;
+        add([rings[l][j], rings[l][k], rings[l + 1][j]]);
+        add([rings[l][k], rings[l + 1][k], rings[l + 1][j]]);
+      }
+      for (let j = 1; j < count - 1; j++) add([rings[layers - 1][0], rings[layers - 1][j], rings[layers - 1][j + 1]]);
+    }
+    function resize(next) {
+      view = next;
+      const ratio = Math.min(window.devicePixelRatio || 1, view.mobile ? 1.5 : 1.75);
+      targetCanvas.width = Math.round(view.width * ratio); targetCanvas.height = Math.round(view.height * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const rand = random(82317);
+      stars = Array.from({ length: view.mobile ? 160 : 350 }, () => ({ x: (rand() - .25) * 33000, y: (rand() - .5) * 21000, z: -2200 - rand() * 12000, radius: 1 + rand() * 3.5, alpha: .12 + rand() * .58 }));
+      faces = [];
+      for (let i = -2; i < 11; i++) cliff({ x: i * view.gap * .51, z: -2000 - rand() * 2200, height: 460 + rand() * 670, radius: 230 + rand() * 250, seed: i + 718 });
+      // Near silhouettes frame the products, rather than filling the reading area.
+      for (let i = -1; i < 5; i++) cliff({ x: i * view.gap + view.gap * .62, z: -500 - rand() * 350, height: 380 + rand() * 430, radius: 210 + rand() * 110, seed: 800 + i });
+      faces.sort((a, b) => a.depth - b.depth);
+      planet ||= makePlanet();
+      if (!grain) {
+        const tile = document.createElement('canvas'); tile.width = tile.height = 128;
+        const g = tile.getContext('2d'), data = g.createImageData(128, 128);
+        for (let i = 0; i < data.data.length; i += 4) { const n = rand() * 255; data.data[i] = data.data[i + 1] = data.data[i + 2] = n; data.data[i + 3] = 10; }
+        g.putImageData(data, 0, 0); grain = ctx.createPattern(tile, 'repeat');
+      }
+      sky = document.createElement('canvas'); sky.width = view.width; sky.height = view.height;
+      const s = sky.getContext('2d'); s.fillStyle = '#050711'; s.fillRect(0, 0, view.width, view.height);
+      const haze = s.createRadialGradient(view.width * .67, view.height * .30, 0, view.width * .67, view.height * .30, view.width * .70);
+      haze.addColorStop(0, '#202345'); haze.addColorStop(.45, '#11182c'); haze.addColorStop(1, '#050711'); s.fillStyle = haze; s.fillRect(0, 0, view.width, view.height);
+    }
+    function draw(camera) {
+      if (!view) return;
+      const { width, height } = view;
+      ctx.drawImage(sky, 0, 0);
+      for (const star of stars) {
+        const p = project({ ...star, y: star.y }, camera, view);
+        if (p.x < 0 || p.x > width || p.y < 0 || p.y > height) continue;
+        ctx.fillStyle = `rgba(190,209,255,${star.alpha})`; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(.35, star.radius * p.scale), 0, Math.PI * 2); ctx.fill();
+      }
+      const planetPosition = { x: view.mobile ? 1050 : 2400, y: view.mobile ? -1750 : -2450, z: view.mobile ? -5200 : -7600 };
+      const p = project(planetPosition, camera, view), radius = (view.mobile ? 1450 : 2300) * p.scale;
+      const glow = ctx.createRadialGradient(p.x, p.y, radius * .93, p.x, p.y, radius * 1.2);
+      glow.addColorStop(0, '#5976a537'); glow.addColorStop(.55, '#486bb515'); glow.addColorStop(1, '#486bb500');
+      ctx.fillStyle = glow; ctx.fillRect(p.x - radius * 1.2, p.y - radius * 1.2, radius * 2.4, radius * 2.4);
+      ctx.drawImage(planet, p.x - radius, p.y - radius, radius * 2, radius * 2);
+      const moon = project({ x: -800, y: -1500, z: -9200 }, camera, view), mr = 245 * moon.scale;
+      ctx.globalAlpha = .64; ctx.drawImage(planet, moon.x - mr, moon.y - mr, mr * 2, mr * 2); ctx.globalAlpha = 1;
+      for (const face of faces) {
+        const points = face.points.map(point => project(point, camera, view));
+        if (points.every(p => p.x < -5) || points.every(p => p.x > width + 5) || points.every(p => p.y > height + 5)) continue;
+        ctx.fillStyle = face.color; ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y); ctx.lineTo(points[1].x, points[1].y); ctx.lineTo(points[2].x, points[2].y); ctx.closePath(); ctx.fill();
+      }
+      const trace = clamp((camera.z - 300) / 1800);
+      if (trace > 0) {
+        ctx.strokeStyle = `rgba(149,215,233,${trace * .44})`; ctx.lineWidth = 1;
+        ctx.beginPath();
+        view.devices.forEach((d, i) => {
+          const p = project({ x: d.x, y: 260, z: d.z }, camera, view);
+          if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        });
+        ctx.stroke();
+        view.devices.forEach(d => {
+          const p = project({ x: d.x, y: 260, z: d.z }, camera, view);
+          ctx.fillStyle = `rgba(183,224,244,${trace * .75})`; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
+        });
+      }
+      const mist = ctx.createLinearGradient(0, height * .52, 0, height);
+      mist.addColorStop(0, '#0b142200'); mist.addColorStop(.50, '#1827484a'); mist.addColorStop(1, '#03050b'); ctx.fillStyle = mist; ctx.fillRect(0, height * .52, width, height * .48);
+      ctx.fillStyle = grain; ctx.fillRect(0, 0, width, height);
+    }
+    return { resize, draw };
+  }
 
-  const animate = () => {
-    raf = 0;
-    pointerX += (targetPointerX - pointerX) * .08;
-    pointerY += (targetPointerY - pointerY) * .08;
-    progress += (targetProgress - progress) * .11;
-    computeStates(progress);
-    drawStars();
-
-    const moving = Math.abs(targetProgress - progress) > .0005 ||
-      Math.abs(targetPointerX - pointerX) > .002 ||
-      Math.abs(targetPointerY - pointerY) > .002;
-    if (moving) raf = requestAnimationFrame(animate);
-  };
-
-  const schedule = () => {
-    measureTarget();
-    if (!raf) raf = requestAnimationFrame(animate);
-  };
-
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', () => {
-    resizeStars();
-    schedule();
-  });
-  window.addEventListener('pointermove', (event) => {
-    if (reducedMotion.matches) return;
-    targetPointerX = clamp((event.clientX / window.innerWidth - .5) * 2, -1, 1);
-    targetPointerY = clamp((event.clientY / window.innerHeight - .5) * 2, -1, 1);
-    if (!raf) raf = requestAnimationFrame(animate);
+  localize();
+  story.classList.add('tech-ready');
+  document.documentElement.classList.add('in-tech-story');
+  try { backdrop = createSpace(canvas); } catch (_) { backdrop = null; }
+  resize(); progress = target; render();
+  on(window, 'scroll', () => { readScroll(); requestFrame(); }, { passive: true });
+  let resizeFrame = 0;
+  on(window, 'resize', () => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(resize); }, { passive: true });
+  on(stage, 'pointermove', event => {
+    if (!fine.matches || staticMode || event.pointerType === 'touch') return;
+    aimX = clamp(event.clientX / layout.width * 2 - 1, -1, 1);
+    aimY = clamp((event.clientY - stage.getBoundingClientRect().top) / layout.height * 2 - 1, -1, 1);
+    requestFrame();
   }, { passive: true });
-
-  reducedMotion.addEventListener('change', () => {
-    targetPointerX = 0;
-    targetPointerY = 0;
-    resizeStars();
-    schedule();
+  on(stage, 'pointerleave', () => { aimX = aimY = 0; requestFrame(); });
+  on(document, 'visibilitychange', () => { if (document.hidden) stopFrame(); else { readScroll(); requestFrame(); } });
+  on(motion, 'change', () => { stopFrame(); aimX = aimY = pointerX = pointerY = 0; resize(); });
+  on(hud, 'click', event => {
+    const button = event.target.closest('[data-station]'); if (!button) return;
+    const points = [.18, .405, .65, .86];
+    window.scrollTo({ top: startY + distance * points[Number(button.dataset.station)], behavior: staticMode ? 'instant' : 'smooth' });
   });
-
-  resizeStars();
-  measureTarget();
-  progress = targetProgress;
-  computeStates(progress);
-  drawStars();
+  const languageObserver = new MutationObserver(() => { localize(); measureCopy(); requestFrame(); });
+  languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  const sizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => { measureCopy(); requestFrame(); }) : null;
+  copies.forEach(copy => sizeObserver?.observe(copy));
+  const intersection = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting);
+    document.documentElement.classList.toggle('in-tech-story', visible);
+    if (!visible) stopFrame(); else { readScroll(); requestFrame(); }
+  }) : null;
+  intersection?.observe(story);
+  on(window, 'pagehide', event => {
+    stopFrame(); cancelAnimationFrame(resizeFrame);
+    if (!event.persisted) { destroyed = true; controller.abort(); intersection?.disconnect(); languageObserver.disconnect(); sizeObserver?.disconnect(); }
+  });
+  on(window, 'pageshow', () => { readScroll(); requestFrame(); });
 })();

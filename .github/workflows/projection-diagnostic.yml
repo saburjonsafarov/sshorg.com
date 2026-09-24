@@ -1,6 +1,7 @@
 name: Projection compositor diagnostic
 on:
-  pull_request:
+  push:
+    branches: ['fix/webkit-camera-projection']
     paths: ['tests/projection-diagnostic.py', '.github/workflows/projection-diagnostic.yml']
 permissions:
   contents: read

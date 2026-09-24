@@ -1,2 +1,4 @@
 .DS_Store
 .deploy_key_ci*
+node_modules/
+test-results/

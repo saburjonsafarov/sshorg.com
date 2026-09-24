@@ -852,7 +852,7 @@ function createForceGraph(config) {
 
 function initGraphs() {
   const hero = document.querySelector('.hero');
-  if (hero?.matches('[data-tech-story]')) {
+  if (hero?.matches('[data-story]')) {
     return;
   }
   const heroInner = document.querySelector('.hero-inner');

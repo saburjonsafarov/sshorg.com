@@ -1,0 +1,19 @@
+name: Device story checks
+on:
+  push:
+    branches: [feat/3d-device-story]
+    paths: [site/beyond.html, site/beyond.css, site/beyond.js, tests/device-story.test.cjs, .github/workflows/device-story-check.yml]
+  pull_request:
+    paths: [site/beyond.html, site/beyond.css, site/beyond.js, tests/device-story.test.cjs, .github/workflows/device-story-check.yml]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check site/beyond.js
+      - run: node --test tests/device-story.test.cjs

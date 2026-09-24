@@ -17,7 +17,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23181818'/%3E%3Ctext x='32' y='43' font-family='system-ui' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css?v=dev">
   <link rel="stylesheet" href="enhancements.css?v=dev">
-  <link rel="stylesheet" href="experience.css?v=dev">
+  <link rel="stylesheet" href="story3d.css?v=dev">
 </head>
 <body>
 
@@ -46,98 +46,12 @@
 
 <main class="page">
 
-  <section class="hero tech-story" data-tech-story aria-labelledby="techHeroTitle">
-    <div class="tech-stage">
-      <canvas class="hero-graph tech-ambient-graph" aria-hidden="true"></canvas>
-      <canvas class="tech-stars" aria-hidden="true"></canvas>
+  <section class="hero story" data-story aria-labelledby="techHeroTitle">
+    <div class="story-stage">
+      <canvas class="story-canvas" aria-hidden="true"></canvas>
 
-      <div class="tech-world" aria-hidden="true">
-        <div class="tech-floor"></div>
-        <div class="tech-ring"></div>
-
-        <div class="tech-device tech-laptop" data-device="laptop">
-          <div class="tech-laptop-lid">
-            <div class="tech-camera-dot"></div>
-            <div class="tech-laptop-screen">
-              <div class="tech-windowbar"><i></i><i></i><i></i><span>sshorg.com · sharedMain</span></div>
-              <div class="tech-ide">
-                <div class="tech-ide-sidebar">
-                  <b>PROJECT</b>
-                  <span>shared</span>
-                  <span>domain</span>
-                  <span>presentation</span>
-                  <span>androidApp</span>
-                  <span>iosApp</span>
-                </div>
-                <pre class="tech-code"><span class="kw">interface</span> Product {
-  <span class="kw">val</span> platform: Platform
-}
-
-<span class="kw">fun</span> <span class="fn">build</span>() = product {
-  android()
-  ios()
-  desktop()
-}
-
-<span class="muted">// one idea · many surfaces</span>
-<span class="kw">val</span> future = <span class="str">"shared"</span></pre>
-              </div>
-            </div>
-          </div>
-          <div class="tech-laptop-base"></div>
-          <span class="tech-device-label">Build · Kotlin Multiplatform</span>
-        </div>
-
-        <div class="tech-device tech-phone" data-device="phone">
-          <div class="tech-phone-screen">
-            <div class="tech-phone-island"></div>
-            <div class="tech-mobile-content">
-              <p class="tech-mobile-kicker">KMP · Mobile</p>
-              <div class="tech-mobile-balance">12 840 TJS</div>
-              <div class="tech-mobile-card"><strong>Smart transfer</strong><span>Fast · secure · native UX</span></div>
-              <div class="tech-mobile-card"><strong>Shared domain</strong><span>Android + iOS</span></div>
-              <div class="tech-mobile-card"><strong>Realtime</strong><span>Product data in motion</span></div>
-            </div>
-            <div class="tech-mobile-tabs"><i></i><i></i><i></i></div>
-          </div>
-          <span class="tech-device-label">Ship · Android + iOS</span>
-        </div>
-
-        <div class="tech-device tech-tablet" data-device="tablet">
-          <div class="tech-tablet-screen">
-            <div class="tech-graph-grid">
-              <span class="tech-node n1">KMP</span>
-              <span class="tech-node n2">Android</span>
-              <span class="tech-node n3">iOS</span>
-              <span class="tech-node n4">AI</span>
-              <span class="tech-node n5">CI/CD</span>
-            </div>
-          </div>
-          <span class="tech-device-label">See · Architecture as a system</span>
-        </div>
-
-        <div class="tech-device tech-monitor" data-device="monitor">
-          <div class="tech-monitor-frame">
-            <div class="tech-monitor-screen">
-              <div class="tech-pipeline">
-                <div class="tech-pipeline-title">release / production</div>
-                <div class="tech-pipeline-row">
-                  <div class="tech-pipeline-step">Code</div>
-                  <div class="tech-pipeline-step">Test</div>
-                  <div class="tech-pipeline-step">Review</div>
-                  <div class="tech-pipeline-step">Deploy</div>
-                  <div class="tech-pipeline-step">Live</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tech-monitor-stand"></div>
-          <span class="tech-device-label">Operate · CI/CD + AI</span>
-        </div>
-      </div>
-
-      <div class="tech-copy" data-tech-copy="0">
-        <p class="tech-eyebrow">Engineer · Creator · System builder</p>
+      <div class="story-copy story-intro" data-story-copy="0">
+        <p class="story-eyebrow">Engineer · Creator · System builder</p>
         <h1 id="techHeroTitle"><span id="typedGreeting" data-i18n="greeting">Привет, я Сабурджон.</span></h1>
         <p data-i18n="role">Senior Android · Kotlin Multiplatform инженер</p>
         <p data-i18n="tagline">Продуктовый инженер: общий Kotlin-код для Android и iOS, забота об UI/UX и разработка, выстроенная вокруг ИИ-агентов.</p>
@@ -148,41 +62,39 @@
         </div>
       </div>
 
-      <div class="tech-copy" data-tech-copy="1">
-        <p class="tech-eyebrow">01 · Build</p>
-        <h2><span class="tech-copy-ru">Идея начинается с кода.</span><span class="tech-copy-tg">Ғоя аз код оғоз мешавад.</span><span class="tech-copy-en">Ideas start in code.</span></h2>
-        <p><span class="tech-copy-ru">Ноутбук раскрывается — и из общего Kotlin-кода появляется продукт сразу для нескольких платформ.</span><span class="tech-copy-tg">Ноутбук кушода мешавад — ва аз Kotlin-коди умумӣ маҳсулот барои чанд платформа пайдо мешавад.</span><span class="tech-copy-en">The laptop opens and shared Kotlin turns into a product across platforms.</span></p>
+      <div class="story-copy" data-story-copy="1">
+        <p class="story-eyebrow">01 · Build</p>
+        <h2><span class="story-ru">Идея начинается с кода.</span><span class="story-tg">Ғоя аз код оғоз мешавад.</span><span class="story-en">Ideas start in code.</span></h2>
+        <p><span class="story-ru">Ноутбук раскрывается — и из общего Kotlin-кода появляется продукт сразу для нескольких платформ.</span><span class="story-tg">Ноутбук кушода мешавад — ва аз Kotlin-коди умумӣ маҳсулот барои чанд платформа пайдо мешавад.</span><span class="story-en">The laptop opens and shared Kotlin turns into a product across platforms.</span></p>
       </div>
 
-      <div class="tech-copy" data-tech-copy="2">
-        <p class="tech-eyebrow">02 · Ship</p>
-        <h2><span class="tech-copy-ru">Код становится продуктом.</span><span class="tech-copy-tg">Код ба маҳсулот табдил меёбад.</span><span class="tech-copy-en">Code becomes a product.</span></h2>
-        <p><span class="tech-copy-ru">Тот же домен и архитектура выходят на маленький экран — с нативным ощущением Android и iOS.</span><span class="tech-copy-tg">Ҳамон домен ва меъморӣ ба экрани хурд меоянд — бо ҳисси нативии Android ва iOS.</span><span class="tech-copy-en">The same domain and architecture reach the small screen with a native Android and iOS feel.</span></p>
+      <div class="story-copy" data-story-copy="2">
+        <p class="story-eyebrow">02 · Ship</p>
+        <h2><span class="story-ru">Код становится продуктом.</span><span class="story-tg">Код ба маҳсулот табдил меёбад.</span><span class="story-en">Code becomes a product.</span></h2>
+        <p><span class="story-ru">Тот же домен и архитектура выходят на маленький экран — с нативным ощущением Android и iOS.</span><span class="story-tg">Ҳамон домен ва меъморӣ ба экрани хурд меоянд — бо ҳисси нативии Android ва iOS.</span><span class="story-en">The same domain and architecture reach the small screen with a native Android and iOS feel.</span></p>
       </div>
 
-      <div class="tech-copy" data-tech-copy="3">
-        <p class="tech-eyebrow">03 · Connect</p>
-        <h2><span class="tech-copy-ru">Не экраны. Система.</span><span class="tech-copy-tg">На экранҳо. Система.</span><span class="tech-copy-en">Not screens. A system.</span></h2>
-        <p><span class="tech-copy-ru">Архитектура, графы, инструменты и AI связывают отдельные интерфейсы в одну инженерную экосистему.</span><span class="tech-copy-tg">Меъморӣ, графҳо, абзорҳо ва AI интерфейсҳоро ба як экосистемаи муҳандисӣ мепайванданд.</span><span class="tech-copy-en">Architecture, graphs, tooling and AI connect separate interfaces into one engineering ecosystem.</span></p>
+      <div class="story-copy" data-story-copy="3">
+        <p class="story-eyebrow">03 · Connect</p>
+        <h2><span class="story-ru">Не экраны. Система.</span><span class="story-tg">На экранҳо. Система.</span><span class="story-en">Not screens. A system.</span></h2>
+        <p><span class="story-ru">Архитектура, графы, инструменты и AI связывают отдельные интерфейсы в одну инженерную экосистему.</span><span class="story-tg">Меъморӣ, графҳо, абзорҳо ва AI интерфейсҳоро ба як экосистемаи муҳандисӣ мепайванданд.</span><span class="story-en">Architecture, graphs, tooling and AI connect separate interfaces into one engineering ecosystem.</span></p>
       </div>
 
-      <div class="tech-copy" data-tech-copy="4">
-        <p class="tech-eyebrow">04 · Operate</p>
-        <h2><span class="tech-copy-ru">Довести до продакшена.</span><span class="tech-copy-tg">То продакшен расондан.</span><span class="tech-copy-en">Take it to production.</span></h2>
-        <p><span class="tech-copy-ru">CI/CD, автоматизация и инженерные гейты превращают красивый прототип в продукт, который можно стабильно выпускать.</span><span class="tech-copy-tg">CI/CD, автоматизатсия ва гейтҳои муҳандисӣ прототипро ба маҳсулоти устувор табдил медиҳанд.</span><span class="tech-copy-en">CI/CD, automation and engineering gates turn a polished prototype into something you can ship reliably.</span></p>
+      <div class="story-copy" data-story-copy="4">
+        <p class="story-eyebrow">04 · Operate</p>
+        <h2><span class="story-ru">Довести до продакшена.</span><span class="story-tg">То продакшен расондан.</span><span class="story-en">Take it to production.</span></h2>
+        <p><span class="story-ru">CI/CD, автоматизация и инженерные гейты превращают красивый прототип в продукт, который можно стабильно выпускать.</span><span class="story-tg">CI/CD, автоматизатсия ва гейтҳои муҳандисӣ прототипро ба маҳсулоти устувор табдил медиҳанд.</span><span class="story-en">CI/CD, automation and engineering gates turn a polished prototype into something you can ship reliably.</span></p>
       </div>
 
-      <div class="tech-final-caption" aria-hidden="true">
-        <strong>One codebase. Multiple platforms. Real products.</strong>
-        <span>Android · iOS · Desktop · Web · AI · CI/CD</span>
+      <div class="story-copy story-final" data-story-copy="5">
+        <p class="story-final-title"><span class="story-ru">Одна кодовая база. Много платформ. Настоящие продукты.</span><span class="story-tg">Як кодбаза. Платформаҳои зиёд. Маҳсулоти воқеӣ.</span><span class="story-en">One codebase. Many platforms. Real products.</span></p>
+        <p class="story-final-sub">Android · iOS · Desktop · Web · AI · CI/CD</p>
       </div>
 
-      <div class="tech-progress-rail" aria-hidden="true">
-        <div class="tech-progress-bar"></div>
-        <span class="tech-progress-label">scroll / explore</span>
-      </div>
-      <div class="tech-scroll-cue" aria-hidden="true">Scroll to build</div>
+      <div class="story-rail" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="story-cue" aria-hidden="true"><span></span></div>
     </div>
+    <img class="story-poster" src="story-poster.jpg" alt="" width="1600" height="1000" loading="lazy" decoding="async">
   </section>
 
   <section class="band band-alt" aria-labelledby="strengthsTitle">
@@ -526,7 +438,7 @@
 <script src="enhancement-copy.js?v=dev"></script>
 <script src="app.js?v=dev"></script>
 <script src="enhancements.js?v=dev"></script>
-<script src="experience.js?v=dev"></script>
+<script type="module" src="story3d.js?v=dev"></script>
 <!-- Cloudflare Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "67045909e9a840ffa16384b8512f0a70"}'></script>
 <!-- End Cloudflare Web Analytics -->

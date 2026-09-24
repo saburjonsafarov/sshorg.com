@@ -1,5 +1,6 @@
 """Check the full production page; SCENE_FIXTURE=1 uses a local offline fixture."""
 import functools
+import runpy
 import http.server
 import json
 import os
@@ -22,6 +23,7 @@ server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(Han
 threading.Thread(target=server.serve_forever, daemon=True).start()
 URL = f'http://127.0.0.1:{server.server_port}'
 report = []
+assert_painted_projection = runpy.run_path(str(ROOT/'tests/camera-paint.py'))['assert_painted_projection']
 
 def load(page, no_canvas=False):
     if FIXTURE:
@@ -81,6 +83,9 @@ with sync_playwright() as p:
                     for box in state['deviceBoxes']:
                         assert box['left']>=0 and box['right']<=w, f'{label}: final device clipped: {box}'
                 if label in ['1440x900-ru','390x844-ru']: page.screenshot(path=str(OUT/f'{label}-{point}.png'))
+                if point == 1 and label in ['1440x900-ru','390x844-ru']:
+                    paint = assert_painted_projection(page)
+                    (OUT/f'paint-{label}.json').write_text(json.dumps(paint,indent=2))
             for point in [.405,.18,0]:
                 scrub(page,point); assert page.evaluate(STATE)['transforms']==original
             page.locator('.tech-chapters button').nth(1).click()

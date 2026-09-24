@@ -60,6 +60,19 @@
     return { x: layout.width / 2 + viewX * scale, y: layout.sceneY + (point.y - camera.y) * scale, scale, z: viewZ };
   }
 
+  function cameraProjection(camera, layout) {
+    const angle = radians(camera.yaw), cos = Math.cos(angle), sin = Math.sin(angle);
+    const depth = camera.x * sin - camera.z * cos;
+    const perspective = layout.perspective - depth;
+    return {
+      scale: layout.perspective / perspective,
+      perspective,
+      x: -camera.x * cos - camera.z * sin,
+      y: -camera.y,
+      yaw: camera.yaw,
+    };
+  }
+
   function deviceBounds(d, camera, layout) {
     const corners = [];
     for (const dx of [-.5, .5]) for (const dy of [-.5, .5]) {
@@ -80,7 +93,7 @@
   }
 
   const overlaps = (a, b, padding = 12) => a.left < b.right + padding && a.right > b.left - padding && a.top < b.bottom + padding && a.bottom > b.top - padding;
-  const api = { clamp, ease, damp, makeLayout, cameraAt, project, deviceBounds, copyOpacity };
+  const api = { clamp, ease, damp, makeLayout, cameraAt, project, cameraProjection, deviceBounds, copyOpacity };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof document === 'undefined') return;
   const story = document.querySelector('[data-tech-story]');
@@ -196,7 +209,10 @@
   function render() {
     const camera = cameraAt(progress, layout);
     if (!staticMode) { camera.x += pointerX * 12; camera.y += pointerY * 8; camera.yaw += pointerX * .18; }
-    world.style.transform = `perspective(${layout.perspective}px) rotateY(${camera.yaw.toFixed(5)}deg) translate3d(${-camera.x.toFixed(4)}px,${-camera.y.toFixed(4)}px,${-camera.z.toFixed(4)}px)`;
+    // Factor the camera depth into scale + perspective. This equivalent projection
+    // avoids WebKit painting descendants at an unprojected scale on the wide shot.
+    const view = cameraProjection(camera, layout);
+    world.style.transform = `scale(${view.scale}) perspective(${view.perspective}px) translate3d(${view.x}px,${view.y}px,0) rotateY(${view.yaw}deg)`;
     story.style.setProperty('--lid-angle', mix(-103, -4, ramp(progress, .006, .145)).toFixed(3) + 'deg');
     story.style.setProperty('--screen-power', ramp(progress, .015, .115).toFixed(3));
     story.style.setProperty('--scan', (progress * 230).toFixed(3) + '%');

@@ -1,4 +1,7 @@
 
+.hero.tech-story{padding:0;text-align:left;touch-action:pan-y}
+.hero.tech-story:before{animation:none!important;filter:none}
+.hero.tech-story .hero-actions{justify-content:flex-start}
 .tech-story{--tech-progress:0;--tech-glow-x:50%;--tech-glow-y:48%;--tw:#f7f8fb;--tm:#a7afc2;--tl:rgba(255,255,255,.12);--tb:#84a7ff;--tc:#72f4e5;position:relative;height:560svh;min-height:3200px;background:radial-gradient(circle at var(--tech-glow-x) var(--tech-glow-y),rgba(81,111,188,.2),transparent 28%),radial-gradient(circle at 78% 22%,rgba(46,86,160,.12),transparent 25%),linear-gradient(180deg,#05070b 0%,#080b12 42%,#05070b 100%);color:var(--tw);overflow:clip;isolation:isolate}
 .tech-story:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.44;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 50% 45%,black,transparent 76%)}
 .tech-story:after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,11,.4),transparent 12%,transparent 82%,rgba(5,7,11,.86))}

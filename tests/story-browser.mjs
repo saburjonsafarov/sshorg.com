@@ -44,6 +44,10 @@ async function scenario(name, fn) {
 
 async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-preference', lang = 'en', query = '' }) {
   const context = await browser.newContext({ viewport, colorScheme, reducedMotion, deviceScaleFactor: 1 });
+  // Stub third-party analytics: keeps tests hermetic and out of the site's real analytics.
+  await context.route((url) => !url.href.startsWith(base), (route) =>
+    route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, contentType: route.request().resourceType() === 'script' ? 'text/javascript' : 'text/plain', body: '' }),
+  );
   await context.addInitScript((value) => localStorage.setItem('sshorg.lang', value), lang);
   const page = await context.newPage();
   const errors = [];

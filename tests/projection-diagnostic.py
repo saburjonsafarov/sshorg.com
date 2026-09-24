@@ -18,7 +18,7 @@ with sync_playwright() as p:
     page.wait_for_function("()=>Number(document.querySelector('[data-tech-story]').dataset.progress)>.99998")
     page.wait_for_timeout(300)
     variants={
-      'baseline':'',
+      'baseline':'/* baseline */',
       'world-one-pixel':'.tech-world{width:1px!important;height:1px!important}',
       'world-area':'.tech-world{width:1440px!important;height:900px!important}',
       'viewport-3d':'.tech-viewport{transform-style:preserve-3d!important}',
@@ -26,6 +26,8 @@ with sync_playwright() as p:
       'without-will-change':'.tech-world{will-change:auto!important;width:1px!important;height:1px!important}',
       'flatten-world':'.tech-world{transform-style:flat!important}',
       'world-contain':'.tech-world{contain:layout!important;width:1px!important;height:1px!important}',
+      'no-isolation':'.hero.tech-story{isolation:auto!important}',
+      'no-clip':'.hero.tech-story,.tech-stage{overflow:visible!important}',
     }
     report=[]
     for name,css in variants.items():
@@ -34,7 +36,7 @@ with sync_playwright() as p:
         page.screenshot(path=str(out/f'{name}.png'))
         report.append({'variant':name,'boxes':page.locator('[data-device]').evaluate_all('(els)=>els.map(e=>({name:e.dataset.device,rect:e.getBoundingClientRect().toJSON()}))')})
         handle.evaluate('(e)=>e.remove()')
-    matrix=page.evaluate("""()=>{const e=document.querySelector('.tech-world'),s=e.style.transform;
+    matrix=page.evaluate(r"""()=>{const e=document.querySelector('.tech-world'),s=e.style.transform;
       const d=+s.match(/perspective\(([^p]+)px/)[1], xyz=s.match(/translate3d\(([^)]+)\)/)[1].split(',').map(parseFloat),D=d-xyz[2];
       const next=`scale(${d/D}) perspective(${D}px) translate3d(${xyz[0]}px,${xyz[1]}px,0)`;
       e.style.transform=next;return {before:s,after:next};}""")

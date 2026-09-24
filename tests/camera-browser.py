@@ -45,6 +45,7 @@ STATE = """() => {
  collisions:visible.flatMap(e=>devices.filter(d=>intersects(e.getBoundingClientRect(),d.getBoundingClientRect())).map(d=>d.dataset.device)),
  overflow:document.documentElement.scrollWidth>innerWidth+1,
  transforms:devices.map(e=>e.style.transform),
+ deviceBoxes:devices.map(e=>({name:e.dataset.device,...e.getBoundingClientRect().toJSON()})),
  inactiveFocusable:copies.filter(e=>+getComputedStyle(e).opacity<.01&&!e.inert).length};
 }"""
 
@@ -76,6 +77,9 @@ with sync_playwright() as p:
                 assert not state['overflow'], f'{label}: overflow'
                 assert state['inactiveFocusable']==0, f'{label}: invisible focus targets'
                 assert state['visible']==([expected] if expected else []), f'{label} {point}: missing chapter {state}'
+                if point==1:
+                    for box in state['deviceBoxes']:
+                        assert box['left']>=0 and box['right']<=w, f'{label}: final device clipped: {box}'
                 if label in ['1440x900-ru','390x844-ru']: page.screenshot(path=str(OUT/f'{label}-{point}.png'))
             for point in [.405,.18,0]:
                 scrub(page,point); assert page.evaluate(STATE)['transforms']==original

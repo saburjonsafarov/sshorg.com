@@ -171,8 +171,7 @@
     story.classList.toggle('is-static', staticMode);
     layout = makeLayout(stage.clientWidth, stage.clientHeight);
     world.style.top = layout.sceneY + 'px';
-    viewport.style.perspective = layout.perspective + 'px';
-    viewport.style.perspectiveOrigin = `50% ${layout.sceneY}px`;
+    viewport.style.perspective = 'none';
     devices.forEach((element, i) => {
       const d = layout.devices[i];
       if (!d) return;
@@ -197,7 +196,7 @@
   function render() {
     const camera = cameraAt(progress, layout);
     if (!staticMode) { camera.x += pointerX * 12; camera.y += pointerY * 8; camera.yaw += pointerX * .18; }
-    world.style.transform = `rotateY(${camera.yaw.toFixed(5)}deg) translate3d(${-camera.x.toFixed(4)}px,${-camera.y.toFixed(4)}px,${-camera.z.toFixed(4)}px)`;
+    world.style.transform = `perspective(${layout.perspective}px) rotateY(${camera.yaw.toFixed(5)}deg) translate3d(${-camera.x.toFixed(4)}px,${-camera.y.toFixed(4)}px,${-camera.z.toFixed(4)}px)`;
     story.style.setProperty('--lid-angle', mix(-103, -4, ramp(progress, .006, .145)).toFixed(3) + 'deg');
     story.style.setProperty('--screen-power', ramp(progress, .015, .115).toFixed(3));
     story.style.setProperty('--scan', (progress * 230).toFixed(3) + '%');

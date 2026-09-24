@@ -27,8 +27,8 @@ export const COPY = [
 
 // Scene effects driven by progress windows [start, end].
 export const EFFECTS = {
-  lid: [0.07, 0.2],
-  power: [0.15, 0.22],
+  lid: [0.07, 0.185],
+  power: [0.14, 0.19],
   typing: [0.18, 0.3],
   links: [0.57, 0.7],
   trails: [0.9, 0.99],

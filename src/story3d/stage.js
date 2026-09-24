@@ -40,7 +40,7 @@ const SHOT_DEFS = {
   ship: { device: 'phone', box: 'main', az: -0.36, el: 0.04, fill: 0.86, zone: 'chapter' },
   connect: { device: 'tablet', box: 'main', az: -0.28, el: 0.07, fill: 0.93, zone: 'chapter' },
   operate: { device: 'monitor', box: 'main', az: -0.2, el: 0.05, fill: 0.95, zone: 'chapter' },
-  final: { device: null, az: -0.5, el: 0.26, azTall: -0.75, elTall: 0.3, fill: 0.97, zone: 'final' },
+  final: { device: null, az: -0.82, el: 0.2, azTall: -0.9, elTall: 0.26, fill: 1, zone: 'final' },
 };
 
 // Where the device may sit on screen, in NDC: centre (cx, cy) and half extents.
@@ -81,6 +81,38 @@ function fitDistance(points, target, dir, zone, fovY, aspect, fill) {
     distance = Math.max(distance, z + Math.abs(v.dot(right)) / tanX, z + Math.abs(v.dot(up)) / tanY);
   }
   return distance;
+}
+
+// Refines a conservative fit: iterate distance until the projected bounds fill the
+// zone, then return the lens shift that centres those bounds in the zone.
+function tightFrame(points, target, dir, distance, zone, fill, probe) {
+  let d = distance;
+  let bounds = null;
+  const measure = () => {
+    probe.position.copy(target).addScaledVector(dir, d);
+    probe.lookAt(target);
+    probe.updateMatrixWorld();
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (const p of points) {
+      const v = p.clone().project(probe);
+      minX = Math.min(minX, v.x);
+      maxX = Math.max(maxX, v.x);
+      minY = Math.min(minY, v.y);
+      maxY = Math.max(maxY, v.y);
+    }
+    return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, hw: (maxX - minX) / 2, hh: (maxY - minY) / 2 };
+  };
+  for (let i = 0; i < 6; i += 1) {
+    bounds = measure();
+    const k = Math.max(bounds.hw / (zone.hw * fill), bounds.hh / (zone.hh * fill));
+    if (Math.abs(k - 1) < 0.004) break;
+    d *= k;
+  }
+  bounds = measure();
+  return { distance: d, cx: zone.cx - bounds.cx, cy: zone.cy - bounds.cy };
 }
 
 const direction = (angle, elevation) => new Vector3(Math.sin(angle) * Math.cos(elevation), Math.sin(elevation), Math.cos(angle) * Math.cos(elevation));
@@ -134,6 +166,7 @@ export function createStage(canvas) {
 
   let rail = { positions: null, targets: null, zones: [] };
   let size = { width: 1, height: 1 };
+  let lidOpen = 0;
   const view = { position: new Vector3(), target: new Vector3(), zone: { cx: 0, cy: 0 } };
 
   function computeRail() {
@@ -143,6 +176,7 @@ export function createStage(canvas) {
     camera.aspect = aspect;
     const fovY = (camera.fov * Math.PI) / 180;
     const zones = zonesFor(aspect);
+    const probe = new PerspectiveCamera(camera.fov, aspect, 0.1, 400);
     const allPoints = [];
     for (const name of deviceList) {
       const d = devices[name];
@@ -167,10 +201,11 @@ export function createStage(canvas) {
       }
       const target = new Box3().setFromPoints(points).getCenter(new Vector3());
       const dir = direction(yaw + (tall && def.azTall !== undefined ? def.azTall : def.az), tall && def.elTall !== undefined ? def.elTall : def.el);
-      const distance = fitDistance(points, target, dir, zone, fovY, aspect, def.fill);
-      positions.push(target.clone().addScaledVector(dir, distance));
+      const rough = fitDistance(points, target, dir, zone, fovY, aspect, def.fill);
+      const framed = tightFrame(points, target, dir, rough, zone, def.fill, probe);
+      positions.push(target.clone().addScaledVector(dir, framed.distance));
       targets.push(target);
-      zoneList.push(zone);
+      zoneList.push({ cx: framed.cx, cy: framed.cy });
     }
     rail = {
       positions: new CatmullRomCurve3(positions, false, 'centripetal'),
@@ -228,6 +263,7 @@ export function createStage(canvas) {
     camera.setViewOffset(size.width, size.height, (-view.zone.cx * size.width) / 2, (view.zone.cy * size.height) / 2, size.width, size.height);
 
     devices.laptop.setLid(fx.lid);
+    lidOpen = fx.lid;
     devices.laptop.screens[0].setPower(fx.power);
     let screensChanged = devices.laptop.update({ typing: fx.typing, caret: fx.typing > 0 && fx.typing < 1 ? Math.floor(time * 2.4) % 2 === 0 : false });
     [['phone', 2], ['tablet', 3], ['monitor', 4]].forEach(([name, index]) => {
@@ -257,7 +293,7 @@ export function createStage(canvas) {
     const out = {};
     for (const name of deviceList) {
       const d = devices[name];
-      const box = name === 'laptop' ? d.boxes.open : d.boxes.main;
+      const box = name === 'laptop' ? (lidOpen > 0.5 ? d.boxes.open : d.boxes.closed) : d.boxes.main;
       const pts = boxCorners(box, d.group.matrixWorld).map((p) => p.project(camera));
       if (pts.some((p) => p.z > 1 || p.z < -1)) continue;
       const xs = pts.map((p) => ((p.x + 1) / 2) * size.width);
@@ -265,6 +301,21 @@ export function createStage(canvas) {
       out[name] = { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
     }
     return out;
+  }
+
+  // Fraction of opaque pixels on three sampled rows, read right after a render.
+  function coverage() {
+    renderer.render(scene, camera);
+    const gl = renderer.getContext();
+    const w = gl.drawingBufferWidth;
+    const h = gl.drawingBufferHeight;
+    const row = new Uint8Array(w * 4);
+    let lit = 0;
+    for (const y of [0.3, 0.5, 0.7]) {
+      gl.readPixels(0, Math.floor(h * y), w, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
+      for (let i = 3; i < row.length; i += 4) if (row[i] > 8) lit += 1;
+    }
+    return lit / (w * 3);
   }
 
   function dispose() {
@@ -280,5 +331,5 @@ export function createStage(canvas) {
     scene.environment?.dispose();
   }
 
-  return { renderer, camera, resize, setTheme, update, render, deviceRects, dispose };
+  return { renderer, camera, resize, setTheme, update, render, deviceRects, coverage, dispose };
 }

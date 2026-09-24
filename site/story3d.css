@@ -151,10 +151,10 @@ html[lang="ru"] .story-ru, html[lang="tg"] .story-tg, html[lang="en"] .story-en 
   width: min(440px, 36vw);
   translate: 0 -50%;
   opacity: 0;
-  visibility: hidden;
+  pointer-events: none;
   will-change: opacity, transform;
 }
-.story-live .story-copy[data-story-copy="0"] { opacity: 1; visibility: visible; }
+.story-live .story-copy[data-story-copy="0"] { opacity: 1; pointer-events: auto; }
 .story-live .story-intro { width: min(520px, 40vw); }
 .story-live .story-intro .hero-location { display: none; }
 .story-live .story-final {
@@ -208,8 +208,7 @@ html[lang="ru"] .story-ru, html[lang="tg"] .story-tg, html[lang="en"] .story-en 
 
 /* Tall screens: device on top, text at the bottom (JS uses the same aspect split). */
 @media (max-aspect-ratio: 999/1000) {
-  .story-live .story-copy,
-  .story-live .story-intro {
+  .story-live .story-copy:not(.story-final) {
     left: 20px;
     right: 20px;
     top: auto;
@@ -233,8 +232,7 @@ html[lang="ru"] .story-ru, html[lang="tg"] .story-tg, html[lang="en"] .story-en 
   }
 }
 @media (max-aspect-ratio: 999/1000) and (max-width: 760px) {
-  .story-live .story-copy,
-  .story-live .story-intro { bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+  .story-live .story-copy:not(.story-final) { bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

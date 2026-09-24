@@ -141,7 +141,8 @@ function createSession(node, onLost) {
       last.copies[index] = opacity;
       element.style.opacity = String(opacity);
       element.style.transform = `translate3d(0, ${((1 - opacity) * 18).toFixed(2)}px, 0)`;
-      element.style.visibility = opacity < 0.01 ? 'hidden' : 'visible';
+      // Only the intro holds links; other chapters stay in the accessibility tree.
+      if (index === 0) element.style.visibility = opacity < 0.01 ? 'hidden' : 'visible';
     });
     const shot = activeShot(p);
     if (shot !== last.tick) {
@@ -208,6 +209,7 @@ function createSession(node, onLost) {
       return rendered;
     },
     rects: () => stage.deviceRects(),
+    coverage: () => stage.coverage(),
   };
 
   return {

@@ -1,0 +1,59 @@
+name: Story checks
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/story-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Bundle is up to date with src/story3d
+        run: |
+          npm run build:story
+          git diff --exit-code -- site/story3d.js
+      - run: npm test
+
+  browsers:
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: node tests/story-browser.mjs
+        env:
+          BROWSER: ${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: story-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 7

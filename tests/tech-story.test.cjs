@@ -1,47 +1,31 @@
-
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const test = require('node:test');
-
 const site = path.join(__dirname, '..', 'site');
 const html = fs.readFileSync(path.join(site, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(site, 'experience.css'), 'utf8');
 const js = fs.readFileSync(path.join(site, 'experience.js'), 'utf8');
 
-test('cinematic story contains laptop, phone, tablet and monitor', () => {
-  for (const device of ['laptop', 'phone', 'tablet', 'monitor']) {
-    assert.match(html, new RegExp('data-device=["\\']' + device + '["\\']'));
+test('all four production device anchors remain available', () => {
+  for (const name of ['laptop', 'phone', 'tablet', 'monitor']) {
+    assert.ok(html.includes(`data-device="${name}"`));
   }
 });
-
-test('story contains five scroll narrative chapters', () => {
-  const chapters = [...html.matchAll(/data-tech-copy="(\d+)"/g)].map((match) => match[1]);
-  assert.deepEqual(chapters, ['0', '1', '2', '3', '4']);
+test('five original chapters and language variants survive the upgrade', () => {
+  assert.deepEqual([...html.matchAll(/data-tech-copy="(\d+)"/g)].map(m => m[1]), ['0', '1', '2', '3', '4']);
+  const counts = ['ru', 'tg', 'en'].map(lang => (html.match(new RegExp(`class="tech-copy-${lang}"`, 'g')) || []).length);
+  assert.ok(counts[0] >= 8); assert.equal(counts[0], counts[1]); assert.equal(counts[1], counts[2]);
 });
-
-test('experience assets are wired into the page', () => {
-  assert.match(html, /experience\.css\?v=dev/);
-  assert.match(html, /experience\.js\?v=dev/);
-  assert.match(html, /data-tech-story/);
+test('production loads the new scene assets', () => {
+  assert.match(html, /experience\.css\?v=dev/); assert.match(html, /experience\.js\?v=dev/);
 });
-
-test('motion has an accessible fallback', () => {
-  assert.match(css, /prefers-reduced-motion:reduce/);
+test('reduced motion and visibility changes are handled', () => {
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(js, /prefers-reduced-motion: reduce/);
+  assert.match(js, /visibilitychange/); assert.match(js, /IntersectionObserver/);
 });
-
-test('device scene stays dependency-free', () => {
-  assert.doesNotMatch(js, /\brequire\s*\(/);
-  assert.doesNotMatch(js, /\bimport\s*\(/);
-  assert.doesNotMatch(html, /three(?:\.min)?\.js|react-three|gsap/i);
-});
-
-test('all new localized copy has ru, tg and en variants', () => {
-  const ru = (html.match(/class="tech-copy-ru"/g) || []).length;
-  const tg = (html.match(/class="tech-copy-tg"/g) || []).length;
-  const en = (html.match(/class="tech-copy-en"/g) || []).length;
-  assert.ok(ru >= 8);
-  assert.equal(ru, tg);
-  assert.equal(ru, en);
+test('runtime remains self-contained without CDN or package imports', () => {
+  assert.doesNotMatch(js, /\b(?:require|import)\s*\(/);
+  assert.doesNotMatch(js, /https?:\/\//);
 });

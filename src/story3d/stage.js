@@ -1,15 +1,14 @@
 import {
-  ACESFilmicToneMapping,
   AdditiveBlending,
   Box3,
+  CanvasTexture,
   CatmullRomCurve3,
   Color,
-  DirectionalLight,
   Mesh,
   MeshBasicMaterial,
+  NeutralToneMapping,
   NormalBlending,
   PerspectiveCamera,
-  PMREMGenerator,
   QuadraticBezierCurve3,
   Scene,
   SRGBColorSpace,
@@ -17,9 +16,10 @@ import {
   Vector3,
   WebGLRenderer,
 } from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { createDevices } from './devices.js';
-import { effectsAt, railAt, SHOTS, smoothstep } from './schedule.js';
+import { createLighting } from './lighting.js';
+import { createPost } from './post.js';
+import { effectsAt, pushAt, railAt, SHOTS, smoothstep } from './schedule.js';
 
 const UP = new Vector3(0, 1, 0);
 
@@ -115,26 +115,49 @@ function tightFrame(points, target, dir, distance, zone, fill, probe) {
   return { distance: d, cx: zone.cx - bounds.cx, cy: zone.cy - bounds.cy };
 }
 
+// The studio backdrop, painted to match the CSS placeholder gradient (--story-bg).
+const BACKDROPS = {
+  dark: { stops: ['#1c1d21', '#0c0d0f', '#040405'], glow: 'rgba(255,255,255,0.045)' },
+  light: { stops: ['#ffffff', '#f2f3f5', '#e3e5e9'], glow: 'rgba(0,0,0,0.05)' },
+};
+
+function ellipse(ctx, W, H, cx, cy, rx, ry, stops) {
+  ctx.save();
+  ctx.translate(cx * W, cy * H);
+  ctx.scale(rx * W, ry * H);
+  const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+  stops.forEach(([at, color]) => g.addColorStop(at, color));
+  ctx.fillStyle = g;
+  ctx.fillRect(-cx / rx, -cy / ry, 1 / rx, 1 / ry);
+  ctx.restore();
+}
+
+function paintBackdrop(canvas, theme, aspect) {
+  const W = 512;
+  const H = Math.max(256, Math.min(1024, Math.round(W / aspect)));
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const b = BACKDROPS[theme];
+  ellipse(ctx, W, H, 0.58, 0.26, 1.2, 0.95, [[0, b.stops[0]], [0.5, b.stops[1]], [1, b.stops[2]]]);
+  ellipse(ctx, W, H, 0.58, 0.74, 0.6, 0.4, [[0, b.glow], [0.7, 'rgba(0,0,0,0)']]);
+}
+
 const direction = (angle, elevation) => new Vector3(Math.sin(angle) * Math.cos(elevation), Math.sin(elevation), Math.cos(angle) * Math.cos(elevation));
 
-export function createStage(canvas) {
+// options.bloom: render through the bloom composer (fine pointers only).
+export function createStage(canvas, { bloom = false } = {}) {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.toneMapping = ACESFilmicToneMapping;
+  // Neutral keeps product and screen colours faithful (made for product rendering).
+  renderer.toneMapping = NeutralToneMapping;
   renderer.setClearColor(0x000000, 0);
 
   const scene = new Scene();
-  const pmrem = new PMREMGenerator(renderer);
-  const room = new RoomEnvironment();
-  scene.environment = pmrem.fromScene(room, 0.035).texture;
-  room.dispose?.();
-  pmrem.dispose();
-
-  const key = new DirectionalLight(0xffffff, 1.4);
-  key.position.set(4, 7, 6);
-  const rim = new DirectionalLight(0xbcd4ff, 1.1);
-  rim.position.set(-6, 4, -6);
-  scene.add(key, rim);
+  const backdropCanvas = document.createElement('canvas');
+  const backdrop = new CanvasTexture(backdropCanvas);
+  backdrop.colorSpace = SRGBColorSpace;
+  scene.background = backdrop;
 
   const camera = new PerspectiveCamera(28, 1, 0.1, 200);
   const devices = createDevices(renderer.capabilities.getMaxAnisotropy());
@@ -147,6 +170,9 @@ export function createStage(canvas) {
     scene.add(group);
     group.updateMatrixWorld(true);
   }
+  const lighting = createLighting(renderer, scene, devices.laptop.group.position);
+  let post = bloom ? createPost(renderer, scene, camera) : null;
+  let theme = 'dark';
 
   // Light trails from the tablet ("the system") to every other device; drawn in the final shot.
   const linkMaterial = new MeshBasicMaterial({ color: 0x3d9bff, transparent: true, opacity: 0.9, toneMapped: false, depthWrite: false, blending: AdditiveBlending });
@@ -214,20 +240,38 @@ export function createStage(canvas) {
     };
   }
 
-  function resize(width, height, pixelRatio) {
+  let pixelRatio = 1;
+  function resize(width, height, ratio) {
     size = { width: Math.max(1, width), height: Math.max(1, height) };
-    renderer.setPixelRatio(pixelRatio);
+    pixelRatio = ratio;
+    renderer.setPixelRatio(ratio);
     renderer.setSize(size.width, size.height, false);
+    post?.setSize(size.width, size.height, ratio);
+    paintBackdrop(backdropCanvas, theme, size.width / size.height);
+    backdrop.needsUpdate = true;
     computeRail();
   }
 
-  function setTheme(theme) {
+  function setBloom(enabled) {
+    if (enabled && !post) {
+      post = createPost(renderer, scene, camera);
+      post.setTheme(theme);
+      post.setSize(size.width, size.height, pixelRatio);
+    } else if (!enabled && post) {
+      post.dispose();
+      post = null;
+    }
+  }
+
+  function setTheme(next) {
+    theme = next === 'light' ? 'light' : 'dark';
     const light = theme === 'light';
     devices.setFinish(theme);
-    renderer.toneMappingExposure = light ? 1.02 : 0.92;
-    scene.environmentIntensity = light ? 0.95 : 0.85;
-    key.intensity = light ? 1.6 : 1.1;
-    rim.intensity = light ? 0.5 : 1.1;
+    lighting.setTheme(theme);
+    post?.setTheme(theme);
+    paintBackdrop(backdropCanvas, theme, size.width / size.height);
+    backdrop.needsUpdate = true;
+    renderer.toneMappingExposure = light ? 1 : 1.05;
     linkMaterial.color = new Color(light ? 0x0071e3 : 0x3d9bff);
     linkMaterial.blending = light ? NormalBlending : AdditiveBlending;
     linkMaterial.needsUpdate = true;
@@ -248,6 +292,8 @@ export function createStage(canvas) {
     view.zone.cx = a.cx + (b.cx - a.cx) * f;
     view.zone.cy = a.cy + (b.cy - a.cy) * f;
 
+    // Slow push-in while a chapter holds (at most 4.5 % of the distance).
+    view.position.lerp(view.target, 0.045 * pushAt(p));
     const offset = view.position.clone().sub(view.target);
     const distance = offset.length();
     // Load reveal: start a little further out and higher, then settle.
@@ -262,6 +308,11 @@ export function createStage(canvas) {
     camera.lookAt(view.target);
     camera.setViewOffset(size.width, size.height, (-view.zone.cx * size.width) / 2, (view.zone.cy * size.height) / 2, size.width, size.height);
 
+    // Studio light: hero beam until the story starts, then the whole room; it turns
+    // slowly with the scroll and follows the mouse so highlights glide over the metal.
+    lighting.setReveal(smoothstep(p / 0.1), intro);
+    lighting.setRotation(Math.round((p * 0.4 + pointerX * 0.3) * 2000) / 2000);
+
     devices.laptop.setLid(fx.lid);
     lidOpen = fx.lid;
     devices.laptop.screens[0].setPower(fx.power);
@@ -269,7 +320,8 @@ export function createStage(canvas) {
     [['phone', 2], ['tablet', 3], ['monitor', 4]].forEach(([name, index]) => {
       devices[name].screens[0].setPower(smoothstep((r - (index - 0.85)) / 0.55));
     });
-    screensChanged = devices.phone.update() || screensChanged;
+    devices.laptop.setBacklight(theme === 'light' ? 0 : fx.power);
+    screensChanged = devices.phone.update({ reveal: smoothstep((r - 1.55) / 0.45) }) || screensChanged;
     screensChanged = devices.tablet.update({ links: fx.links }) || screensChanged;
     screensChanged = devices.monitor.update({ pipeline: fx.pipeline, pulse: fx.pipeline > 0 && fx.pipeline < 1 ? (time * 1.4) % 1 : 0 }) || screensChanged;
 
@@ -283,8 +335,13 @@ export function createStage(canvas) {
     return { rail: r, cue: fx.cue, screensChanged };
   }
 
+  // The light studio renders direct: bloom barely shows on white, and the composer's
+  // tone mapping would grey the white backdrop.
+  const bloomActive = () => Boolean(post) && theme !== 'light';
+
   function render() {
-    renderer.render(scene, camera);
+    if (bloomActive()) post.render();
+    else renderer.render(scene, camera);
   }
 
   // Screen-space rectangles (CSS px) of each device, for layout checks.
@@ -305,7 +362,11 @@ export function createStage(canvas) {
 
   // Fraction of opaque pixels on three sampled rows, read right after a render.
   function coverage() {
+    // Measure the devices, not the painted backdrop.
+    const background = scene.background;
+    scene.background = null;
     renderer.render(scene, camera);
+    scene.background = background;
     const gl = renderer.getContext();
     const w = gl.drawingBufferWidth;
     const h = gl.drawingBufferHeight;
@@ -319,6 +380,9 @@ export function createStage(canvas) {
   }
 
   function dispose() {
+    lighting.dispose();
+    post?.dispose();
+    backdrop.dispose();
     renderer.dispose();
     scene.traverse((object) => {
       object.geometry?.dispose();
@@ -328,8 +392,24 @@ export function createStage(canvas) {
         m.dispose();
       });
     });
-    scene.environment?.dispose();
   }
 
-  return { renderer, camera, resize, setTheme, update, render, deviceRects, coverage, dispose };
+  return {
+    renderer,
+    camera,
+    resize,
+    setTheme,
+    setBloom,
+    get bloom() {
+      return bloomActive();
+    },
+    get light() {
+      return lighting.state;
+    },
+    update,
+    render,
+    deviceRects,
+    coverage,
+    dispose,
+  };
 }

@@ -65,9 +65,12 @@ function createSession(node, onLost) {
   const ticks = Array.from(node.querySelectorAll('.story-rail i'));
   const cue = node.querySelector('.story-cue');
   const coarse = window.matchMedia('(pointer: coarse)').matches;
+  const fine = window.matchMedia('(pointer: fine)').matches;
 
   setMode(node, 'live');
-  const stage = createStage(canvas);
+  // Bloom only where a mouse suggests a desktop-class GPU; phones render direct.
+  const stage = createStage(canvas, { bloom: fine && !coarse });
+  const bloomAtStart = stage.bloom;
   stage.setTheme(currentTheme());
 
   const maxDpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
@@ -160,6 +163,9 @@ function createSession(node, onLost) {
     if (average > 24 && dpr > 1) {
       dpr = Math.max(1, Math.round((dpr - 0.25) * 100) / 100);
       measure();
+    } else if (average > 24 && stage.bloom) {
+      stage.setBloom(false);
+      dirty = true;
     }
   }
 
@@ -204,6 +210,13 @@ function createSession(node, onLost) {
     },
     get dpr() {
       return dpr;
+    },
+    get bloom() {
+      return stage.bloom;
+    },
+    bloomAtStart,
+    get light() {
+      return stage.light;
     },
     get frames() {
       return rendered;

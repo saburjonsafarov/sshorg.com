@@ -84,5 +84,19 @@ export function effectsAt(p) {
   };
 }
 
+// Slow camera push while a chapter holds: rises 0→1 across the hold, then eases back
+// to 0 during the next flight, so the camera path stays continuous.
+export function pushAt(p) {
+  const holds = [[0, MOVES[0].start]];
+  for (let i = 0; i < MOVES.length; i += 1) holds.push([MOVES[i].end, i + 1 < MOVES.length ? MOVES[i + 1].start : 1]);
+  for (let i = 0; i < holds.length; i += 1) {
+    const [start, end] = holds[i];
+    if (p >= start && p <= end) return smoothstep((p - start) / (end - start));
+    const move = MOVES[i];
+    if (move && p > move.start && p < move.end) return 1 - easeInOutCubic((p - move.start) / (move.end - move.start));
+  }
+  return 0;
+}
+
 // Index of the chapter whose shot the camera is closest to (for the progress rail).
 export const activeShot = (p) => Math.round(railAt(p));

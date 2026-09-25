@@ -211,13 +211,19 @@ if (webgl) {
 // Page motion outside the story (site/motion.js).
 await scenario('page motion: tilt cards, lit manifesto, drawing KMP scheme', async () => {
   const { page, context, errors } = await openPage({ viewport: { width: 1440, height: 900 }, lang: 'ru' });
-  // Lenis eases even programmatic scrolls: wait until the element has actually arrived.
+  // Lenis eases even programmatic scrolls, and .reveal blocks carry a translateY until they
+  // appear: target the layout position (offsetTop chain, no transforms) and wait for scrollY.
   const placeTop = async (selector, fraction) => {
-    await page.evaluate(({ selector, fraction }) => {
-      const el = document.querySelector(selector);
-      window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - window.innerHeight * fraction);
+    const target = await page.evaluate(({ selector, fraction }) => {
+      let top = 0;
+      for (let el = document.querySelector(selector); el; el = el.offsetParent) top += el.offsetTop;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const y = Math.round(Math.min(max, Math.max(0, top - window.innerHeight * fraction)));
+      window.scrollTo(0, y);
+      return y;
     }, { selector, fraction });
-    await page.waitForFunction(({ selector, fraction }) => Math.abs(document.querySelector(selector).getBoundingClientRect().top - window.innerHeight * fraction) < 3, { selector, fraction }, { timeout: 8000 });
+    await page.waitForFunction((y) => Math.abs(window.scrollY - y) < 2, target, { timeout: 8000 });
+    await page.waitForTimeout(250);
   };
   const lit = () => page.evaluate(() => Array.from(document.querySelector('.statement-text').querySelectorAll('.motion-word')).map((w) => Number(w.style.getPropertyValue('--lit'))));
   await placeTop('.statement-text', 0.86);

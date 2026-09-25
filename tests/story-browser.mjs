@@ -172,12 +172,15 @@ if (webgl) {
     await checkHolds(page, 'desktop');
     assert.equal(await page.evaluate(() => window.__story.light.reveal), 1, 'studio not lit after the hero');
     await checkViewer(page, 'desktop');
-    // Idle: park on the phone hold, let the scrub settle completely, then count frames.
+    // Idle: park on the phone hold with the mouse at the centre (zero parallax; browsers
+    // send a synthetic mousemove after scrolling), let everything settle, then count frames.
+    await page.mouse.move(720, 450);
     await scrollToProgress(page, HOLDS[2].p);
     await page.waitForFunction(() => new Promise((resolve) => {
       const first = window.__story.progress;
       setTimeout(() => resolve(window.__story.progress === first), 250);
     }), null, { timeout: 10000 });
+    await page.waitForTimeout(1000);
     const before = await page.evaluate(() => window.__story.frames);
     await page.waitForTimeout(1500);
     const idle = (await page.evaluate(() => window.__story.frames)) - before;

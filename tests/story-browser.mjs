@@ -42,8 +42,8 @@ async function scenario(name, fn) {
   }
 }
 
-async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-preference', lang = 'en', query = '' }) {
-  const context = await browser.newContext({ viewport, colorScheme, reducedMotion, deviceScaleFactor: 1 });
+async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-preference', lang = 'en', query = '', touch = false }) {
+  const context = await browser.newContext({ viewport, colorScheme, reducedMotion, deviceScaleFactor: 1, ...(touch ? { isMobile: true, hasTouch: true } : {}) });
   // Stub third-party analytics: keeps tests hermetic and out of the site's real analytics.
   await context.route((url) => !url.href.startsWith(base), (route) =>
     route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, contentType: route.request().resourceType() === 'script' ? 'text/javascript' : 'text/plain', body: '' }),
@@ -126,7 +126,15 @@ if (webgl) {
   await scenario('desktop dark: chapters hold, text clear of devices', async () => {
     const { page, context, errors } = await openPage({ viewport: { width: 1440, height: 900 } });
     assert.equal(await page.evaluate(() => window.__story.mode), 'live');
+    // Hero beam: on within 1.8 s of load in the dark studio, then the room lights up by chapter 01.
+    await page.waitForTimeout(1800);
+    const hero = await page.evaluate(() => ({ ...window.__story.light, bloom: window.__story.bloomAtStart }));
+    assert.equal(hero.theme, 'dark');
+    assert.ok(hero.spot >= 0.9, `beam not on after 1.8 s (${hero.spot})`);
+    assert.ok(hero.reveal < 0.05, `studio already lit on the hero (${hero.reveal})`);
+    assert.equal(hero.bloom, true, 'bloom should start on for a fine pointer');
     await checkHolds(page, 'desktop');
+    assert.equal(await page.evaluate(() => window.__story.light.reveal), 1, 'studio not lit after the hero');
     await scrollToProgress(page, 0.45);
     const before = await page.evaluate(() => window.__story.frames);
     await page.waitForTimeout(1500);
@@ -137,7 +145,8 @@ if (webgl) {
   });
 
   await scenario('phone portrait: device on top, text below', async () => {
-    const { page, context, errors } = await openPage({ viewport: { width: 390, height: 844 } });
+    const { page, context, errors } = await openPage({ viewport: { width: 390, height: 844 }, touch: true });
+    assert.equal(await page.evaluate(() => window.__story.bloomAtStart), false, 'touch devices render without bloom');
     await checkHolds(page, 'phone');
     assert.deepEqual(errors, []);
     await context.close();

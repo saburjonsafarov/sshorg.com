@@ -379,9 +379,9 @@ export function createDevices(maxAnisotropy) {
     // Space grey in the dark studio, silver in the light one.
     setFinish(theme) {
       const dark = theme !== 'light';
-      materials.aluminium.color.set(dark ? 0x74777d : 0xcfd2d8);
+      materials.aluminium.color.set(dark ? 0x8a8d93 : 0xcfd2d8);
       materials.aluminium.roughness = dark ? 0.34 : 0.3;
-      materials.titanium.color.set(dark ? 0x5d5e63 : 0x8a8b90);
+      materials.titanium.color.set(dark ? 0x74767c : 0x8a8b90);
     },
     laptop: createLaptop(materials, textures, maxAnisotropy),
     phone: createPhone(materials, textures, maxAnisotropy),

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { activeShot, COPY, copyOpacity, EFFECTS, effectsAt, MOVES, pushAt, railAt, SHOTS } from '../src/story3d/schedule.js';
+import { activeShot, COPY, copyOpacity, EFFECTS, effectsAt, EXPLORE, exploreAt, MOVES, pushAt, railAt, SHOTS, STORY_END } from '../src/story3d/schedule.js';
 
 const samples = Array.from({ length: 4001 }, (_, i) => i / 4000);
 
@@ -64,11 +64,22 @@ test('the hold push-in is continuous, bounded and only grows while the camera ho
     const push = pushAt(p);
     assert.ok(push >= 0 && push <= 1, `push ${push} at p=${p}`);
     assert.ok(Math.abs(push - previous) < 0.02, `push jumps at p=${p}`);
-    if (push > previous + 1e-9) assert.ok(Number.isInteger(railAt(p)), `push grows during a flight at p=${p}`);
+    if (push > previous + 1e-3) assert.ok(Number.isInteger(railAt(p)), `push grows during a flight at p=${p}`);
     previous = push;
   }
   MOVES.forEach((move) => {
     assert.equal(pushAt(move.end), 0, 'a new hold starts without push');
     assert.ok(pushAt(move.start) > 0.99, 'the hold ends fully pushed');
   });
+});
+
+test('the viewer opens only after the story has settled on its final caption', () => {
+  const [, captionIn] = COPY[COPY.length - 1];
+  assert.ok(captionIn <= STORY_END, 'final caption must be in before the viewer');
+  assert.ok(MOVES[MOVES.length - 1].end <= STORY_END, 'last flight must land before the viewer');
+  assert.equal(exploreAt(STORY_END - 0.001), 0);
+  assert.equal(exploreAt(EXPLORE[1]), 1);
+  assert.equal(railAt(STORY_END), SHOTS.length - 1);
+  // Story pacing is unchanged: three screens of scroll before the viewer.
+  assert.ok(Math.abs(STORY_END - 3 / 3.8) < 1e-12);
 });

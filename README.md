@@ -24,9 +24,10 @@ The site is served by Caddy on a VPS as plain static files.
 
 The hero is a scroll-driven WebGL scene: a procedural laptop, phone, tablet and monitor in a studio, with a camera that travels between them while four chapters of text fade in and out.
 
-- Source lives in `src/story3d/` (three.js + GSAP ScrollTrigger + Lenis). `npm run build:story` bundles it with esbuild into `site/story3d.js` (~213 KB gzip). Commit the bundle together with the source; CI fails if they drift apart.
+- Source lives in `src/story3d/` (three.js + GSAP ScrollTrigger + Lenis). `npm run build:story` bundles it with esbuild into `site/story3d.js` (~216 KB gzip). Commit the bundle together with the source; CI fails if they drift apart.
 - `schedule.js` holds the choreography as data (camera moves, text windows, effects). Text windows never overlap, and text only shows while the camera holds on its own device.
 - Lighting is a procedural softbox studio baked into an environment map (no HDR download), with a hero beam in the dark theme, a studio that follows the mouse, and bloom on desktop-class devices.
+- After the story, a "closer look" viewer (about 0.8 screens of extra scroll) shows feature pills in the style of Apple's product viewer: a pill flies the camera to its device, opens its text (taken from the site's own i18n keys), and the view can be dragged to orbit. `STORY_END` in `schedule.js` splits the section between story and viewer.
 - Devices stay fixed in the world; only the camera moves (and the laptop lid opens). Each shot is fitted so the device fills its screen zone and never shares space with the text column.
 - Rendering is on demand, pauses offscreen and in hidden tabs, and lowers the pixel ratio if frames get slow.
 - Without WebGL, with reduced motion, or with `?story=static`, the hero falls back to stacked text and a poster (`site/story-poster.jpg`, rendered by `node tools/render-poster.mjs`).

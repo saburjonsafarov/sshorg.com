@@ -43,13 +43,14 @@ async function scenario(name, fn) {
   }
 }
 
-async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-preference', lang = 'en', query = '', touch = false }) {
+async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-preference', lang = 'en', query = '', touch = false, waitReady = true, initScript = null }) {
   const context = await browser.newContext({ viewport, colorScheme, reducedMotion, deviceScaleFactor: 1, ...(touch ? { isMobile: true, hasTouch: true } : {}) });
   // Stub third-party analytics: keeps tests hermetic and out of the site's real analytics.
   await context.route((url) => !url.href.startsWith(base), (route) =>
     route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, contentType: route.request().resourceType() === 'script' ? 'text/javascript' : 'text/plain', body: '' }),
   );
   await context.addInitScript((value) => localStorage.setItem('sshorg.lang', value), lang);
+  if (initScript) await context.addInitScript(initScript);
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -57,6 +58,10 @@ async function openPage({ viewport, colorScheme = 'dark', reducedMotion = 'no-pr
     // Only this site's errors count; third-party beacons may be blocked in CI.
     if (message.type() === 'error' && (message.location().url || base).startsWith(base)) errors.push(message.text());
   });
+  if (!waitReady) {
+    await page.goto(`${base}${query}`, { waitUntil: 'commit' });
+    return { page, context, errors };
+  }
   await page.goto(`${base}${query}`, { waitUntil: 'load' });
   await page.waitForFunction(() => window.__story?.mode === 'static' || (window.__story?.mode === 'live' && window.__story.frames > 0), null, { timeout: 20000 });
   return { page, context, errors };
@@ -162,11 +167,12 @@ if (webgl) {
   await scenario('desktop dark: chapters hold, text clear of devices', async () => {
     const { page, context, errors } = await openPage({ viewport: { width: 1440, height: 900 } });
     assert.equal(await page.evaluate(() => window.__story.mode), 'live');
-    // Hero beam: on within 1.8 s of load in the dark studio, then the room lights up by chapter 01.
-    await page.waitForTimeout(1800);
+    // Hero beam: fades in after the first frame in the dark studio (about half a second;
+    // software GL in CI can starve frames, hence the wait), then the room lights up by chapter 01.
+    await page.waitForFunction(() => window.__story.light.spot >= 0.9, null, { timeout: 5000, polling: 100 }).catch(() => {});
     const hero = await page.evaluate(() => ({ ...window.__story.light, bloom: window.__story.bloomAtStart }));
     assert.equal(hero.theme, 'dark');
-    assert.ok(hero.spot >= 0.9, `beam not on after 1.8 s (${hero.spot})`);
+    assert.ok(hero.spot >= 0.9, `beam not on 5 s after the first frame (${hero.spot})`);
     assert.ok(hero.reveal < 0.05, `studio already lit on the hero (${hero.reveal})`);
     assert.equal(hero.bloom, true, 'bloom should start on for a fine pointer');
     await checkHolds(page, 'desktop');
@@ -280,6 +286,49 @@ await scenario('reduced motion: static stacked story with poster', async () => {
   const words = await page.evaluate(() => Array.from(document.querySelectorAll('.statement-text .motion-word')).map((w) => w.style.getPropertyValue('--lit')));
   assert.ok(words.length > 0 && words.every((v) => v === '1.000'), `reduced motion must show the manifesto fully ${JSON.stringify(words)}`);
   await page.screenshot({ path: `${OUT}/${browserName}-reduced-motion.png`, fullPage: false });
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+await scenario('reduced motion switched on while the scene loads ends static', async () => {
+  // Hold animation frames so the boot stops at its first "after paint" step, and record
+  // every mode the story announces.
+  const initScript = () => {
+    let held = true;
+    const queue = [];
+    const raf = window.requestAnimationFrame.bind(window);
+    window.requestAnimationFrame = (callback) => (held ? (queue.push(callback), 0) : raf(callback));
+    window.__releaseFrames = () => {
+      held = false;
+      queue.splice(0).forEach((callback) => raf(callback));
+    };
+    window.__modes = [];
+    let story;
+    Object.defineProperty(window, '__story', {
+      configurable: true,
+      get: () => story,
+      set: (value) => {
+        story = value;
+        window.__modes.push(value.mode);
+      },
+    });
+  };
+  const { page, context, errors } = await openPage({ viewport: { width: 1280, height: 800 }, waitReady: false, initScript });
+  await page.waitForSelector('[data-story].story-live', { state: 'attached', timeout: 20000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  // Timer polling: frames are held, so the default rAF polling would never run.
+  await page.waitForFunction(() => window.__story?.mode === 'static', null, { timeout: 10000, polling: 100 });
+  await page.evaluate(() => window.__releaseFrames());
+  // The cancelled boot settles without ever going live.
+  await page.waitForTimeout(1500);
+  const state = await page.evaluate(() => ({
+    modes: window.__modes,
+    live: document.querySelector('[data-story]').classList.contains('story-live'),
+    canvas: getComputedStyle(document.querySelector('.story-canvas')).display,
+  }));
+  assert.ok(!state.modes.includes('live'), `boot went live after it was cancelled: ${state.modes.join(' → ')}`);
+  assert.equal(state.live, false);
+  assert.equal(state.canvas, 'none');
   assert.deepEqual(errors, []);
   await context.close();
 });

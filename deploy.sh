@@ -12,8 +12,11 @@ VERSION="$(git rev-parse --short HEAD 2>/dev/null || date +%s)-$(date +%H%M)"
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 
-cp site/* "$STAGE/"
+# -R и явный .well-known: глоб site/* не захватывает скрытые директории
+cp -R site/* site/.well-known "$STAGE/"
 sed -i '' "s/?v=dev/?v=$VERSION/g" "$STAGE/index.html"
 
-scp -i "$DEPLOY_KEY" "$STAGE"/* "$DEPLOY_HOST:$DEPLOY_PATH/"
+scp -r -i "$DEPLOY_KEY" "$STAGE"/* "$STAGE/.well-known" "$DEPLOY_HOST:$DEPLOY_PATH/"
+# Удалить с сервера файлы, которые site/ когда-то содержал, а теперь нет (чужие не трогает).
+tools/stale-files.sh | ssh -i "$DEPLOY_KEY" "$DEPLOY_HOST" "cd '$DEPLOY_PATH' && xargs -r -d '\n' rm -f --"
 curl -s -o /dev/null -w "https://sshorg.com -> %{http_code} (v=$VERSION)\n" https://sshorg.com

@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # tools/stale-files.sh reads the whole history of site/.
+          fetch-depth: 0
 
       - name: Set up SSH key
         run: |
@@ -26,11 +29,28 @@ jobs:
         run: |
           VERSION="${GITHUB_SHA::7}"
           sed -i "s/?v=dev/?v=$VERSION/g" site/index.html
-          scp -i ~/.ssh/deploy_key site/* \
+          # -r и явный site/.well-known: глоб site/* не захватывает скрытые директории
+          scp -r -i ~/.ssh/deploy_key site/* site/.well-known \
             "${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Remove files the site no longer ships
+        run: |
+          tools/stale-files.sh > stale.txt
+          echo "Stale files: $(wc -l < stale.txt)"
+          cat stale.txt
+          # Only paths this repo once deployed; the server's other files are left alone.
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" \
+            "cd '${{ secrets.DEPLOY_PATH }}' && xargs -r -d '\n' rm -f --" < stale.txt
 
       - name: Smoke check
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" https://sshorg.com)
-          echo "https://sshorg.com -> $code"
-          test "$code" = "200"
+          check() {
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://sshorg.com/$1")
+            echo "https://sshorg.com/$1 -> $code (want $2)"
+            test "$code" = "$2"
+          }
+          check "" 200
+          check robots.txt 200
+          check sitemap.xml 200
+          check .well-known/security.txt 200
+          check beyond.html 404

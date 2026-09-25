@@ -12,6 +12,7 @@ A single static page, no frameworks: `site/index.html` + `site/style.css` + `sit
 - **Light / dark theme** follows the system by default, with a manual toggle.
 - **Progressive enhancement**: with JavaScript disabled the full page still renders (Russian).
 - Design in the apple.com aesthetic: system font stack, large type, alternating light bands with dark hero/footer sections, blurred sticky navbar, scroll-reveal (respecting `prefers-reduced-motion`).
+- **SEO / hygiene**: JSON-LD (`schema.org/Person`), `robots.txt`, `sitemap.xml`, `.well-known/security.txt`, `404.html` (served once the Caddy config below is in place).
 
 ## Deploy
 
@@ -19,6 +20,42 @@ The site is served by Caddy on a VPS as plain static files.
 
 - **Automatic**: pushing to `main` runs `.github/workflows/deploy.yml`, which copies `site/` to the server over SSH (requires the `DEPLOY_KEY`, `DEPLOY_HOST`, `DEPLOY_PATH` repository secrets).
 - **Manual**: `./deploy.sh` does the same from a local machine.
+- **Stale files**: copying never deletes, so both deploy paths then remove the files `tools/stale-files.sh` lists: paths that were once committed under `site/` but are gone now. Files on the server that never came from this repo are left alone.
+
+### Caddy config for the site block
+
+The Caddyfile lives on the server (shared with other services), so it is not deployed from here. Checked with Caddy 2.10 (`caddy validate`, then served locally): the 404 page, a year of caching for `?v=`-versioned assets, and basic security headers on every response, errors included.
+
+```
+(sshorg_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+}
+
+sshorg.com, www.sshorg.com {
+	root * /srv/sshorg
+	encode zstd gzip
+	import sshorg_headers
+
+	# Assets carry ?v=<commit> (deploy rewrites ?v=dev): cache them for a year.
+	@versioned query v=*
+	header @versioned Cache-Control "public, max-age=31536000, immutable"
+
+	file_server
+
+	handle_errors {
+		import sshorg_headers
+		@404 expression {err.status_code} == 404
+		rewrite @404 /404.html
+		file_server
+	}
+}
+```
 
 ## Studio 3D story
 

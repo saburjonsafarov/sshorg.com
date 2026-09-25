@@ -267,8 +267,9 @@ export function createIdeScreen() {
 
 /* ─── Phone: product demo ─── */
 
+// reveal 0..1: the chart draws itself and the feature cards slide in as the camera arrives.
 export function createPhoneScreen() {
-  return screen(700, 1472, (ctx, W, H) => {
+  return screen(700, 1472, (ctx, W, H, { reveal = 1 }) => {
     const g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, '#0d1018');
     g.addColorStop(1, '#0a0c12');
@@ -328,6 +329,11 @@ export function createPhoneScreen() {
     const pts = [0.62, 0.55, 0.6, 0.44, 0.48, 0.34, 0.38, 0.22, 0.26, 0.14];
     const chartY = cy + 180;
     const chartH = 160;
+    const drawn = Math.min(1, reveal * 1.25);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(cx, cy, 36 + (cw - 72) * drawn + 6, ch);
+    ctx.clip();
     ctx.beginPath();
     pts.forEach((v, i) => {
       const x = cx + 36 + (i / (pts.length - 1)) * (cw - 72);
@@ -351,6 +357,7 @@ export function createPhoneScreen() {
     fill.addColorStop(1, 'rgba(111,182,255,0)');
     ctx.fillStyle = fill;
     ctx.fill();
+    ctx.restore();
 
     // Feature rows
     const rows = [
@@ -359,16 +366,21 @@ export function createPhoneScreen() {
       ['Realtime', 'Synced across devices', '#3fcf8e'],
     ];
     rows.forEach(([title, sub, color], i) => {
+      const k = Math.min(1, Math.max(0, (reveal * 1.5 - 0.3 - i * 0.18) / 0.3));
+      if (k <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = k;
+      ctx.translate(0, (1 - k) * 44);
       const y = 712 + i * 162;
       ctx.fillStyle = C.panel2;
       rr(ctx, 40, y, W - 80, 140, 32);
       ctx.fill();
       ctx.fillStyle = color;
-      ctx.globalAlpha = 0.18;
+      ctx.globalAlpha = 0.18 * k;
       ctx.beginPath();
       ctx.arc(116, y + 70, 38, 0, Math.PI * 2);
       ctx.fill();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = k;
       ctx.beginPath();
       ctx.arc(116, y + 70, 13, 0, Math.PI * 2);
       ctx.fill();
@@ -385,6 +397,7 @@ export function createPhoneScreen() {
       ctx.lineTo(W - 78, y + 70);
       ctx.lineTo(W - 92, y + 84);
       ctx.stroke();
+      ctx.restore();
     });
 
     // Tab bar + home indicator

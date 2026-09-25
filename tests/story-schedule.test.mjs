@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { activeShot, COPY, copyOpacity, EFFECTS, effectsAt, MOVES, railAt, SHOTS } from '../src/story3d/schedule.js';
+import { activeShot, COPY, copyOpacity, EFFECTS, effectsAt, MOVES, pushAt, railAt, SHOTS } from '../src/story3d/schedule.js';
 
 const samples = Array.from({ length: 4001 }, (_, i) => i / 4000);
 
@@ -56,4 +56,19 @@ test('effects stay within 0..1 and windows are well formed', () => {
   for (const p of samples) {
     Object.entries(effectsAt(p)).forEach(([name, value]) => assert.ok(value >= 0 && value <= 1, `${name}=${value} at p=${p}`));
   }
+});
+
+test('the hold push-in is continuous, bounded and only grows while the camera holds', () => {
+  let previous = pushAt(0);
+  for (const p of samples) {
+    const push = pushAt(p);
+    assert.ok(push >= 0 && push <= 1, `push ${push} at p=${p}`);
+    assert.ok(Math.abs(push - previous) < 0.02, `push jumps at p=${p}`);
+    if (push > previous + 1e-9) assert.ok(Number.isInteger(railAt(p)), `push grows during a flight at p=${p}`);
+    previous = push;
+  }
+  MOVES.forEach((move) => {
+    assert.equal(pushAt(move.end), 0, 'a new hold starts without push');
+    assert.ok(pushAt(move.start) > 0.99, 'the hold ends fully pushed');
+  });
 });

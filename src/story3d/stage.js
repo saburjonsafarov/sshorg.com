@@ -19,7 +19,7 @@ import {
 import { createDevices } from './devices.js';
 import { createLighting } from './lighting.js';
 import { createPost } from './post.js';
-import { effectsAt, railAt, SHOTS, smoothstep } from './schedule.js';
+import { effectsAt, pushAt, railAt, SHOTS, smoothstep } from './schedule.js';
 
 const UP = new Vector3(0, 1, 0);
 
@@ -292,6 +292,8 @@ export function createStage(canvas, { bloom = false } = {}) {
     view.zone.cx = a.cx + (b.cx - a.cx) * f;
     view.zone.cy = a.cy + (b.cy - a.cy) * f;
 
+    // Slow push-in while a chapter holds (at most 4.5 % of the distance).
+    view.position.lerp(view.target, 0.045 * pushAt(p));
     const offset = view.position.clone().sub(view.target);
     const distance = offset.length();
     // Load reveal: start a little further out and higher, then settle.
@@ -318,7 +320,8 @@ export function createStage(canvas, { bloom = false } = {}) {
     [['phone', 2], ['tablet', 3], ['monitor', 4]].forEach(([name, index]) => {
       devices[name].screens[0].setPower(smoothstep((r - (index - 0.85)) / 0.55));
     });
-    screensChanged = devices.phone.update() || screensChanged;
+    devices.laptop.setBacklight(theme === 'light' ? 0 : fx.power);
+    screensChanged = devices.phone.update({ reveal: smoothstep((r - 1.55) / 0.45) }) || screensChanged;
     screensChanged = devices.tablet.update({ links: fx.links }) || screensChanged;
     screensChanged = devices.monitor.update({ pipeline: fx.pipeline, pulse: fx.pipeline > 0 && fx.pipeline < 1 ? (time * 1.4) % 1 : 0 }) || screensChanged;
 

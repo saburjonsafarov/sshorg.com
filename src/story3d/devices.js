@@ -448,7 +448,12 @@ function createMonitor(m, tex, aniso) {
     update({ pipeline, pulse }) {
       return display.update({ pipeline: Math.round(pipeline * 60) / 60, pulse: Math.round(pulse * 8) / 8 });
     },
-    boxes: { main: new Box3(new Vector3(-W / 2, 0, -0.95), new Vector3(W / 2, 3.52, 0.1)) },
+    boxes: {
+      main: new Box3(new Vector3(-W / 2, 0, -0.95), new Vector3(W / 2, 3.52, 0.1)),
+      // Screen regions for the viewer: the checks panel and the pipeline stages.
+      checks: new Box3(new Vector3(-1.84, 1.34, -0.06), new Vector3(-0.06, 2.51, 0.06)),
+      stages: new Box3(new Vector3(-1.74, 2.65, -0.06), new Vector3(1.74, 3.06, 0.06)),
+    },
   };
 }
 

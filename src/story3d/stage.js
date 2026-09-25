@@ -19,7 +19,7 @@ import {
 import { createDevices } from './devices.js';
 import { createLighting } from './lighting.js';
 import { createPost } from './post.js';
-import { effectsAt, pushAt, railAt, SHOTS, smoothstep } from './schedule.js';
+import { easeInOutCubic, effectsAt, exploreAt, pushAt, railAt, SHOTS, smoothstep } from './schedule.js';
 
 const UP = new Vector3(0, 1, 0);
 
@@ -51,14 +51,27 @@ export function zonesFor(aspect) {
       intro: { cx: 0.42, cy: -0.04, hw: 0.5, hh: 0.66 },
       chapter: { cx: 0.4, cy: 0, hw: 0.52, hh: 0.7 },
       final: { cx: 0, cy: -0.24, hw: 0.86, hh: 0.56 },
+      // Viewer overview: devices to the right of the feature list, under the caption.
+      overview: { cx: 0.3, cy: -0.1, hw: 0.62, hh: 0.56 },
     };
   }
   return {
     intro: { cx: 0, cy: 0.54, hw: 0.88, hh: 0.3 },
     chapter: { cx: 0, cy: 0.44, hw: 0.86, hh: 0.4 },
     final: { cx: 0, cy: -0.1, hw: 0.9, hh: 0.5 },
+    overview: { cx: 0, cy: 0.12, hw: 0.9, hh: 0.34 },
   };
 }
+
+// "Closer look" viewer poses, one per feature pill (plus the overview).
+export const FEATURES = {
+  overview: { devices: 'all', az: -0.82, el: 0.2, azTall: -0.9, elTall: 0.26, fill: 0.97, zone: 'overview' },
+  kmp: { device: 'laptop', box: 'open', az: -0.3, el: 0.22, fill: 0.92, zone: 'chapter' },
+  product: { device: 'phone', box: 'main', az: -0.14, el: 0.04, fill: 0.84, zone: 'chapter' },
+  graph: { device: 'tablet', box: 'main', az: -0.1, el: 0.06, fill: 0.92, zone: 'chapter' },
+  ai: { device: 'monitor', box: 'checks', az: -0.2, el: 0.02, fill: 0.9, zone: 'chapter' },
+  delivery: { device: 'monitor', box: 'stages', az: -0.08, el: 0.05, fill: 0.96, zone: 'chapter' },
+};
 
 function boxCorners(box, matrix) {
   const { min, max } = box;
@@ -191,6 +204,9 @@ export function createStage(canvas, { bloom = false } = {}) {
   });
 
   let rail = { positions: null, targets: null, zones: [] };
+  let poses = {};
+  // Viewer state: pose we fly from (snapshot at selection) and the feature we fly to.
+  const explore = { from: null, to: 'overview', finish: null, last: null, fade: 0, fadeFrom: 0 };
   let size = { width: 1, height: 1 };
   let lidOpen = 0;
   const view = { position: new Vector3(), target: new Vector3(), zone: { cx: 0, cy: 0 } };
@@ -209,11 +225,7 @@ export function createStage(canvas, { bloom = false } = {}) {
       const box = d.boxes.main ?? d.boxes.open;
       allPoints.push(...boxCorners(box, d.group.matrixWorld));
     }
-    const positions = [];
-    const targets = [];
-    const zoneList = [];
-    for (const shotName of SHOTS) {
-      const def = SHOT_DEFS[shotName];
+    const frame = (def) => {
       const zone = zones[def.zone];
       let points;
       let yaw;
@@ -229,10 +241,18 @@ export function createStage(canvas, { bloom = false } = {}) {
       const dir = direction(yaw + (tall && def.azTall !== undefined ? def.azTall : def.az), tall && def.elTall !== undefined ? def.elTall : def.el);
       const rough = fitDistance(points, target, dir, zone, fovY, aspect, def.fill);
       const framed = tightFrame(points, target, dir, rough, zone, def.fill, probe);
-      positions.push(target.clone().addScaledVector(dir, framed.distance));
-      targets.push(target);
-      zoneList.push({ cx: framed.cx, cy: framed.cy });
+      return { position: target.clone().addScaledVector(dir, framed.distance), target, cx: framed.cx, cy: framed.cy };
+    };
+    const positions = [];
+    const targets = [];
+    const zoneList = [];
+    for (const shotName of SHOTS) {
+      const pose = frame(SHOT_DEFS[shotName]);
+      positions.push(pose.position);
+      targets.push(pose.target);
+      zoneList.push({ cx: pose.cx, cy: pose.cy });
     }
+    poses = Object.fromEntries(Object.entries(FEATURES).map(([name, def]) => [name, frame(def)]));
     rail = {
       positions: new CatmullRomCurve3(positions, false, 'centripetal'),
       targets: new CatmullRomCurve3(targets, false, 'centripetal'),
@@ -252,6 +272,31 @@ export function createStage(canvas, { bloom = false } = {}) {
     computeRail();
   }
 
+  // Fly from wherever the viewer camera is now to a feature pose (unknown → overview).
+  function selectFeature(name) {
+    explore.from = explore.last ? { ...explore.last } : null;
+    explore.to = name && poses[name] ? name : 'overview';
+    explore.fadeFrom = explore.fade;
+  }
+
+  // Finish swatches override the theme's finish until the theme changes.
+  function setFinish(finish) {
+    explore.finish = finish;
+    devices.setFinish(finish ?? theme);
+  }
+
+  // Screen rectangle (CSS px) of the selected feature's box, for layout checks.
+  function featureRect() {
+    const def = FEATURES[explore.to];
+    if (!def?.device) return null;
+    const d = devices[def.device];
+    camera.updateMatrixWorld();
+    const pts = boxCorners(d.boxes[def.box], d.group.matrixWorld).map((v) => v.project(camera));
+    const xs = pts.map((v) => ((v.x + 1) / 2) * size.width);
+    const ys = pts.map((v) => ((1 - v.y) / 2) * size.height);
+    return { left: Math.min(...xs), right: Math.max(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+  }
+
   function setBloom(enabled) {
     if (enabled && !post) {
       post = createPost(renderer, scene, camera);
@@ -266,6 +311,7 @@ export function createStage(canvas, { bloom = false } = {}) {
   function setTheme(next) {
     theme = next === 'light' ? 'light' : 'dark';
     const light = theme === 'light';
+    explore.finish = null;
     devices.setFinish(theme);
     lighting.setTheme(theme);
     post?.setTheme(theme);
@@ -278,7 +324,8 @@ export function createStage(canvas, { bloom = false } = {}) {
   }
 
   // p: smoothed scroll progress; intro: 0..1 load reveal; time in seconds.
-  function update(p, { intro = 1, time = 0, pointerX = 0, pointerY = 0 } = {}) {
+  // exploreT: 0..1 progress of the flight to the selected viewer pose; orbit: drag yaw.
+  function update(p, { intro = 1, time = 0, pointerX = 0, pointerY = 0, exploreT = 1, orbit = 0 } = {}) {
     const fx = effectsAt(p);
     const r = railAt(p);
     const segments = SHOTS.length - 1;
@@ -294,6 +341,38 @@ export function createStage(canvas, { bloom = false } = {}) {
 
     // Slow push-in while a chapter holds (at most 4.5 % of the distance).
     view.position.lerp(view.target, 0.045 * pushAt(p));
+
+    // "Closer look" viewer: past the story, blend from the rail onto the viewer pose.
+    const ex = exploreAt(p);
+    if (ex > 0 && poses.overview) {
+      const to = poses[explore.to] ?? poses.overview;
+      const from = explore.from ?? to;
+      const k = easeInOutCubic(exploreT);
+      const pose = {
+        position: from.position.clone().lerp(to.position, k),
+        target: from.target.clone().lerp(to.target, k),
+        cx: from.cx + (to.cx - from.cx) * k,
+        cy: from.cy + (to.cy - from.cy) * k,
+      };
+      explore.last = pose;
+      // Light trails belong to the overview; close-ups fade them out.
+      const fadeTo = explore.to === 'overview' ? 0 : 1;
+      explore.fade = explore.fadeFrom + (fadeTo - explore.fadeFrom) * k;
+      view.position.lerp(pose.position, ex);
+      view.target.lerp(pose.target, ex);
+      view.zone.cx += (pose.cx - view.zone.cx) * ex;
+      view.zone.cy += (pose.cy - view.zone.cy) * ex;
+      if (orbit) {
+        const around = view.position.clone().sub(view.target).applyAxisAngle(UP, orbit * ex);
+        view.position.copy(view.target).add(around);
+      }
+    } else {
+      explore.last = null;
+      explore.fade = 0;
+      explore.fadeFrom = 0;
+    }
+    const trailsLevel = 1 - explore.fade * ex;
+    linkMaterial.opacity = 0.9 * trailsLevel;
     const offset = view.position.clone().sub(view.target);
     const distance = offset.length();
     // Load reveal: start a little further out and higher, then settle.
@@ -329,7 +408,7 @@ export function createStage(canvas, { bloom = false } = {}) {
       const k = Math.min(1, Math.max(0, fx.trails * 1.3 - index * 0.15));
       const segmentsCount = mesh.geometry.parameters.tubularSegments;
       const radial = mesh.geometry.parameters.radialSegments;
-      mesh.visible = k > 0;
+      mesh.visible = k > 0 && trailsLevel > 0.01;
       mesh.geometry.setDrawRange(0, Math.floor(k * segmentsCount) * radial * 6);
     });
     return { rail: r, cue: fx.cue, screensChanged };
@@ -400,6 +479,9 @@ export function createStage(canvas, { bloom = false } = {}) {
     resize,
     setTheme,
     setBloom,
+    selectFeature,
+    setFinish,
+    featureRect,
     get bloom() {
       return bloomActive();
     },

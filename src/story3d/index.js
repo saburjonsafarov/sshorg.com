@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import { activeShot, COPY, copyOpacity } from './schedule.js';
+import { activeShot, COPY, copyOpacity, exploreAt, STORY_END } from './schedule.js';
 import { createStage } from './stage.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -169,6 +169,82 @@ function createSession(node, onLost) {
     }
   }
 
+  // "Closer look" viewer: pills fly the camera to a feature; drag orbits the view.
+  const exploreEl = node.querySelector('[data-story-explore]');
+  const features = Array.from(node.querySelectorAll('.story-feature'));
+  const swatches = Array.from(node.querySelectorAll('.story-swatch'));
+  const viewer = { active: null, t: 1, orbit: 0, orbitTarget: 0, on: false, shown: -1 };
+  let flight = null;
+
+  function selectFeature(name) {
+    const next = name && name !== viewer.active ? name : null;
+    viewer.active = next;
+    stage.selectFeature(next === 'finish' ? null : next);
+    flight?.kill();
+    viewer.t = 0;
+    viewer.orbitTarget = 0;
+    flight = gsap.to(viewer, { t: 1, duration: 1.25, ease: 'none' });
+    features.forEach((feature) => {
+      const open = feature.dataset.feature === next;
+      feature.classList.toggle('is-open', open);
+      feature.querySelector('.story-pill')?.setAttribute('aria-expanded', String(open));
+      const body = feature.querySelector('.story-feature-body');
+      if (body) body.hidden = !open;
+    });
+    node.toggleAttribute('data-feature-open', Boolean(next && next !== 'finish'));
+    dirty = true;
+  }
+
+  const onPill = (event) => {
+    const feature = event.currentTarget.closest('.story-feature');
+    if (feature) selectFeature(feature.dataset.feature);
+  };
+  features.forEach((feature) => feature.querySelector('.story-pill')?.addEventListener('click', onPill));
+  const onSwatch = (event) => {
+    const finish = event.currentTarget.dataset.finish;
+    stage.setFinish(finish);
+    swatches.forEach((swatch) => swatch.setAttribute('aria-pressed', String(swatch.dataset.finish === finish)));
+    dirty = true;
+  };
+  swatches.forEach((swatch) => swatch.addEventListener('click', onSwatch));
+  const onKey = (event) => {
+    if (event.key === 'Escape' && viewer.active) selectFeature(null);
+  };
+  document.addEventListener('keydown', onKey);
+
+  const drag = { id: null, x: 0, start: 0 };
+  const onDown = (event) => {
+    if (!viewer.on || event.button > 0) return;
+    drag.id = event.pointerId;
+    drag.x = event.clientX;
+    drag.start = viewer.orbitTarget;
+    canvas.setPointerCapture?.(event.pointerId);
+  };
+  const onMove = (event) => {
+    if (event.pointerId !== drag.id) return;
+    viewer.orbitTarget = Math.max(-0.7, Math.min(0.7, drag.start + (event.clientX - drag.x) * 0.006));
+  };
+  const onUp = (event) => {
+    if (event.pointerId === drag.id) drag.id = null;
+  };
+  canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
+
+  function applyExplore(p) {
+    const level = Math.round(exploreAt(p) * 1000) / 1000;
+    if (level === viewer.shown) return;
+    viewer.shown = level;
+    exploreEl.style.opacity = String(level);
+    exploreEl.style.visibility = level < 0.01 ? 'hidden' : 'visible';
+    viewer.on = level > 0.6;
+    node.dataset.explore = viewer.on ? 'on' : 'off';
+    // Scrolling back into the story closes the viewer.
+    if (level < 0.5 && viewer.active) selectFeature(null);
+    if (level < 0.5) viewer.orbitTarget = 0;
+  }
+
   const tick = (time, deltaTime) => {
     if (!visible || document.hidden) {
       frameTimes.length = 0;
@@ -178,9 +254,13 @@ function createSession(node, onLost) {
     pointer.x += (pointer.tx - pointer.x) * k;
     pointer.y += (pointer.ty - pointer.y) * k;
     const pointerMoving = Math.abs(pointer.x - last.px) > 1e-4 || Math.abs(pointer.y - last.py) > 1e-4;
-    const moved = dirty || state.p !== last.p || state.intro !== last.intro || pointerMoving;
+    viewer.orbit += (viewer.orbitTarget - viewer.orbit) * (1 - Math.exp(-deltaTime / 160));
+    if (Math.abs(viewer.orbitTarget - viewer.orbit) < 1e-4) viewer.orbit = viewer.orbitTarget;
+    const viewerMoving = viewer.t !== last.t || viewer.orbit !== last.orbit;
+    const moved = dirty || state.p !== last.p || state.intro !== last.intro || pointerMoving || viewerMoving;
+    if (exploreEl) applyExplore(state.p);
 
-    const { screensChanged, cue: cueOpacity } = stage.update(state.p, { intro: state.intro, time: time, pointerX: pointer.x, pointerY: pointer.y });
+    const { screensChanged, cue: cueOpacity } = stage.update(state.p, { intro: state.intro, time: time, pointerX: pointer.x, pointerY: pointer.y, exploreT: viewer.t, orbit: viewer.orbit });
     if (!moved && !screensChanged) {
       frameTimes.length = 0;
       return;
@@ -194,6 +274,8 @@ function createSession(node, onLost) {
     last.intro = state.intro;
     last.px = pointer.x;
     last.py = pointer.y;
+    last.t = viewer.t;
+    last.orbit = viewer.orbit;
     dirty = false;
     if (!ready) {
       ready = true;
@@ -210,6 +292,22 @@ function createSession(node, onLost) {
     },
     get dpr() {
       return dpr;
+    },
+    storyEnd: STORY_END,
+    get explore() {
+      return exploreAt(state.p);
+    },
+    get feature() {
+      return viewer.active;
+    },
+    get flight() {
+      return viewer.t;
+    },
+    featureRect: () => {
+      const r = stage.featureRect();
+      if (!r) return null;
+      const c = canvas.getBoundingClientRect();
+      return { left: r.left + c.left, right: r.right + c.left, top: r.top + c.top, bottom: r.bottom + c.top };
     },
     get bloom() {
       return stage.bloom;
@@ -239,6 +337,20 @@ function createSession(node, onLost) {
       themeObserver.disconnect();
       schemeQuery.removeEventListener('change', applyTheme);
       window.removeEventListener('pointermove', onPointer);
+      flight?.kill();
+      document.removeEventListener('keydown', onKey);
+      features.forEach((feature) => feature.querySelector('.story-pill')?.removeEventListener('click', onPill));
+      swatches.forEach((swatch) => swatch.removeEventListener('click', onSwatch));
+      canvas.removeEventListener('pointerdown', onDown);
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerup', onUp);
+      canvas.removeEventListener('pointercancel', onUp);
+      if (exploreEl) {
+        exploreEl.style.opacity = '';
+        exploreEl.style.visibility = '';
+      }
+      node.removeAttribute('data-feature-open');
+      delete node.dataset.explore;
       canvas.removeEventListener('webglcontextlost', onContextLost);
       copies.forEach((element) => {
         element.style.opacity = '';

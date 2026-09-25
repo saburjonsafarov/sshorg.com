@@ -6,6 +6,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, normalize } from 'node:path';
 import { chromium, webkit } from 'playwright';
+import { COPY, STORY_END } from '../src/story3d/schedule.js';
 
 const browserName = process.env.BROWSER || 'chromium';
 const OUT = 'test-results';
@@ -72,14 +73,9 @@ async function scrollToProgress(page, p) {
 
 const overlap = (a, b, tolerance = 4) => a.left < b.right - tolerance && a.right > b.left + tolerance && a.top < b.bottom - tolerance && a.bottom > b.top + tolerance;
 
-const HOLDS = [
-  { p: 0.005, shot: 0, devices: ['laptop'] },
-  { p: 0.24, shot: 1, devices: ['laptop'] },
-  { p: 0.45, shot: 2, devices: ['phone'] },
-  { p: 0.66, shot: 3, devices: ['tablet'] },
-  { p: 0.855, shot: 4, devices: ['monitor'] },
-  { p: 1, shot: 5, devices: ['laptop', 'phone', 'tablet', 'monitor'] },
-];
+// Hold points come from the schedule: the middle of each text block's fully visible window.
+const holdAt = (i) => (i === 0 ? 0.005 : i === COPY.length - 1 ? (COPY[i][1] + STORY_END) / 2 : (COPY[i][1] + COPY[i][2]) / 2);
+const HOLDS = [['laptop'], ['laptop'], ['phone'], ['tablet'], ['monitor'], ['laptop', 'phone', 'tablet', 'monitor']].map((devices, shot) => ({ p: Math.round(holdAt(shot) * 1e4) / 1e4, shot, devices }));
 
 async function checkHolds(page, label) {
   for (const hold of HOLDS) {
@@ -114,6 +110,46 @@ async function checkHolds(page, label) {
   }
 }
 
+// "Closer look" viewer: pills appear after the story, a pill flies the camera to its
+// device without covering the feature list or its card, Escape returns to the overview.
+async function checkViewer(page, label) {
+  await scrollToProgress(page, 0.92);
+  await page.waitForFunction(() => window.__story.explore > 0.99, null, { timeout: 10000 });
+  const pills = await page.locator('.story-pill').evaluateAll((els) => els.filter((el) => el.getBoundingClientRect().width > 0 && getComputedStyle(el.closest('.story-explore')).visibility === 'visible').length);
+  assert.equal(pills, 6, `expected 6 visible pills, got ${pills}`);
+  for (const feature of ['graph', 'ai']) {
+    await page.click(`.story-feature[data-feature="${feature}"] .story-pill`);
+    await page.waitForFunction(() => window.__story.flight >= 1, null, { timeout: 10000 });
+    await page.waitForTimeout(300);
+    const state = await page.evaluate((name) => {
+      const rect = (el) => {
+        const r = el.getBoundingClientRect();
+        return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+      };
+      const body = document.querySelector(`#feature-${name}`);
+      return {
+        active: window.__story.feature,
+        device: window.__story.featureRect(),
+        body: rect(body),
+        bodyText: body.hidden ? '' : body.textContent.trim(),
+        list: rect(document.querySelector('.story-features')),
+        expanded: document.querySelector(`.story-feature[data-feature="${name}"] .story-pill`).getAttribute('aria-expanded'),
+      };
+    }, feature);
+    assert.equal(state.active, feature);
+    assert.equal(state.expanded, 'true');
+    assert.ok(state.bodyText.length > 20, `${feature}: card text missing`);
+    assert.ok(!overlap(state.device, state.body), `${feature}: device overlaps its card ${JSON.stringify(state)}`);
+    if (label === 'desktop') assert.ok(!overlap(state.device, state.list), `${feature}: device overlaps the pills ${JSON.stringify(state)}`);
+    await page.screenshot({ path: `${OUT}/${browserName}-${label}-viewer-${feature}.png` });
+  }
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => window.__story.feature === null && window.__story.flight >= 1, null, { timeout: 10000 });
+  await page.click('.story-feature[data-feature="finish"] .story-pill');
+  await page.click('.story-swatch[data-finish="light"]');
+  assert.equal(await page.locator('.story-swatch[data-finish="light"]').getAttribute('aria-pressed'), 'true');
+}
+
 const webgl = await (async () => {
   const page = await browser.newPage();
   const ok = await page.evaluate(() => Boolean(document.createElement('canvas').getContext('webgl2') || document.createElement('canvas').getContext('webgl')));
@@ -135,7 +171,16 @@ if (webgl) {
     assert.equal(hero.bloom, true, 'bloom should start on for a fine pointer');
     await checkHolds(page, 'desktop');
     assert.equal(await page.evaluate(() => window.__story.light.reveal), 1, 'studio not lit after the hero');
-    await scrollToProgress(page, 0.45);
+    await checkViewer(page, 'desktop');
+    // Idle: park on the phone hold with the mouse at the centre (zero parallax; browsers
+    // send a synthetic mousemove after scrolling), let everything settle, then count frames.
+    await page.mouse.move(720, 450);
+    await scrollToProgress(page, HOLDS[2].p);
+    await page.waitForFunction(() => new Promise((resolve) => {
+      const first = window.__story.progress;
+      setTimeout(() => resolve(window.__story.progress === first), 250);
+    }), null, { timeout: 10000 });
+    await page.waitForTimeout(1000);
     const before = await page.evaluate(() => window.__story.frames);
     await page.waitForTimeout(1500);
     const idle = (await page.evaluate(() => window.__story.frames)) - before;
@@ -148,13 +193,14 @@ if (webgl) {
     const { page, context, errors } = await openPage({ viewport: { width: 390, height: 844 }, touch: true });
     assert.equal(await page.evaluate(() => window.__story.bloomAtStart), false, 'touch devices render without bloom');
     await checkHolds(page, 'phone');
+    await checkViewer(page, 'phone');
     assert.deepEqual(errors, []);
     await context.close();
   });
 
   await scenario('light theme in Russian renders', async () => {
     const { page, context, errors } = await openPage({ viewport: { width: 1280, height: 800 }, colorScheme: 'light', lang: 'ru' });
-    await scrollToProgress(page, 0.45);
+    await scrollToProgress(page, HOLDS[2].p);
     assert.ok((await page.evaluate(() => window.__story.coverage())) > 0.004);
     await page.screenshot({ path: `${OUT}/${browserName}-light-ru.png` });
     assert.deepEqual(errors, []);

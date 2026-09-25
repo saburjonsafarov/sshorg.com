@@ -208,6 +208,57 @@ if (webgl) {
   });
 }
 
+// Page motion outside the story (site/motion.js).
+await scenario('page motion: tilt cards, lit manifesto, drawing KMP scheme', async () => {
+  const { page, context, errors } = await openPage({ viewport: { width: 1440, height: 900 }, lang: 'ru' });
+  // Lenis eases even programmatic scrolls, and .reveal blocks carry a translateY until they
+  // appear: target the layout position (offsetTop chain, no transforms) and wait for scrollY.
+  const placeTop = async (selector, fraction) => {
+    const target = await page.evaluate(({ selector, fraction }) => {
+      let top = 0;
+      for (let el = document.querySelector(selector); el; el = el.offsetParent) top += el.offsetTop;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const y = Math.round(Math.min(max, Math.max(0, top - window.innerHeight * fraction)));
+      window.scrollTo(0, y);
+      return y;
+    }, { selector, fraction });
+    await page.waitForFunction((y) => Math.abs(window.scrollY - y) < 2, target, { timeout: 8000 });
+    await page.waitForTimeout(250);
+  };
+  const lit = () => page.evaluate(() => Array.from(document.querySelector('.statement-text').querySelectorAll('.motion-word')).map((w) => Number(w.style.getPropertyValue('--lit'))));
+  await placeTop('.statement-text', 0.86);
+  await page.waitForTimeout(400);
+  const early = await lit();
+  assert.ok(early.length >= 3, `manifesto not split into words (${early.length})`);
+  assert.ok(early[early.length - 1] < 0.5, `last word lit too early ${JSON.stringify(early)}`);
+  await placeTop('.statement-text', 0.25);
+  await page.waitForTimeout(400);
+  assert.ok((await lit()).every((v) => v === 1), 'manifesto should be fully lit once read');
+  await placeTop('.kmp-scheme', 0.95);
+  await page.waitForTimeout(300);
+  const drawEarly = await page.evaluate(() => Number(document.querySelector('.kmp-scheme').style.getPropertyValue('--draw')));
+  await placeTop('.kmp-scheme', 0.2);
+  await page.waitForTimeout(300);
+  const drawLate = await page.evaluate(() => Number(document.querySelector('.kmp-scheme').style.getPropertyValue('--draw')));
+  assert.ok(drawEarly < 0.3 && drawLate === 1, `scheme draw ${drawEarly} → ${drawLate}`);
+  // Language switch rewrites the text: words are split again.
+  await page.click('.lang-btn[data-lang="en"]');
+  await page.waitForTimeout(300);
+  assert.match(await page.evaluate(() => Array.from(document.querySelectorAll('.statement-text .motion-word')).map((w) => w.textContent).join(' ')), /Kotlin/);
+  // Tilt: a card leans toward the pointer and settles back when it leaves.
+  await placeTop('.card-feature', 0.3);
+  await page.waitForFunction(() => document.querySelector('.card-feature').classList.contains('in'), null, { timeout: 5000 });
+  const box = await page.locator('.card-feature').first().boundingBox();
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.5);
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1, { steps: 6 });
+  await page.waitForTimeout(500);
+  assert.match(await page.evaluate(() => document.querySelector('.card-feature').style.transform), /rotateX/);
+  await page.mouse.move(5, 450, { steps: 4 });
+  await page.waitForFunction(() => document.querySelector('.card-feature').style.transform === '', null, { timeout: 4000 });
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
 await scenario('reduced motion: static stacked story with poster', async () => {
   const { page, context, errors } = await openPage({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
   const state = await page.evaluate(async () => {
@@ -226,6 +277,8 @@ await scenario('reduced motion: static stacked story with poster', async () => {
   assert.ok(state.height < 3.5, `static story is ${state.height.toFixed(1)} screens tall`);
   assert.ok(state.poster > 0, 'poster did not load');
   assert.equal(state.hidden, 0, 'every chapter must be readable');
+  const words = await page.evaluate(() => Array.from(document.querySelectorAll('.statement-text .motion-word')).map((w) => w.style.getPropertyValue('--lit')));
+  assert.ok(words.length > 0 && words.every((v) => v === '1.000'), `reduced motion must show the manifesto fully ${JSON.stringify(words)}`);
   await page.screenshot({ path: `${OUT}/${browserName}-reduced-motion.png`, fullPage: false });
   assert.deepEqual(errors, []);
   await context.close();

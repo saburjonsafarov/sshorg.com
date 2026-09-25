@@ -1,0 +1,35 @@
+/* Page motion outside the 3D story (motion.js). Without JS or with reduced motion the
+   page stays static and fully visible: every effect is gated on html.motion-ready. */
+
+/* 3D tilt cards: stats and titles float above the tilted card (Apple TV poster effect). */
+.card.is-tilting {
+  transform-style: preserve-3d;
+  transition: box-shadow 0.2s ease;
+  will-change: transform;
+}
+.card .card-stat,
+.card h3 { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+.card.is-tilting .card-stat { transform: translateZ(42px); }
+.card.is-tilting h3 { transform: translateZ(22px); }
+
+/* Manifesto: words light up in reading order as the line crosses the screen. */
+html.motion-ready .statement-text.is-split .motion-word {
+  opacity: calc(0.14 + 0.86 * var(--lit, 1));
+  transition: opacity 0.12s linear;
+}
+
+/* KMP scheme: connectors draw down from the shared code, then Android, iOS and the caption. */
+.kmp-scheme { --draw: 1; }
+html.motion-ready .kmp-connectors { clip-path: inset(0 0 calc((1 - var(--draw)) * 100%) 0); }
+html.motion-ready .kmp-platforms .kmp-node {
+  --k: clamp(0, calc((var(--draw) - 0.5) * 4), 1);
+  opacity: var(--k);
+  transform: translateY(calc((1 - var(--k)) * 18px)) scale(calc(0.96 + 0.04 * var(--k)));
+}
+html.motion-ready .kmp-platforms .kmp-node + .kmp-node { --k: clamp(0, calc((var(--draw) - 0.62) * 4), 1); }
+html.motion-ready .kmp-caption { opacity: clamp(0, calc((var(--draw) - 0.8) * 5), 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card .card-stat, .card h3 { transition: none; }
+  html.motion-ready .statement-text.is-split .motion-word { transition: none; }
+}

@@ -37,7 +37,7 @@ Note: deploys copy files but never delete them, so files removed from `site/` (f
 
 ## Visual effects
 
-Card spotlights use fine pointers only. The hero light field pauses offscreen and in hidden tabs. Theme changes use a circular View Transition when supported, with an immediate fallback. The compose-graph preview uses the existing, attributed demo frames; its “Early frame” button also works with touch and keyboard. All decorative motion respects `prefers-reduced-motion`, including changes during a visit.
+Card spotlights use fine pointers only. `site/motion.js` adds page-wide motion without WebGL: cards tilt toward the mouse (up to 7°, less on big cards) with their stat and title floating above, the manifesto lines light up word by word as they cross the screen (re-split when the language changes), and the KMP scheme draws itself on scroll; with reduced motion or without JS everything stays static and fully visible. The hero light field pauses offscreen and in hidden tabs. Theme changes use a circular View Transition when supported, with an immediate fallback. The compose-graph preview uses the existing, attributed demo frames; its “Early frame” button also works with touch and keyboard. All decorative motion respects `prefers-reduced-motion`, including changes during a visit.
 
 Run dependency-free interaction checks with `node --test tests/visual-effects.test.cjs`. These use a simulated DOM and do not replace browser checks of layout, focus, contrast, or animation rendering.
 

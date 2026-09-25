@@ -32,33 +32,56 @@ function setMode(node, mode) {
   if (mode !== 'live') node.classList.remove('story-ready');
 }
 
+// Resolves once the browser has painted what is on the page now. A function declaration:
+// init() runs at the top of the module, before any const below is initialised.
+function afterPaint() {
+  return new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+}
+
 function init(node) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const forcedStatic = new URLSearchParams(window.location.search).get('story') === 'static';
   let session = null;
+  let boot = null;
   const fallback = () => {
+    boot?.cancel();
+    boot = null;
     session?.destroy();
     session = null;
     setMode(node, 'static');
   };
   const start = () => {
-    if (session) return;
+    if (session || boot) return;
     if (forcedStatic || reduce.matches || !webglSupported()) {
       setMode(node, 'static');
       return;
     }
-    try {
-      session = createSession(node, fallback);
-    } catch (error) {
-      console.warn('[story] falling back to static scene', error);
-      fallback();
-    }
+    let cancel;
+    const token = { cancelled: false, done: new Promise((resolve) => (cancel = resolve)) };
+    token.cancel = () => {
+      token.cancelled = true;
+      cancel();
+    };
+    boot = token;
+    createSession(node, fallback, token)
+      .then((created) => {
+        if (token.cancelled) return;
+        boot = null;
+        session = created;
+      })
+      .catch((error) => {
+        if (token.cancelled) return;
+        console.warn('[story] falling back to static scene', error);
+        fallback();
+      });
   };
   reduce.addEventListener('change', () => (reduce.matches ? fallback() : start()));
   start();
 }
 
-function createSession(node, onLost) {
+// Builds the scene in steps so the hero text paints first and no step holds the main
+// thread longer than it must. Resolves to null when `token` is cancelled on the way.
+async function createSession(node, onLost, token) {
   const stageEl = node.querySelector('.story-stage');
   const canvas = node.querySelector('.story-canvas');
   const copies = Array.from(node.querySelectorAll('[data-story-copy]'));
@@ -67,21 +90,50 @@ function createSession(node, onLost) {
   const coarse = window.matchMedia('(pointer: coarse)').matches;
   const fine = window.matchMedia('(pointer: fine)').matches;
 
+  const onContextLost = (event) => {
+    event.preventDefault();
+    onLost();
+  };
+  canvas.addEventListener('webglcontextlost', onContextLost);
+
+  // The intro text rises in with CSS (story3d.css) on the compositor, so it keeps moving
+  // while the scene below is built.
   setMode(node, 'live');
-  // Bloom only where a mouse suggests a desktop-class GPU; phones render direct.
-  const stage = createStage(canvas, { bloom: fine && !coarse });
-  const bloomAtStart = stage.bloom;
-  stage.setTheme(currentTheme());
+  await afterPaint();
 
   const maxDpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
   let dpr = maxDpr;
   let dirty = true;
+  let stage = null;
+  let bloomAtStart = false;
   const measure = () => {
     const rect = stageEl.getBoundingClientRect();
     stage.resize(rect.width, rect.height, dpr);
     dirty = true;
   };
-  measure();
+  const abandon = () => {
+    canvas.removeEventListener('webglcontextlost', onContextLost);
+    stage?.dispose();
+    return null;
+  };
+  const bootTheme = currentTheme();
+  try {
+    if (token.cancelled) return abandon();
+    // Bloom only where a mouse suggests a desktop-class GPU; phones render direct.
+    stage = createStage(canvas, { bloom: fine && !coarse });
+    bloomAtStart = stage.bloom;
+    stage.setTheme(bootTheme);
+    measure();
+    await afterPaint();
+    if (token.cancelled) return abandon();
+    await Promise.race([stage.warmup(), token.done]);
+    if (token.cancelled) return abandon();
+  } catch (error) {
+    abandon();
+    throw error;
+  }
+  // The theme observer below starts only now: catch a switch made while the scene loaded.
+  if (currentTheme() !== bootTheme) stage.setTheme(currentTheme());
 
   // Smooth, inertial page scroll. Touch keeps native momentum.
   const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, anchors: true, autoRaf: false });
@@ -97,7 +149,6 @@ function createSession(node, onLost) {
     scrollTrigger: { trigger: node, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true },
   });
   const introTween = gsap.to(state, { intro: 1, duration: 2.4, ease: 'expo.out', delay: 0.15 });
-  const introCopy = copies[0] ? gsap.from(copies[0].children, { y: 26, autoAlpha: 0, duration: 1.1, ease: 'expo.out', stagger: 0.07, delay: 0.1, clearProps: 'transform,opacity,visibility' }) : null;
 
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   const onPointer = (event) => {
@@ -125,12 +176,6 @@ function createSession(node, onLost) {
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   const schemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
   schemeQuery.addEventListener('change', applyTheme);
-
-  const onContextLost = (event) => {
-    event.preventDefault();
-    onLost();
-  };
-  canvas.addEventListener('webglcontextlost', onContextLost);
 
   const last = { p: -1, intro: -1, px: 0, py: 0, copies: COPY.map(() => -1), tick: -1 };
   const frameTimes = [];
@@ -330,7 +375,6 @@ function createSession(node, onLost) {
       scrollTween.scrollTrigger?.kill();
       scrollTween.kill();
       introTween.kill();
-      introCopy?.revert();
       lenis.destroy();
       io.disconnect();
       ro.disconnect();

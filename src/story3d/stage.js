@@ -423,6 +423,30 @@ export function createStage(canvas, { bloom = false } = {}) {
     else renderer.render(scene, camera);
   }
 
+  // Compiles every material before the first frame. With KHR_parallel_shader_compile the
+  // driver links programs off the main thread and this resolves once they are ready, so the
+  // first render does not stall on shader linking. Hidden meshes (trails, beam) are
+  // included; lights keep their state because the light count is part of each program.
+  function warmup() {
+    const hidden = [];
+    scene.traverse((object) => {
+      if (!object.visible && !object.isLight) {
+        hidden.push(object);
+        object.visible = true;
+      }
+    });
+    // Programs differ between the screen and an offscreen target (tone mapping, colour
+    // space): compile for the target the first frame will draw into.
+    const previous = renderer.getRenderTarget();
+    renderer.setRenderTarget(bloomActive() ? post.target : null);
+    const ready = renderer.compileAsync(scene, camera);
+    renderer.setRenderTarget(previous);
+    hidden.forEach((object) => {
+      object.visible = false;
+    });
+    return ready;
+  }
+
   // Screen-space rectangles (CSS px) of each device, for layout checks.
   function deviceRects() {
     camera.updateMatrixWorld();
@@ -490,6 +514,7 @@ export function createStage(canvas, { bloom = false } = {}) {
     },
     update,
     render,
+    warmup,
     deviceRects,
     coverage,
     dispose,

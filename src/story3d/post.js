@@ -15,6 +15,8 @@ export function createPost(renderer, scene, camera) {
   composer.addPass(new OutputPass());
   return {
     bloom,
+    // The scene is drawn into this target (no tone mapping there; OutputPass applies it).
+    target,
     setSize(width, height, pixelRatio) {
       composer.setPixelRatio(pixelRatio);
       composer.setSize(width, height);

@@ -1,0 +1,28 @@
+# >>> design.sshorg.com — источник: репо sshorg.com, deploy/design.Caddyfile; применяет .github/workflows/design-headers.yml
+design.sshorg.com {
+	root * /srv/sshorg/design
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Cross-Origin-Opener-Policy "same-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+		# Скрипты по sha256 ограничивает <meta> CSP в самой странице (build.py); здесь — то, что meta не умеет
+		__CSP_HEADER__ "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests"
+		-Server
+	}
+	@page path / /index.html /404.html
+	header @page Cache-Control "no-cache"
+	file_server
+	handle_errors {
+		@notfound expression `{err.status_code} == 404`
+		handle @notfound {
+			root * /srv/sshorg/design
+			rewrite * /404.html
+			file_server
+		}
+	}
+}
+# <<< design.sshorg.com

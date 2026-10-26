@@ -1,0 +1,65 @@
+name: Design subdomain (Caddy)
+
+# Разовая настройка: design.sshorg.com отдаёт site/design/ (документация SSH Design System).
+# Запускается вручную после того, как A-запись design → сервер появилась в DNS.
+on:
+  workflow_dispatch:
+
+jobs:
+  caddy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check DNS
+        run: |
+          ip=$(dig +short design.sshorg.com A | tail -1)
+          echo "design.sshorg.com -> ${ip:-<none>}"
+          test -n "$ip"
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST#*@}" >> ~/.ssh/known_hosts
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+
+      - name: Add site block, validate, reload
+        run: |
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          CF=/etc/caddy/Caddyfile
+          test -f "$CF"
+          if grep -q '^design\.sshorg\.com' "$CF"; then echo "block already present"; exit 0; fi
+          ROOT="$(readlink -f "$DEPLOY_PATH")/design"
+          test -f "$ROOT/index.html"
+          cp "$CF" "$CF.bak-design-$(date +%Y%m%d%H%M%S)"
+          cat >> "$CF" <<BLOCK
+
+          design.sshorg.com {
+          	root * $ROOT
+          	encode zstd gzip
+          	header {
+          		Strict-Transport-Security "max-age=31536000"
+          		X-Content-Type-Options "nosniff"
+          		Referrer-Policy "strict-origin-when-cross-origin"
+          		-Server
+          	}
+          	file_server
+          }
+          BLOCK
+          if ! caddy validate --config "$CF" --adapter caddyfile; then
+            cp "$(ls -t "$CF".bak-design-* | head -1)" "$CF"
+            echo "validate failed, restored backup"; exit 1
+          fi
+          systemctl reload caddy
+          echo "reloaded"
+          REMOTE
+
+      - name: Smoke check
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" https://design.sshorg.com/ || true)
+            echo "try $i: $code"; [ "$code" = 200 ] && exit 0; sleep 10
+          done
+          exit 1

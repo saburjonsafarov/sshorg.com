@@ -41,6 +41,15 @@ jobs:
           ls -la /etc/caddy 2>&1 | head
           command -v docker >/dev/null && docker ps --format '{{.Names}} {{.Image}} {{.Mounts}}' 2>&1 | grep -i caddy || echo "no caddy container"
           grep -rlE 'sshorg\.com' /etc/caddy 2>/dev/null || true
+          C=$(docker ps --format '{{.Names}}' | grep -i caddy | head -1)
+          if [ -n "$C" ]; then
+            echo "== container $C mounts"
+            docker inspect "$C" --format '{{range .Mounts}}{{.Type}} {{.Source}} -> {{.Destination}}{{println}}{{end}}'
+            echo "== compose project"
+            docker inspect "$C" --format '{{index .Config.Labels "com.docker.compose.project.working_dir"}} {{index .Config.Labels "com.docker.compose.project.config_files"}}'
+            echo "== Caddyfile in container"
+            docker exec "$C" cat /etc/caddy/Caddyfile 2>&1 | sed -n '1,120p'
+          fi
           REMOTE
 
       - name: Add site block, validate, reload

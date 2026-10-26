@@ -24,15 +24,29 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
 
+      - name: Inspect server (read-only)
+        run: |
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' 'bash -s' <<'REMOTE'
+          echo "whoami: $(whoami)"
+          echo "deploy path: $DEPLOY_PATH -> $(readlink -f "$DEPLOY_PATH")"
+          ls -la "$DEPLOY_PATH/design" 2>&1 | head -5
+          echo "caddy bin: $(command -v caddy || echo none)"
+          systemctl is-active caddy 2>&1 || true
+          systemctl cat caddy 2>/dev/null | grep -E 'ExecStart|ExecReload' || true
+          ls -la /etc/caddy 2>&1 | head
+          command -v docker >/dev/null && docker ps --format '{{.Names}} {{.Image}} {{.Mounts}}' 2>&1 | grep -i caddy || echo "no caddy container"
+          grep -rlE 'sshorg\.com' /etc/caddy 2>/dev/null || true
+          REMOTE
+
       - name: Add site block, validate, reload
         run: |
           ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' 'bash -s' <<'REMOTE'
           set -euo pipefail
           CF=/etc/caddy/Caddyfile
-          test -f "$CF"
+          test -f "$CF" || { echo "no $CF"; exit 1; }
           if grep -q '^design\.sshorg\.com' "$CF"; then echo "block already present"; exit 0; fi
           ROOT="$(readlink -f "$DEPLOY_PATH")/design"
-          test -f "$ROOT/index.html"
+          test -f "$ROOT/index.html" || { echo "no $ROOT/index.html"; exit 1; }
           cp "$CF" "$CF.bak-design-$(date +%Y%m%d%H%M%S)"
           cat >> "$CF" <<BLOCK
 

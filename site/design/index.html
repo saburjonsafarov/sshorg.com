@@ -458,8 +458,10 @@
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: ""; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -753,7 +755,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 <section id="components">
   <div class="sh"><span class="num">06</span><h2>Компоненты</h2></div>
   <p class="lead">29 живых компонентов — настоящий HTML и CSS системы, не картинки. Всё нажимается: свитчи, счётчики, календарь, колёса времени, поля ввода. В Compose — те же имена и параметры. Данные в примерах демонстрационные.</p>
-  <h3 class="grp">Действия</h3><div class="cards"><article class="card" id="c-Button"><div class="card-head"><h4>Button</h4><p>Капсульная кнопка: чёрная <code>primary</code> для главного действия, синяя <code>accent</code> для оплаты и брендовых моментов, серая <code>secondary</code>, текстовая <code>ghost</code>, контурная <code>danger</code>.</p></div><iframe loading="lazy" title="Button" style="height:436px" srcdoc="&lt;!doctype html&gt;
+  <h3 class="grp">Действия</h3><div class="cards"><article class="card" id="c-Button"><div class="card-head"><h4>Button</h4><p>Капсульная кнопка: чёрная <code>primary</code> для главного действия, синяя <code>accent</code> для оплаты и брендовых моментов, серая <code>secondary</code>, текстовая <code>ghost</code>, контурная <code>danger</code>.</p></div><iframe loading="lazy" aria-label="Button" style="height:436px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Button&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .col{display:flex;flex-direction:column;gap:var(--space-8)} .cap{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-2)} .pair{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-8)} .pair .ssh-btn{padding:0 var(--space-8);min-width:0} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -1209,8 +1211,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -1602,7 +1606,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-CtaIsland"><div class="card-head"><h4>CtaIsland</h4><p>Тёмный остров «Следующий шаг» в конце экрана или документа: одна фраза и одна кнопка.</p></div><iframe loading="lazy" title="CtaIsland" style="height:216px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-CtaIsland"><div class="card-head"><h4>CtaIsland</h4><p>Тёмный остров «Следующий шаг» в конце экрана или документа: одна фраза и одна кнопка.</p></div><iframe loading="lazy" aria-label="CtaIsland" style="height:216px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;CtaIsland&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -2058,8 +2062,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -2449,7 +2455,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-IconButton"><div class="card-head"><h4>IconButton</h4><p>Круглая кнопка 48 с иконкой 24: серая без рамки, стеклянная поверх контента, чёрная для главного действия.</p></div><iframe loading="lazy" title="IconButton" style="height:88px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-IconButton"><div class="card-head"><h4>IconButton</h4><p>Круглая кнопка 48 с иконкой 24: серая без рамки, стеклянная поверх контента, чёрная для главного действия.</p></div><iframe loading="lazy" aria-label="IconButton" style="height:88px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;IconButton&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -2905,8 +2911,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -3296,7 +3304,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Ввод</h3><div class="cards"><article class="card" id="c-Chip"><div class="card-head"><h4>Chip</h4><p>Капсула-фильтр 36; выбранный — инверсия (чёрный в светлой теме).</p></div><iframe loading="lazy" title="Chip" style="height:124px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Ввод</h3><div class="cards"><article class="card" id="c-Chip"><div class="card-head"><h4>Chip</h4><p>Капсула-фильтр 36; выбранный — инверсия (чёрный в светлой теме).</p></div><iframe loading="lazy" aria-label="Chip" style="height:124px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Chip&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -3752,8 +3760,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -4143,7 +4153,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-ChoiceCard"><div class="card-head"><h4>ChoiceCard</h4><p>Карточка варианта с чёрным квадратиком-номером: 2–3 варианта на выбор.</p></div><iframe loading="lazy" title="ChoiceCard" style="height:462px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-ChoiceCard"><div class="card-head"><h4>ChoiceCard</h4><p>Карточка варианта с чёрным квадратиком-номером: 2–3 варианта на выбор.</p></div><iframe loading="lazy" aria-label="ChoiceCard" style="height:462px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;ChoiceCard&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -4599,8 +4609,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -4994,7 +5006,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-DatePicker"><div class="card-head"><h4>DatePicker</h4><p>Выбор даты и периода: поле с иконкой календаря и месяц на сером острове.</p></div><iframe loading="lazy" title="DatePicker" style="height:526px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-DatePicker"><div class="card-head"><h4>DatePicker</h4><p>Выбор даты и периода: поле с иконкой календаря и месяц на сером острове.</p></div><iframe loading="lazy" aria-label="DatePicker" style="height:526px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;DatePicker&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -5450,8 +5462,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -5846,7 +5860,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Segmented"><div class="card-head"><h4>Segmented</h4><p>Сегмент-капсула: выбор одного из 2–4 вариантов на месте.</p></div><iframe loading="lazy" title="Segmented" style="height:84px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Segmented"><div class="card-head"><h4>Segmented</h4><p>Сегмент-капсула: выбор одного из 2–4 вариантов на месте.</p></div><iframe loading="lazy" aria-label="Segmented" style="height:84px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Segmented&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -6302,8 +6316,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -6693,7 +6709,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Stepper"><div class="card-head"><h4>Stepper</h4><p>Счётчик количества: серая капсула с «−», числом и «+».</p></div><iframe loading="lazy" title="Stepper" style="height:344px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Stepper"><div class="card-head"><h4>Stepper</h4><p>Счётчик количества: серая капсула с «−», числом и «+».</p></div><iframe loading="lazy" aria-label="Stepper" style="height:344px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Stepper&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -7149,8 +7165,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -7549,7 +7567,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Switch"><div class="card-head"><h4>Switch</h4><p>Переключатель 52×32: включён — синий трек.</p></div><iframe loading="lazy" title="Switch" style="height:72px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Switch"><div class="card-head"><h4>Switch</h4><p>Переключатель 52×32: включён — синий трек.</p></div><iframe loading="lazy" aria-label="Switch" style="height:72px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Switch&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -8005,8 +8023,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -8396,7 +8416,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-TextField"><div class="card-head"><h4>TextField</h4><p>Поле ввода: подпись над полем, белая капсула 56 с радиусом 20.</p></div><iframe loading="lazy" title="TextField" style="height:476px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-TextField"><div class="card-head"><h4>TextField</h4><p>Поле ввода: подпись над полем, белая капсула 56 с радиусом 20.</p></div><iframe loading="lazy" aria-label="TextField" style="height:476px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;TextField&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -8852,8 +8872,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -9248,7 +9270,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-TimePicker"><div class="card-head"><h4>TimePicker</h4><p>Выбор времени: поле с часами и барабан часов и минут, текущее значение на белой полосе.</p></div><iframe loading="lazy" title="TimePicker" style="height:472px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-TimePicker"><div class="card-head"><h4>TimePicker</h4><p>Выбор времени: поле с часами и барабан часов и минут, текущее значение на белой полосе.</p></div><iframe loading="lazy" aria-label="TimePicker" style="height:472px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;TimePicker&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -9704,8 +9726,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -10098,7 +10122,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Навигация</h3><div class="cards"><article class="card" id="c-TabBar"><div class="card-head"><h4>TabBar</h4><p>Нижняя навигация: стеклянная капсула 64 с белой «таблеткой» под активным разделом; главное действие — чёрный круг справа.</p></div><iframe loading="lazy" title="TabBar" style="height:104px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Навигация</h3><div class="cards"><article class="card" id="c-TabBar"><div class="card-head"><h4>TabBar</h4><p>Нижняя навигация: стеклянная капсула 64 с белой «таблеткой» под активным разделом; главное действие — чёрный круг справа.</p></div><iframe loading="lazy" aria-label="TabBar" style="height:104px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;TabBar&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}.wrap{background:var(--surface)}&lt;/style&gt;
@@ -10554,8 +10578,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -10948,7 +10974,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-TopBar"><div class="card-head"><h4>TopBar</h4><p>Тулбар 64: на вкладке крупный заголовок слева, на вложенном экране заголовок по центру между круглыми кнопками.</p></div><iframe loading="lazy" title="TopBar" style="height:184px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-TopBar"><div class="card-head"><h4>TopBar</h4><p>Тулбар 64: на вкладке крупный заголовок слева, на вложенном экране заголовок по центру между круглыми кнопками.</p></div><iframe loading="lazy" aria-label="TopBar" style="height:184px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;TopBar&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -11404,8 +11430,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -11796,7 +11824,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Поверхности</h3><div class="cards"><article class="card" id="c-BottomSheet"><div class="card-head"><h4>BottomSheet</h4><p>Нижний лист: белый, верхние углы 40, иконка в круге, заголовок, текст и действия внизу.</p></div><iframe loading="lazy" title="BottomSheet" style="height:441px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Поверхности</h3><div class="cards"><article class="card" id="c-BottomSheet"><div class="card-head"><h4>BottomSheet</h4><p>Нижний лист: белый, верхние углы 40, иконка в круге, заголовок, текст и действия внизу.</p></div><iframe loading="lazy" aria-label="BottomSheet" style="height:441px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;BottomSheet&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}.stage{border-radius:var(--radius-28);padding-top:var(--space-32);overflow:hidden}&lt;/style&gt;
@@ -12252,8 +12280,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -12648,7 +12678,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Cover"><div class="card-head"><h4>Cover</h4><p></p></div><iframe loading="lazy" title="Cover" style="height:288px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Cover"><div class="card-head"><h4>Cover</h4><p></p></div><iframe loading="lazy" aria-label="Cover" style="height:288px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
@@ -13123,8 +13153,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -13538,7 +13570,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Dialog"><div class="card-head"><h4>Dialog</h4><p>Модальный диалог по центру над <code>scrim</code>: подтверждение необратимого действия или блокирующая ошибка.</p></div><iframe loading="lazy" title="Dialog" style="height:818px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Dialog"><div class="card-head"><h4>Dialog</h4><p>Модальный диалог по центру над <code>scrim</code>: подтверждение необратимого действия или блокирующая ошибка.</p></div><iframe loading="lazy" aria-label="Dialog" style="height:818px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Dialog&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -13994,8 +14026,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -14390,7 +14424,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Hero"><div class="card-head"><h4>Hero</h4><p>Чёрная обложка-герой, как обложка наших документов: капсула-метка, крупный заголовок, подзаголовок и ряд фактов.</p></div><iframe loading="lazy" title="Hero" style="height:552px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Hero"><div class="card-head"><h4>Hero</h4><p>Чёрная обложка-герой, как обложка наших документов: капсула-метка, крупный заголовок, подзаголовок и ряд фактов.</p></div><iframe loading="lazy" aria-label="Hero" style="height:552px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Hero&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -14846,8 +14880,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -15242,7 +15278,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Island"><div class="card-head"><h4>Island</h4><p>Серая карточка-остров с радиусом 22 — основной блок контента, как острова в документах.</p></div><iframe loading="lazy" title="Island" style="height:494px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Island"><div class="card-head"><h4>Island</h4><p>Серая карточка-остров с радиусом 22 — основной блок контента, как острова в документах.</p></div><iframe loading="lazy" aria-label="Island" style="height:494px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Island&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -15698,8 +15734,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -16093,7 +16131,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Данные</h3><div class="cards"><article class="card" id="c-Document"><div class="card-head"><h4>Document</h4><p>Лист документа (счёт, акт, договор) в стиле наших ТЗ: белый лист с рамкой <code>line</code> на сером острове, тот же порядок блоков.</p></div><iframe loading="lazy" title="Document" style="height:732px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Данные</h3><div class="cards"><article class="card" id="c-Document"><div class="card-head"><h4>Document</h4><p>Лист документа (счёт, акт, договор) в стиле наших ТЗ: белый лист с рамкой <code>line</code> на сером острове, тот же порядок блоков.</p></div><iframe loading="lazy" aria-label="Document" style="height:732px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Document&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -16549,8 +16587,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -16949,7 +16989,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-ListRow"><div class="card-head"><h4>ListRow</h4><p>Строки в сгруппированном списке на острове, как настройки iOS: иконка в квадратике, заголовок, справа значение, сумма, свитч или шеврон.</p></div><iframe loading="lazy" title="ListRow" style="height:352px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-ListRow"><div class="card-head"><h4>ListRow</h4><p>Строки в сгруппированном списке на острове, как настройки iOS: иконка в квадратике, заголовок, справа значение, сумма, свитч или шеврон.</p></div><iframe loading="lazy" aria-label="ListRow" style="height:352px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;ListRow&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -17405,8 +17445,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -17805,7 +17847,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Receipt"><div class="card-head"><h4>Receipt</h4><p>Чек об оплате: бумажная лента с зубчатым нижним краем, все суммы моноширинным шрифтом.</p></div><iframe loading="lazy" title="Receipt" style="height:603px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Receipt"><div class="card-head"><h4>Receipt</h4><p>Чек об оплате: бумажная лента с зубчатым нижним краем, все суммы моноширинным шрифтом.</p></div><iframe loading="lazy" aria-label="Receipt" style="height:603px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Receipt&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -18261,8 +18303,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -18664,7 +18708,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-TableIsland"><div class="card-head"><h4>TableIsland</h4><p>Таблица внутри серого острова: заголовки капсом, цифры справа, жирная строка «Итого».</p></div><iframe loading="lazy" title="TableIsland" style="height:328px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-TableIsland"><div class="card-head"><h4>TableIsland</h4><p>Таблица внутри серого острова: заголовки капсом, цифры справа, жирная строка «Итого».</p></div><iframe loading="lazy" aria-label="TableIsland" style="height:328px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;TableIsland&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -19120,8 +19164,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -19514,7 +19560,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Tag"><div class="card-head"><h4>Tag</h4><p>Капсула-метка высотой 28: срок, статус, черновик.</p></div><iframe loading="lazy" title="Tag" style="height:108px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Tag"><div class="card-head"><h4>Tag</h4><p>Капсула-метка высотой 28: срок, статус, черновик.</p></div><iframe loading="lazy" aria-label="Tag" style="height:108px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Tag&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -19970,8 +20016,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -20361,7 +20409,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Обратная связь</h3><div class="cards"><article class="card" id="c-PushNotification"><div class="card-head"><h4>PushNotification</h4><p>Пуш-уведомление: стеклянная карточка r22 с иконкой приложения, названием модуля, временем, заголовком и текстом.</p></div><iframe loading="lazy" title="PushNotification" style="height:292px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Обратная связь</h3><div class="cards"><article class="card" id="c-PushNotification"><div class="card-head"><h4>PushNotification</h4><p>Пуш-уведомление: стеклянная карточка r22 с иконкой приложения, названием модуля, временем, заголовком и текстом.</p></div><iframe loading="lazy" aria-label="PushNotification" style="height:292px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;PushNotification&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -20817,8 +20865,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -21211,7 +21261,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-StateView"><div class="card-head"><h4>StateView</h4><p>Состояния экрана: загрузка, пусто, ошибка, нет сети — на острове, у каждого своё действие.</p></div><iframe loading="lazy" title="StateView" style="height:988px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-StateView"><div class="card-head"><h4>StateView</h4><p>Состояния экрана: загрузка, пусто, ошибка, нет сети — на острове, у каждого своё действие.</p></div><iframe loading="lazy" aria-label="StateView" style="height:988px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;StateView&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -21667,8 +21717,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -22063,7 +22115,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Toast"><div class="card-head"><h4>Toast</h4><p>Тост — тёмная капсула внизу экрана (тёмная в обеих темах); алерт — остров статуса внутри экрана.</p></div><iframe loading="lazy" title="Toast" style="height:412px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Toast"><div class="card-head"><h4>Toast</h4><p>Тост — тёмная капсула внизу экрана (тёмная в обеих темах); алерт — остров статуса внутри экрана.</p></div><iframe loading="lazy" aria-label="Toast" style="height:412px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Toast&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -22519,8 +22571,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -22913,7 +22967,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Текст</h3><div class="cards"><article class="card" id="c-SectionHeader"><div class="card-head"><h4>SectionHeader</h4><p>Заголовок раздела с синим номером «01, 02…», как в документах.</p></div><iframe loading="lazy" title="SectionHeader" style="height:144px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Текст</h3><div class="cards"><article class="card" id="c-SectionHeader"><div class="card-head"><h4>SectionHeader</h4><p>Заголовок раздела с синим номером «01, 02…», как в документах.</p></div><iframe loading="lazy" aria-label="SectionHeader" style="height:144px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;SectionHeader&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-16)}&lt;/style&gt;
@@ -23369,8 +23423,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -23761,7 +23817,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article></div><h3 class="grp">Камера</h3><div class="cards"><article class="card" id="c-Camera"><div class="card-head"><h4>Camera</h4><p>Экран камеры: всегда тёмный в обеих темах — на токенах обложки <code>hero</code>.</p></div><iframe loading="lazy" title="Camera" style="height:480px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article></div><h3 class="grp">Камера</h3><div class="cards"><article class="card" id="c-Camera"><div class="card-head"><h4>Camera</h4><p>Экран камеры: всегда тёмный в обеих темах — на токенах обложки <code>hero</code>.</p></div><iframe loading="lazy" aria-label="Camera" style="height:480px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Camera&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -24217,8 +24273,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }
@@ -24615,7 +24673,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 })();
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
-"></iframe></article><article class="card" id="c-Scanner"><div class="card-head"><h4>Scanner</h4><p>Сканер штрихкода и QR: окно сканирования над затемнением, синий луч и карточка найденного объекта снизу.</p></div><iframe loading="lazy" title="Scanner" style="height:544px" srcdoc="&lt;!doctype html&gt;
+"></iframe></article><article class="card" id="c-Scanner"><div class="card-head"><h4>Scanner</h4><p>Сканер штрихкода и QR: окно сканирования над затемнением, синий луч и карточка найденного объекта снизу.</p></div><iframe loading="lazy" aria-label="Scanner" style="height:544px" srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;ru&quot;&gt;
 &lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Scanner&lt;/title&gt;
 &lt;style&gt;html,body{margin:0} body{background:var(--bg);color:var(--ink);font-family:var(--font-sans)} .wrap{padding:var(--space-20);display:flex;flex-direction:column;gap:var(--space-16)} .row{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center} .stage{background:var(--surface);border-radius:var(--radius-28);padding:var(--space-16)}&lt;/style&gt;
@@ -25071,8 +25129,10 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-cam-btn { width: var(--control-m); height: var(--control-m); flex: none; display: grid; place-items: center; border-radius: var(--radius-pill); border: 0; background: var(--hero-2); color: var(--hero-ink); }
 .ssh-cam-btn.on { background: var(--hero-ink); color: var(--hero); }
 .ssh-cam-pill { display: inline-flex; align-items: center; gap: var(--space-6); height: var(--control-s); padding: 0 var(--space-16); border-radius: var(--radius-pill); background: var(--hero-2); color: var(--hero-ink); font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; }
-.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16);
-  background: linear-gradient(var(--c), var(--c)) top left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) top right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) top right / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom left / var(--w) var(--l), linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--w), linear-gradient(var(--c), var(--c)) bottom right / var(--w) var(--l); background-repeat: no-repeat; }
+.ssh-cam-frame { --c: var(--hero-ink); --l: 28px; --w: 3px; position: absolute; border-radius: var(--radius-16); }
+.ssh-cam-frame::before { content: &quot;&quot;; position: absolute; inset: 0; border: var(--w) solid var(--c); border-radius: inherit; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); -webkit-mask-repeat: no-repeat;
+  mask: linear-gradient(#000 0 0) top left / var(--l) var(--l), linear-gradient(#000 0 0) top right / var(--l) var(--l), linear-gradient(#000 0 0) bottom left / var(--l) var(--l), linear-gradient(#000 0 0) bottom right / var(--l) var(--l); mask-repeat: no-repeat; }
 .ssh-cam-modes { display: flex; justify-content: center; gap: var(--space-4); padding: var(--space-12) var(--space-16) 0; }
 .ssh-cam-mode { height: 28px; padding: 0 var(--space-12); display: grid; place-items: center; border-radius: var(--radius-pill); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--hero-ink-2); }
 .ssh-cam-mode.active { background: var(--hero-2); color: var(--hero-ink); font-weight: 600; }

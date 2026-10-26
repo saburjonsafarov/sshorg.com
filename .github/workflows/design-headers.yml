@@ -43,7 +43,7 @@ jobs:
             report-only) NAME=Content-Security-Policy-Report-Only ;;
             enforce|rollback) NAME=Content-Security-Policy ;;
           esac
-          sed "s/__CSP_HEADER__/$NAME/" deploy/design.Caddyfile > block.caddy
+          sed "s/__CSP_HEADER__/$NAME/g" deploy/design.Caddyfile > block.caddy
           scp -i ~/.ssh/deploy_key block.caddy "${{ secrets.DEPLOY_HOST }}:/tmp/design-block.caddy"
           ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" MODE='${{ inputs.mode }}' 'bash -s' <<'REMOTE'
           set -euo pipefail

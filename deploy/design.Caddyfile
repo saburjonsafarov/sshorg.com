@@ -1,7 +1,5 @@
 # >>> design.sshorg.com — источник: репо sshorg.com, deploy/design.Caddyfile; применяет .github/workflows/design-headers.yml
-design.sshorg.com {
-	root * /srv/sshorg/design
-	encode zstd gzip
+(design_sshorg_headers) {
 	header {
 		Strict-Transport-Security "max-age=31536000"
 		X-Content-Type-Options "nosniff"
@@ -13,12 +11,20 @@ design.sshorg.com {
 		__CSP_HEADER__ "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests"
 		-Server
 	}
+}
+
+design.sshorg.com {
+	root * /srv/sshorg/design
+	encode zstd gzip
+	import design_sshorg_headers
 	@page path / /index.html /404.html
 	header @page Cache-Control "no-cache"
 	file_server
 	handle_errors {
 		@notfound expression `{err.status_code} == 404`
 		handle @notfound {
+			# ответ ошибки собирается заново — заголовки повторяем
+			import design_sshorg_headers
 			root * /srv/sshorg/design
 			rewrite * /404.html
 			file_server

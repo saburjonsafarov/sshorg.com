@@ -21,6 +21,7 @@
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -69,8 +70,9 @@
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -118,8 +120,9 @@
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -258,7 +261,7 @@
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -365,7 +368,7 @@
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -551,7 +554,7 @@
 .ssh-md ol > li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote > * { margin: 0; }
@@ -687,7 +690,7 @@ a{color:var(--accent-text);text-decoration:none} a:hover{text-decoration:underli
 .fact span{color:var(--hero-ink-2);font-size:14px}
 .hero .cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;height:48px;padding:0 22px;border-radius:var(--radius-pill);font-weight:600;font-size:16px}
-.btn.light{background:var(--hero-ink);color:var(--hero)} .btn.blue{background:var(--accent);color:var(--on-accent)}
+.btn.light{background:var(--hero-ink);color:var(--hero)} .btn.blue{background:var(--accent-fill);color:var(--on-accent)}
 .btn:hover{text-decoration:none;opacity:.9}
 
 /* разделы как в документе: синий номер */
@@ -858,7 +861,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
   <p>Набор токенов, компонентов и правил для мобильных и веб-продуктов. Один источник — tokens.json — и из него CSS и Compose Multiplatform для Android, iOS и Desktop.</p>
   <div class="facts">
     <div class="fact"><b>30</b><span>компонентов</span></div>
-    <div class="fact"><b>42</b><span>цветовых токенов × 2 темы</span></div>
+    <div class="fact"><b>43</b><span>цветовых токенов × 2 темы</span></div>
     <div class="fact"><b>27</b><span>стилей текста</span></div>
     <div class="fact"><b>169</b><span>иконок Lucide</span></div>
   </div>
@@ -878,8 +881,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 
 <section id="color">
   <div class="sh"><span class="num">02</span><h2>Цвет</h2></div>
-  <p class="lead">42 семантических токенов. Каждый задан для светлой и тёмной темы — переключите тему наверху, образцы перекрасятся. Значения: светлая · тёмная.</p>
-  <div class="swatches"><div class="sw"><div class="chip" style="background:var(--bg)"></div><div class="sw-name">bg</div><div class="sw-val">#FFFFFF · #000000</div><div class="sw-use">Фон экрана (как лист документа). На нём текст <code>ink</code>, <code>ink-2</code>, <code>accent-text</code>.</div></div><div class="sw"><div class="chip" style="background:var(--surface)"></div><div class="sw-name">surface</div><div class="sw-val">#F5F5F7 · #1D1D1F</div><div class="sw-use">Острова и карточки — серая подложка, как острова в документах. Весь текст читается.</div></div><div class="sw"><div class="chip" style="background:var(--surface-2)"></div><div class="sw-name">surface-2</div><div class="sw-val">#E8E8ED · #2C2C2E</div><div class="sw-use">Утопленные зоны и вторичные кнопки: сегмент, чип, круглая кнопка, скелетон. Текст на нём только <code>ink</code> (не <code>ink-2</code>).</div></div><div class="sw"><div class="chip" style="background:var(--elevated)"></div><div class="sw-name">elevated</div><div class="sw-val">#FFFFFF · #1D1D1F</div><div class="sw-use">Поднятая поверхность над <code>scrim</code>: нижний лист, диалог. В тёмной теме светлее <code>bg</code>, иначе лист сливается с затемнением.</div></div><div class="sw"><div class="chip" style="background:var(--elevated-fill)"></div><div class="sw-name">elevated-fill</div><div class="sw-val">#F5F5F7 · #2C2C2E</div><div class="sw-use">Круг иконки и заливки внутри <code>elevated</code> (в тёмной теме <code>surface</code> совпал бы с листом).</div></div><div class="sw"><div class="chip" style="background:var(--glass)"></div><div class="sw-name">glass</div><div class="sw-val">#FFFFFFB8 · #1D1D1FB8</div><div class="sw-use">Стеклянный остров (таб-бар, тулбар) поверх контента, всегда вместе с <code>blur-*</code>.</div></div><div class="sw"><div class="chip" style="background:var(--line)"></div><div class="sw-name">line</div><div class="sw-val">#D2D2D7 · #38383A</div><div class="sw-use">Линии таблиц, разделители строк — декоративные.</div></div><div class="sw"><div class="chip" style="background:var(--line-strong)"></div><div class="sw-name">line-strong</div><div class="sw-val">#86868B · #7C7C80</div><div class="sw-use">Рамка поля, outline-кнопки, свитча: 3:1 на <code>bg</code> и <code>surface</code> в обеих темах.</div></div><div class="sw"><div class="chip" style="background:var(--ink)"></div><div class="sw-name">ink</div><div class="sw-val">#1D1D1F · #F5F5F7</div><div class="sw-use">Основной текст и иконки на любой поверхности.</div></div><div class="sw"><div class="chip" style="background:var(--ink-2)"></div><div class="sw-name">ink-2</div><div class="sw-val">#6E6E73 · #86868B</div><div class="sw-use">Второстепенный текст, подписи, плейсхолдер на <code>bg</code> и <code>surface</code>. На <code>surface-2</code> не ставить.</div></div><div class="sw"><div class="chip" style="background:var(--ink-3)"></div><div class="sw-name">ink-3</div><div class="sw-val">#86868B · #6E6E73</div><div class="sw-use">Только disabled-текст и декоративные иконки. Для обычного текста не использовать.</div></div><div class="sw"><div class="chip" style="background:var(--accent)"></div><div class="sw-name">accent</div><div class="sw-val">#0071E3 · #2997FF</div><div class="sw-use">Синий — единственный цвет. Номера разделов, включённый свитч, прогресс, фокус, акцентная кнопка (редко). Как текст — только на <code>bg</code>; иначе <code>accent-text</code>.</div></div><div class="sw"><div class="chip" style="background:var(--accent-pressed)"></div><div class="sw-name">accent-pressed</div><div class="sw-val">#0058B0 · #6CB4FF</div><div class="sw-use">Нажатое состояние <code>accent</code>-заливки.</div></div><div class="sw"><div class="chip" style="background:var(--on-accent)"></div><div class="sw-name">on-accent</div><div class="sw-val">#FFFFFF · #000000</div><div class="sw-use">Текст и иконки на <code>accent</code> и <code>accent-pressed</code> (в тёмной теме чёрный).</div></div><div class="sw"><div class="chip" style="background:var(--accent-soft)"></div><div class="sw-name">accent-soft</div><div class="sw-val">#EAF3FE · #0B2A4A</div><div class="sw-use">Выделенный остров (важная оговорка), информационный алерт.</div></div><div class="sw"><div class="chip" style="background:var(--accent-ink)"></div><div class="sw-name">accent-ink</div><div class="sw-val">#0058B0 · #8EC5FF</div><div class="sw-use">Текст на <code>accent-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--accent-text)"></div><div class="sw-name">accent-text</div><div class="sw-val">#0066CC · #2997FF</div><div class="sw-use">Ссылки и ghost-кнопки на любой поверхности (<code>bg</code>, <code>surface</code>, <code>surface-2</code>).</div></div><div class="sw"><div class="chip" style="background:var(--danger)"></div><div class="sw-name">danger</div><div class="sw-val">#C42121 · #FF6B6B</div><div class="sw-use">Ошибка: текст ошибки, рамка поля с ошибкой, деструктивная кнопка. Всегда с иконкой или словом.</div></div><div class="sw"><div class="chip" style="background:var(--danger-soft)"></div><div class="sw-name">danger-soft</div><div class="sw-val">#FBE9E9 · #3A1416</div><div class="sw-use">Фон алерта и тоста ошибки.</div></div><div class="sw"><div class="chip" style="background:var(--danger-ink)"></div><div class="sw-name">danger-ink</div><div class="sw-val">#841717 · #FFA3A3</div><div class="sw-use">Текст на <code>danger-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--success)"></div><div class="sw-name">success</div><div class="sw-val">#12823B · #4CC97A</div><div class="sw-use">Успех: иконка, индикатор, знак «+» у сумм. Всегда с иконкой или словом.</div></div><div class="sw"><div class="chip" style="background:var(--success-soft)"></div><div class="sw-name">success-soft</div><div class="sw-val">#E8F6ED · #0F2C1A</div><div class="sw-use">Фон алерта успеха.</div></div><div class="sw"><div class="chip" style="background:var(--success-ink)"></div><div class="sw-name">success-ink</div><div class="sw-val">#0D622C · #8EE0AB</div><div class="sw-use">Текст на <code>success-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--warning)"></div><div class="sw-name">warning</div><div class="sw-val">#C97400 · #FFB249</div><div class="sw-use">Предупреждение: только иконка или полоса, не текст. ≥3:1 на <code>bg</code>, <code>surface</code>, <code>warning-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--warning-soft)"></div><div class="sw-name">warning-soft</div><div class="sw-val">#FFF5E8 · #33220A</div><div class="sw-use">Фон алерта предупреждения.</div></div><div class="sw"><div class="chip" style="background:var(--warning-ink)"></div><div class="sw-name">warning-ink</div><div class="sw-val">#7A4A0C · #FFD08A</div><div class="sw-use">Текст на <code>warning-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--info-soft)"></div><div class="sw-name">info-soft</div><div class="sw-val">{accent-soft} · {accent-soft}</div><div class="sw-use">Информационный алерт = выделенный остров <code>accent-soft</code> (отдельного синего нет, чтобы не спорить с акцентом).</div></div><div class="sw"><div class="chip" style="background:var(--info-ink)"></div><div class="sw-name">info-ink</div><div class="sw-val">{accent-ink} · {accent-ink}</div><div class="sw-use">Текст информационного алерта.</div></div><div class="sw"><div class="chip" style="background:var(--knob)"></div><div class="sw-name">knob</div><div class="sw-val">#FFFFFF · #F5F5F7</div><div class="sw-use">Бегунок свитча: всегда светлый, в обеих темах.</div></div><div class="sw"><div class="chip" style="background:var(--disabled-bg)"></div><div class="sw-name">disabled-bg</div><div class="sw-val">#E8E8ED · #2C2C2E</div><div class="sw-use">Заливка неактивной кнопки и поля.</div></div><div class="sw"><div class="chip" style="background:var(--disabled-ink)"></div><div class="sw-name">disabled-ink</div><div class="sw-val">#AEAEB2 · #636366</div><div class="sw-use">Текст неактивного контрола (WCAG не требует контраста для disabled).</div></div><div class="sw"><div class="chip" style="background:var(--scrim)"></div><div class="sw-name">scrim</div><div class="sw-val">#00000066 · #000000A3</div><div class="sw-use">Затемнение под листом и диалогом.</div></div><div class="sw"><div class="chip" style="background:var(--primary)"></div><div class="sw-name">primary</div><div class="sw-val">{ink} · {ink}</div><div class="sw-use">Главная кнопка (CTA): чёрная капсула в светлой теме, светлая в тёмной — как тёмный CTA-остров документа.</div></div><div class="sw"><div class="chip" style="background:var(--primary-pressed)"></div><div class="sw-name">primary-pressed</div><div class="sw-val">#424245 · #D2D2D7</div><div class="sw-use">Нажатое состояние <code>primary</code>.</div></div><div class="sw"><div class="chip" style="background:var(--on-primary)"></div><div class="sw-name">on-primary</div><div class="sw-val">{bg} · {bg}</div><div class="sw-use">Текст и иконки на <code>primary</code> и <code>primary-pressed</code>.</div></div><div class="sw"><div class="chip" style="background:var(--inverse)"></div><div class="sw-name">inverse</div><div class="sw-val">#1D1D1F · #F5F5F7</div><div class="sw-use">Тост и выбранный чип: инверсия темы.</div></div><div class="sw"><div class="chip" style="background:var(--on-inverse)"></div><div class="sw-name">on-inverse</div><div class="sw-val">#F5F5F7 · #1D1D1F</div><div class="sw-use">Текст на <code>inverse</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero)"></div><div class="sw-name">hero</div><div class="sw-val">#000000 · #1D1D1F</div><div class="sw-use">Чёрная обложка-герой (как обложка документа). В тёмной теме приподнята до <code>#1D1D1F</code>, чтобы не слиться с фоном.</div></div><div class="sw"><div class="chip" style="background:var(--hero-2)"></div><div class="sw-name">hero-2</div><div class="sw-val">#1D1D1F · #2C2C2E</div><div class="sw-use">Карточки-факты на <code>hero</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero-ink)"></div><div class="sw-name">hero-ink</div><div class="sw-val">#F5F5F7 · #F5F5F7</div><div class="sw-use">Заголовок и цифры на <code>hero</code> и <code>hero-2</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero-ink-2)"></div><div class="sw-name">hero-ink-2</div><div class="sw-val">#A1A1A6 · #98989D</div><div class="sw-use">Подзаголовок и подписи на <code>hero</code> и <code>hero-2</code> (≥4,8:1).</div></div><div class="sw"><div class="chip" style="background:var(--hero-line)"></div><div class="sw-name">hero-line</div><div class="sw-val">#424245 · #48484A</div><div class="sw-use">Обводка капсулы-метки на <code>hero</code>, декоративная.</div></div></div>
+  <p class="lead">43 семантических токенов. Каждый задан для светлой и тёмной темы — переключите тему наверху, образцы перекрасятся. Значения: светлая · тёмная.</p>
+  <div class="swatches"><div class="sw"><div class="chip" style="background:var(--bg)"></div><div class="sw-name">bg</div><div class="sw-val">#FFFFFF · #000000</div><div class="sw-use">Фон экрана (как лист документа). На нём текст <code>ink</code>, <code>ink-2</code>, <code>accent-text</code>.</div></div><div class="sw"><div class="chip" style="background:var(--surface)"></div><div class="sw-name">surface</div><div class="sw-val">#F5F5F7 · #1D1D1F</div><div class="sw-use">Острова и карточки — серая подложка, как острова в документах. Весь текст читается.</div></div><div class="sw"><div class="chip" style="background:var(--surface-2)"></div><div class="sw-name">surface-2</div><div class="sw-val">#E8E8ED · #2C2C2E</div><div class="sw-use">Утопленные зоны и вторичные кнопки: сегмент, чип, круглая кнопка, скелетон. Текст на нём только <code>ink</code> (не <code>ink-2</code>).</div></div><div class="sw"><div class="chip" style="background:var(--elevated)"></div><div class="sw-name">elevated</div><div class="sw-val">#FFFFFF · #1D1D1F</div><div class="sw-use">Поднятая поверхность над <code>scrim</code>: нижний лист, диалог. В тёмной теме светлее <code>bg</code>, иначе лист сливается с затемнением.</div></div><div class="sw"><div class="chip" style="background:var(--elevated-fill)"></div><div class="sw-name">elevated-fill</div><div class="sw-val">#F5F5F7 · #2C2C2E</div><div class="sw-use">Круг иконки и заливки внутри <code>elevated</code> (в тёмной теме <code>surface</code> совпал бы с листом).</div></div><div class="sw"><div class="chip" style="background:var(--glass)"></div><div class="sw-name">glass</div><div class="sw-val">#FFFFFFB8 · #1D1D1FB8</div><div class="sw-use">Стеклянный остров (таб-бар, тулбар) поверх контента, всегда вместе с <code>blur-*</code>.</div></div><div class="sw"><div class="chip" style="background:var(--line)"></div><div class="sw-name">line</div><div class="sw-val">#D2D2D7 · #38383A</div><div class="sw-use">Линии таблиц, разделители строк — декоративные.</div></div><div class="sw"><div class="chip" style="background:var(--line-strong)"></div><div class="sw-name">line-strong</div><div class="sw-val">#86868B · #7C7C80</div><div class="sw-use">Рамка поля, outline-кнопки, свитча: 3:1 на <code>bg</code> и <code>surface</code> в обеих темах.</div></div><div class="sw"><div class="chip" style="background:var(--ink)"></div><div class="sw-name">ink</div><div class="sw-val">#1D1D1F · #F5F5F7</div><div class="sw-use">Основной текст и иконки на любой поверхности.</div></div><div class="sw"><div class="chip" style="background:var(--ink-2)"></div><div class="sw-name">ink-2</div><div class="sw-val">#6E6E73 · #86868B</div><div class="sw-use">Второстепенный текст, подписи, плейсхолдер на <code>bg</code> и <code>surface</code>. На <code>surface-2</code> не ставить.</div></div><div class="sw"><div class="chip" style="background:var(--ink-3)"></div><div class="sw-name">ink-3</div><div class="sw-val">#86868B · #6E6E73</div><div class="sw-use">Только disabled-текст и декоративные иконки. Для обычного текста не использовать.</div></div><div class="sw"><div class="chip" style="background:var(--accent)"></div><div class="sw-name">accent</div><div class="sw-val">#0071E3 · #2997FF</div><div class="sw-use">Синий — единственный цвет. Номера разделов, включённый свитч, прогресс, фокус — без текста поверх. Под текст — <code>accent-fill</code>. Как текст — только на <code>bg</code>; иначе <code>accent-text</code>.</div></div><div class="sw"><div class="chip" style="background:var(--accent-fill)"></div><div class="sw-name">accent-fill</div><div class="sw-val">#0071E3 · #0071E3</div><div class="sw-use">Заливка с текстом: акцентная кнопка, акцентный лид строки, отмеченный чекбокс. В обеих темах одна — белый текст читается (≥ 4,5:1); светлый <code>accent</code> тёмной темы под текст не годится.</div></div><div class="sw"><div class="chip" style="background:var(--accent-pressed)"></div><div class="sw-name">accent-pressed</div><div class="sw-val">#0058B0 · #0058B0</div><div class="sw-use">Нажатое состояние <code>accent-fill</code>.</div></div><div class="sw"><div class="chip" style="background:var(--on-accent)"></div><div class="sw-name">on-accent</div><div class="sw-val">#FFFFFF · #FFFFFF</div><div class="sw-use">Текст и иконки на <code>accent-fill</code> и <code>accent-pressed</code> — белый в обеих темах.</div></div><div class="sw"><div class="chip" style="background:var(--accent-soft)"></div><div class="sw-name">accent-soft</div><div class="sw-val">#EAF3FE · #0B2A4A</div><div class="sw-use">Выделенный остров (важная оговорка), информационный алерт.</div></div><div class="sw"><div class="chip" style="background:var(--accent-ink)"></div><div class="sw-name">accent-ink</div><div class="sw-val">#0058B0 · #8EC5FF</div><div class="sw-use">Текст на <code>accent-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--accent-text)"></div><div class="sw-name">accent-text</div><div class="sw-val">#0066CC · #2997FF</div><div class="sw-use">Ссылки и ghost-кнопки на любой поверхности (<code>bg</code>, <code>surface</code>, <code>surface-2</code>).</div></div><div class="sw"><div class="chip" style="background:var(--danger)"></div><div class="sw-name">danger</div><div class="sw-val">#C42121 · #FF6B6B</div><div class="sw-use">Ошибка: текст ошибки, рамка поля с ошибкой, деструктивная кнопка. Всегда с иконкой или словом.</div></div><div class="sw"><div class="chip" style="background:var(--danger-soft)"></div><div class="sw-name">danger-soft</div><div class="sw-val">#FBE9E9 · #3A1416</div><div class="sw-use">Фон алерта и тоста ошибки.</div></div><div class="sw"><div class="chip" style="background:var(--danger-ink)"></div><div class="sw-name">danger-ink</div><div class="sw-val">#841717 · #FFA3A3</div><div class="sw-use">Текст на <code>danger-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--success)"></div><div class="sw-name">success</div><div class="sw-val">#12823B · #4CC97A</div><div class="sw-use">Успех: иконка, индикатор, знак «+» у сумм. Всегда с иконкой или словом.</div></div><div class="sw"><div class="chip" style="background:var(--success-soft)"></div><div class="sw-name">success-soft</div><div class="sw-val">#E8F6ED · #0F2C1A</div><div class="sw-use">Фон алерта успеха.</div></div><div class="sw"><div class="chip" style="background:var(--success-ink)"></div><div class="sw-name">success-ink</div><div class="sw-val">#0D622C · #8EE0AB</div><div class="sw-use">Текст на <code>success-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--warning)"></div><div class="sw-name">warning</div><div class="sw-val">#C97400 · #FFB249</div><div class="sw-use">Предупреждение: только иконка или полоса, не текст. ≥3:1 на <code>bg</code>, <code>surface</code>, <code>warning-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--warning-soft)"></div><div class="sw-name">warning-soft</div><div class="sw-val">#FFF5E8 · #33220A</div><div class="sw-use">Фон алерта предупреждения.</div></div><div class="sw"><div class="chip" style="background:var(--warning-ink)"></div><div class="sw-name">warning-ink</div><div class="sw-val">#7A4A0C · #FFD08A</div><div class="sw-use">Текст на <code>warning-soft</code>.</div></div><div class="sw"><div class="chip" style="background:var(--info-soft)"></div><div class="sw-name">info-soft</div><div class="sw-val">{accent-soft} · {accent-soft}</div><div class="sw-use">Информационный алерт = выделенный остров <code>accent-soft</code> (отдельного синего нет, чтобы не спорить с акцентом).</div></div><div class="sw"><div class="chip" style="background:var(--info-ink)"></div><div class="sw-name">info-ink</div><div class="sw-val">{accent-ink} · {accent-ink}</div><div class="sw-use">Текст информационного алерта.</div></div><div class="sw"><div class="chip" style="background:var(--knob)"></div><div class="sw-name">knob</div><div class="sw-val">#FFFFFF · #F5F5F7</div><div class="sw-use">Бегунок свитча: всегда светлый, в обеих темах.</div></div><div class="sw"><div class="chip" style="background:var(--disabled-bg)"></div><div class="sw-name">disabled-bg</div><div class="sw-val">#E8E8ED · #2C2C2E</div><div class="sw-use">Заливка неактивной кнопки и поля.</div></div><div class="sw"><div class="chip" style="background:var(--disabled-ink)"></div><div class="sw-name">disabled-ink</div><div class="sw-val">#AEAEB2 · #636366</div><div class="sw-use">Текст неактивного контрола (WCAG не требует контраста для disabled).</div></div><div class="sw"><div class="chip" style="background:var(--scrim)"></div><div class="sw-name">scrim</div><div class="sw-val">#00000066 · #000000A3</div><div class="sw-use">Затемнение под листом и диалогом.</div></div><div class="sw"><div class="chip" style="background:var(--primary)"></div><div class="sw-name">primary</div><div class="sw-val">{ink} · {ink}</div><div class="sw-use">Главная кнопка (CTA): чёрная капсула в светлой теме, светлая в тёмной — как тёмный CTA-остров документа.</div></div><div class="sw"><div class="chip" style="background:var(--primary-pressed)"></div><div class="sw-name">primary-pressed</div><div class="sw-val">#424245 · #D2D2D7</div><div class="sw-use">Нажатое состояние <code>primary</code>.</div></div><div class="sw"><div class="chip" style="background:var(--on-primary)"></div><div class="sw-name">on-primary</div><div class="sw-val">{bg} · {bg}</div><div class="sw-use">Текст и иконки на <code>primary</code> и <code>primary-pressed</code>.</div></div><div class="sw"><div class="chip" style="background:var(--inverse)"></div><div class="sw-name">inverse</div><div class="sw-val">#1D1D1F · #F5F5F7</div><div class="sw-use">Тост и выбранный чип: инверсия темы.</div></div><div class="sw"><div class="chip" style="background:var(--on-inverse)"></div><div class="sw-name">on-inverse</div><div class="sw-val">#F5F5F7 · #1D1D1F</div><div class="sw-use">Текст на <code>inverse</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero)"></div><div class="sw-name">hero</div><div class="sw-val">#000000 · #1D1D1F</div><div class="sw-use">Чёрная обложка-герой (как обложка документа). В тёмной теме приподнята до <code>#1D1D1F</code>, чтобы не слиться с фоном.</div></div><div class="sw"><div class="chip" style="background:var(--hero-2)"></div><div class="sw-name">hero-2</div><div class="sw-val">#1D1D1F · #2C2C2E</div><div class="sw-use">Карточки-факты на <code>hero</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero-ink)"></div><div class="sw-name">hero-ink</div><div class="sw-val">#F5F5F7 · #F5F5F7</div><div class="sw-use">Заголовок и цифры на <code>hero</code> и <code>hero-2</code>.</div></div><div class="sw"><div class="chip" style="background:var(--hero-ink-2)"></div><div class="sw-name">hero-ink-2</div><div class="sw-val">#A1A1A6 · #98989D</div><div class="sw-use">Подзаголовок и подписи на <code>hero</code> и <code>hero-2</code> (≥4,8:1).</div></div><div class="sw"><div class="chip" style="background:var(--hero-line)"></div><div class="sw-name">hero-line</div><div class="sw-val">#424245 · #48484A</div><div class="sw-use">Обводка капсулы-метки на <code>hero</code>, декоративная.</div></div></div>
 </section>
 
 <section id="type">
@@ -944,7 +947,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
       <div class="island st-live"><h3>Попробуйте</h3><p class="mo-note">Наведите, нажмите и подержите, пройдите Tab-ом.</p>
         <div class="st-try"><button class="ssh-btn l primary">Продолжить</button><button class="ssh-btn l secondary">Отложить</button><button class="ssh-btn m ghost">Не сейчас</button><button class="ssh-chip">Важные</button><button class="ssh-iconbtn" aria-label="Уведомления"><svg class="ssh-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></button><span class="ssh-switch on" role="switch" aria-checked="true" tabindex="0"></span></div>
       </div>
-      <div class="island st-live"><h3>Контраст текста</h3><p class="mo-note">WCAG, слой поверх фона учтён. Норма для текста — 4,5.</p><table class="st-contrast"><tr><th></th><th>Светлая: покой · ховер · нажатие</th><th>Тёмная: покой · ховер · нажатие</th></tr><tr><th>Primary</th><td class="ok">16.8 · 13.2 · 10.0</td><td class="ok">19.3 · 16.6 · 13.9</td></tr><tr><th>Accent</th><td class="ok">4.7 · 5.7 · 6.9</td><td class="ok">7.0 · 8.2 · 9.6</td></tr><tr><th>Secondary / Chip</th><td class="ok">13.8 · 12.3 · 10.9</td><td class="ok">12.8 · 10.7 · 8.9</td></tr><tr><th>Ghost</th><td class="ok">5.6 · 5.1 · 4.7</td><td class="ok">7.0 · 6.6 · 6.3</td></tr><tr><th>Danger</th><td class="ok">5.9 · 5.3 · 4.8</td><td class="ok">7.6 · 7.2 · 6.7</td></tr></table></div>
+      <div class="island st-live"><h3>Контраст текста</h3><p class="mo-note">WCAG, слой поверх фона учтён. Норма для текста — 4,5.</p><table class="st-contrast"><tr><th></th><th>Светлая: покой · ховер · нажатие</th><th>Тёмная: покой · ховер · нажатие</th></tr><tr><th>Primary</th><td class="ok">16.8 · 13.2 · 10.0</td><td class="ok">19.3 · 16.6 · 13.9</td></tr><tr><th>Accent</th><td class="ok">4.7 · 5.7 · 6.9</td><td class="ok">4.7 · 5.7 · 6.9</td></tr><tr><th>Secondary / Chip</th><td class="ok">13.8 · 12.3 · 10.9</td><td class="ok">12.8 · 10.7 · 8.9</td></tr><tr><th>Ghost</th><td class="ok">5.6 · 5.1 · 4.7</td><td class="ok">7.0 · 6.6 · 6.3</td></tr><tr><th>Danger</th><td class="ok">5.9 · 5.3 · 4.8</td><td class="ok">7.6 · 7.2 · 6.7</td></tr></table></div>
     </div>
   </div>
 </section>
@@ -970,6 +973,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -1018,8 +1022,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -1067,8 +1072,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -1207,7 +1213,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -1314,7 +1320,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -1500,7 +1506,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-2);f
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -2136,6 +2142,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -2184,8 +2191,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -2233,8 +2241,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -2373,7 +2382,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -2480,7 +2489,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -2666,7 +2675,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -3300,6 +3309,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -3348,8 +3358,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -3397,8 +3408,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -3537,7 +3549,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -3644,7 +3656,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -3830,7 +3842,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -4464,6 +4476,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -4512,8 +4525,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -4561,8 +4575,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -4701,7 +4716,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -4808,7 +4823,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -4994,7 +5009,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -5628,6 +5643,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -5676,8 +5692,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -5725,8 +5742,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -5865,7 +5883,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -5972,7 +5990,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -6158,7 +6176,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -6796,6 +6814,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -6844,8 +6863,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -6893,8 +6913,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -7033,7 +7054,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -7140,7 +7161,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -7326,7 +7347,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -7964,6 +7985,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -8012,8 +8034,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -8061,8 +8084,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -8201,7 +8225,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -8308,7 +8332,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -8494,7 +8518,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -9133,6 +9157,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -9181,8 +9206,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -9230,8 +9256,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -9370,7 +9397,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -9477,7 +9504,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -9663,7 +9690,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -10297,6 +10324,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -10345,8 +10373,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -10394,8 +10423,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -10534,7 +10564,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -10641,7 +10671,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -10827,7 +10857,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -11470,6 +11500,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -11518,8 +11549,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -11567,8 +11599,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -11707,7 +11740,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -11814,7 +11847,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -12000,7 +12033,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -12634,6 +12667,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -12682,8 +12716,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -12731,8 +12766,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -12871,7 +12907,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -12978,7 +13014,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -13164,7 +13200,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -13803,6 +13839,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -13851,8 +13888,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -13900,8 +13938,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -14040,7 +14079,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -14147,7 +14186,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -14333,7 +14372,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -14970,6 +15009,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -15018,8 +15058,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -15067,8 +15108,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -15207,7 +15249,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -15314,7 +15356,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -15500,7 +15542,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -16137,6 +16179,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -16185,8 +16228,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -16234,8 +16278,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -16374,7 +16419,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -16481,7 +16526,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -16667,7 +16712,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -17302,6 +17347,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -17350,8 +17396,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -17399,8 +17446,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -17539,7 +17587,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -17646,7 +17694,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -17832,7 +17880,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -18501,6 +18549,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -18549,8 +18598,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -18598,8 +18648,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -18738,7 +18789,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -18845,7 +18896,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -19031,7 +19082,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -19689,6 +19740,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -19737,8 +19789,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -19786,8 +19839,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -19926,7 +19980,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -20033,7 +20087,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -20219,7 +20273,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -20858,6 +20912,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -20906,8 +20961,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -20955,8 +21011,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -21095,7 +21152,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -21202,7 +21259,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -21388,7 +21445,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -22027,6 +22084,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -22075,8 +22133,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -22124,8 +22183,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -22264,7 +22324,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -22371,7 +22431,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -22557,7 +22617,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -23195,6 +23255,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -23243,8 +23304,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -23292,8 +23354,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -23432,7 +23495,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -23539,7 +23602,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -23725,7 +23788,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -24368,6 +24431,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -24416,8 +24480,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -24465,8 +24530,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -24605,7 +24671,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -24712,7 +24778,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -24898,7 +24964,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -25541,6 +25607,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -25589,8 +25656,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -25638,8 +25706,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -25778,7 +25847,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -25885,7 +25954,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -26071,7 +26140,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -26717,6 +26786,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -26765,8 +26835,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -26814,8 +26885,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -26954,7 +27026,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -27061,7 +27133,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -27247,7 +27319,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -27884,6 +27956,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -27932,8 +28005,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -27981,8 +28055,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -28121,7 +28196,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -28228,7 +28303,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -28414,7 +28489,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -29048,6 +29123,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -29096,8 +29172,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -29145,8 +29222,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -29285,7 +29363,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -29392,7 +29470,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -29578,7 +29656,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -30215,6 +30293,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -30263,8 +30342,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -30312,8 +30392,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -30452,7 +30533,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -30559,7 +30640,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -30745,7 +30826,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -31384,6 +31465,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -31432,8 +31514,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -31481,8 +31564,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -31621,7 +31705,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -31728,7 +31812,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -31914,7 +31998,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -32551,6 +32635,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -32599,8 +32684,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -32648,8 +32734,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -32788,7 +32875,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -32895,7 +32982,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -33081,7 +33168,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -33716,6 +33803,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -33764,8 +33852,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -33813,8 +33902,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -33953,7 +34043,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -34060,7 +34150,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -34246,7 +34336,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }
@@ -34887,6 +34977,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #6e6e73;
   --ink-3: #86868b;
   --accent: #0071e3;
+  --accent-fill: #0071e3;
   --accent-pressed: #0058b0;
   --on-accent: #ffffff;
   --accent-soft: #eaf3fe;
@@ -34935,8 +35026,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -34984,8 +35076,9 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   --ink-2: #86868b;
   --ink-3: #6e6e73;
   --accent: #2997ff;
-  --accent-pressed: #6cb4ff;
-  --on-accent: #000000;
+  --accent-fill: #0071e3;
+  --accent-pressed: #0058b0;
+  --on-accent: #ffffff;
   --accent-soft: #0b2a4a;
   --accent-ink: #8ec5ff;
   --accent-text: #2997ff;
@@ -35124,7 +35217,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-btn.block { width: 100%; }
 .ssh-btn.primary { background: var(--primary); color: var(--on-primary); }
 .ssh-btn.primary.pressed { background: var(--primary-pressed); }
-.ssh-btn.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-btn.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-btn.accent.pressed { background: var(--accent-pressed); }
 .ssh-btn.secondary { background: var(--surface-2); color: var(--ink); }
 .ssh-btn.ghost { background: transparent; color: var(--accent-text); }
@@ -35231,7 +35324,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-list { background: var(--surface); border-radius: var(--radius-22); overflow: hidden; }
 .ssh-row { display: flex; align-items: center; gap: var(--space-12); padding: 0 var(--space-16); min-height: 60px; }
 .ssh-row-lead { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: var(--radius-12); background: var(--primary); color: var(--on-primary); }
-.ssh-row-lead.accent { background: var(--accent); color: var(--on-accent); }
+.ssh-row-lead.accent { background: var(--accent-fill); color: var(--on-accent); }
 .ssh-row-lead.soft { background: var(--bg); color: var(--ink); }
 .ssh-row-body { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-12); align-self: stretch; padding: var(--space-12) 0; }
 .ssh-row + .ssh-row .ssh-row-body { box-shadow: inset 0 1px 0 var(--line); }
@@ -35417,7 +35510,7 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
 .ssh-md ol &gt; li::marker { font-family: var(--font-mono); }
 .ssh-md li.task-list-item { list-style: none; margin-left: calc(-1 * var(--space-24)); display: flex; gap: var(--space-8); align-items: flex-start; }
 .ssh-md .task-list-item-checkbox { appearance: none; flex: none; width: 18px; height: 18px; margin: 3px 0 0; border: 2px solid var(--line-strong); border-radius: var(--radius-6); }
-.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
+.ssh-md .task-list-item-checkbox:checked { border: 0; background: var(--accent-fill) url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 24 24&#x27; fill=&#x27;none&#x27; stroke=&#x27;white&#x27; stroke-width=&#x27;3&#x27; stroke-linecap=&#x27;round&#x27; stroke-linejoin=&#x27;round&#x27;%3E%3Cpath d=&#x27;M20 6 9 17l-5-5&#x27;/%3E%3C/svg%3E&quot;) center / 14px no-repeat; }
 .ssh-md li.task-list-item:has(:checked) { color: var(--ink-2); text-decoration: line-through; }
 .ssh-md blockquote { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-22); padding: var(--space-16) var(--space-20); display: flex; flex-direction: column; gap: var(--space-8); }
 .ssh-md blockquote &gt; * { margin: 0; }

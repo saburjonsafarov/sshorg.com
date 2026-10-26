@@ -55,18 +55,23 @@ jobs:
       - name: Add site block, validate, reload
         if: ${{ inputs.apply }}
         run: |
-          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' 'bash -s' <<'REMOTE'
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" 'bash -s' <<'REMOTE'
           set -euo pipefail
-          CF=/etc/caddy/Caddyfile
+          # Caddy работает в контейнере проекта Sartarosh; Caddyfile примонтирован с хоста,
+          # каталог сайта sshorg.com виден в контейнере как /srv/sshorg.
+          C=sartarosh-caddy-1
+          CF=/root/Sartarosh/Caddyfile
           test -f "$CF" || { echo "no $CF"; exit 1; }
+          git -C /root/Sartarosh status --short -- Caddyfile 2>/dev/null || true
           if grep -q '^design\.sshorg\.com' "$CF"; then echo "block already present"; exit 0; fi
-          ROOT="$(readlink -f "$DEPLOY_PATH")/design"
-          test -f "$ROOT/index.html" || { echo "no $ROOT/index.html"; exit 1; }
-          cp "$CF" "$CF.bak-design-$(date +%Y%m%d%H%M%S)"
-          cat >> "$CF" <<BLOCK
+          docker exec "$C" test -f /srv/sshorg/design/index.html || { echo "no /srv/sshorg/design/index.html in $C"; exit 1; }
+          BAK="$CF.bak-design-$(date +%Y%m%d%H%M%S)"
+          cp "$CF" "$BAK"
+          cat >> "$CF" <<'BLOCK'
 
+          # SSH Design System docs (sshorg.com repo, site/design/).
           design.sshorg.com {
-          	root * $ROOT
+          	root * /srv/sshorg/design
           	encode zstd gzip
           	header {
           		Strict-Transport-Security "max-age=31536000"
@@ -77,12 +82,12 @@ jobs:
           	file_server
           }
           BLOCK
-          if ! caddy validate --config "$CF" --adapter caddyfile; then
-            cp "$(ls -t "$CF".bak-design-* | head -1)" "$CF"
-            echo "validate failed, restored backup"; exit 1
+          if ! docker exec "$C" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile; then
+            cat "$BAK" > "$CF"
+            echo "validate failed, restored $BAK"; exit 1
           fi
-          systemctl reload caddy
-          echo "reloaded"
+          docker exec "$C" caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+          echo "reloaded; backup at $BAK"
           REMOTE
 
       - name: Smoke check

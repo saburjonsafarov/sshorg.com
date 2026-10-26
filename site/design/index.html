@@ -626,7 +626,10 @@ a{color:var(--accent-text);text-decoration:none} a:hover{text-decoration:underli
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.3px;color:var(--ink);white-space:nowrap}
 .brand svg{width:32px;height:32px;border-radius:9px /* token-ok: форма монограммы-логотипа */}
 .brand svg rect{fill:var(--ink)} .brand svg text{fill:var(--bg)}
-.links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+@property --fade-l{syntax:'<length>';inherits:false;initial-value:0px}
+@property --fade-r{syntax:'<length>';inherits:false;initial-value:0px}
+.links{position:relative;display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--fade-l),#000 calc(100% - var(--fade-r)),transparent);mask-image:linear-gradient(90deg,transparent,#000 var(--fade-l),#000 calc(100% - var(--fade-r)),transparent);transition:--fade-l var(--duration-base) var(--ease-standard),--fade-r var(--duration-base) var(--ease-standard)}
+.links.fade-l{--fade-l:40px}.links.fade-r{--fade-r:40px}
 .links::-webkit-scrollbar{display:none}
 .links a{color:var(--ink-2);font-size:14px;font-weight:500;padding:8px 12px;border-radius:var(--radius-pill);white-space:nowrap}
 .links a:hover{color:var(--ink);background:var(--surface);text-decoration:none}
@@ -652,7 +655,8 @@ a{color:var(--accent-text);text-decoration:none} a:hover{text-decoration:underli
 /* разделы как в документе: синий номер */
 section{margin:0 0 80px}
 .sh{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
-.sh .num{color:var(--accent);font-size:24px;font-weight:700;letter-spacing:-.5px}
+/* номер раздела — тем же кеглем, что заголовок (как SshSectionHeader): меньший номер выглядел опечаткой */
+.sh .num{color:var(--accent);font-size:clamp(28px,4vw,40px);line-height:1.1;font-weight:700;letter-spacing:-1.2px;font-variant-numeric:tabular-nums}
 .sh h2{font-size:clamp(28px,4vw,40px);line-height:1.1;letter-spacing:-1.2px;margin:0}
 .lead{color:var(--ink-2);font-size:17px;line-height:26px;max-width:720px;margin:0 0 28px}
 .island{background:var(--surface);border-radius:var(--radius-22);padding:24px}
@@ -35031,8 +35035,22 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
   var saved = null; try { saved = localStorage.getItem('ssh-theme'); } catch (e) {}
   if (saved) apply(saved);
 
+  var navStrip = document.querySelector('.links');
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('.links a'));
   var sections = navLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  var lastCurrent = -1;
+  function stripEdges() {
+    var max = navStrip.scrollWidth - navStrip.clientWidth;
+    navStrip.classList.toggle('fade-l', navStrip.scrollLeft > 1);
+    navStrip.classList.toggle('fade-r', navStrip.scrollLeft < max - 1);
+  }
+  // Подкручиваем ленту только при смене раздела, чтобы не спорить с ручной прокруткой ленты
+  function revealActive(a) {
+    var left = a.offsetLeft - (navStrip.clientWidth - a.offsetWidth) / 2;
+    navStrip.scrollTo({ left: Math.max(0, left), behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+  }
+  navStrip.addEventListener('scroll', stripEdges, { passive: true });
   function spy() {
     var current = -1;
     sections.forEach(function (sec, i) { if (sec && sec.getBoundingClientRect().top <= 120) current = i; });
@@ -35042,6 +35060,11 @@ input.ssh-field-value::placeholder { color: var(--ink-2); }
       a.classList.toggle('active', on);
       if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
     });
+    if (current !== lastCurrent) {
+      lastCurrent = current;
+      if (current >= 0) revealActive(navLinks[current]);
+    }
+    stripEdges();
   }
   var ticking = false;
   addEventListener('scroll', function () {

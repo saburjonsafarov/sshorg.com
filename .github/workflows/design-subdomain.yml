@@ -4,6 +4,11 @@ name: Design subdomain (Caddy)
 # Запускается вручную после того, как A-запись design → сервер появилась в DNS.
 on:
   workflow_dispatch:
+    inputs:
+      apply:
+        description: "Apply the Caddy change (false = inspect only)"
+        type: boolean
+        default: false
 
 jobs:
   caddy:
@@ -39,6 +44,7 @@ jobs:
           REMOTE
 
       - name: Add site block, validate, reload
+        if: ${{ inputs.apply }}
         run: |
           ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' 'bash -s' <<'REMOTE'
           set -euo pipefail
@@ -71,6 +77,7 @@ jobs:
           REMOTE
 
       - name: Smoke check
+        if: ${{ inputs.apply }}
         run: |
           for i in 1 2 3 4 5 6; do
             code=$(curl -s -o /dev/null -w "%{http_code}" https://design.sshorg.com/ || true)

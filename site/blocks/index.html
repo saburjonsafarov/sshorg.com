@@ -10,52 +10,80 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <meta name="theme-color" content="#ff9a3c">
   <meta property="og:title" content="Блоки 8×8">
-  <meta property="og:description" content="Головоломка из блоков 8×8 для Android: ежедневный пазл, стрик, дуэли и рейтинги.">
+  <meta property="og:description" content="Собирай линии. Один пазл дня для всех. Android, без рекламы.">
   <meta property="og:url" content="https://blocks.sshorg.com/">
+  <meta property="og:image" content="https://blocks.sshorg.com/img/og.png">
   <link rel="stylesheet" href="blocks.css">
   <script src="blocks.js" defer></script>
 </head>
 <body>
 <header class="hero">
-  <div class="bar"><button class="lang" id="lang" type="button"><span lang="ru">English</span><span lang="en">Русский</span></button></div>
-  <img class="icon" src="icon.svg" width="112" height="112" alt="">
-  <h1><span lang="ru">Блоки 8×8</span><span lang="en">Blocks 8×8</span></h1>
-  <p class="lead">
-    <span lang="ru">Ставь фигуры на поле 8×8, собирай полные ряды и столбцы — и не дай полю заполниться.</span>
-    <span lang="en">Place pieces on an 8×8 board, clear full rows and columns, and keep the board from filling up.</span>
-  </p>
-  <div class="actions">
-    <a class="btn" href="https://play.google.com/store/apps/details?id=org.sshorg.blocks" rel="noopener"><span lang="ru">Скачать в Google Play</span><span lang="en">Get it on Google Play</span></a>
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="https://blocks.sshorg.com/"><img src="icon.svg" width="36" height="36" alt=""><span lang="ru">Блоки 8×8</span><span lang="en">Blocks 8×8</span></a>
+      <button class="lang" id="lang" type="button"><span lang="ru">English</span><span lang="en">Русский</span></button>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">🔥 <span lang="ru">Стрик · Комбо · Дуэли</span><span lang="en">Streak · Combo · Duels</span></span>
+        <h1><span lang="ru">Блоки 8×8</span><span lang="en">Blocks 8×8</span></h1>
+        <p class="lead"><span lang="ru">Собирай линии. Один пазл дня для всех. Спокойная головоломка на пару минут или на весь вечер.</span><span lang="en">Clear lines. One daily puzzle for everyone. A calm puzzle for two minutes or the whole evening.</span></p>
+        <div class="actions">
+          <a class="btn" href="https://play.google.com/store/apps/details?id=org.sshorg.blocks" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 5 3.5z"/></svg><span lang="ru">Скачать в Google Play</span><span lang="en">Get it on Google Play</span></a>
+        </div>
+        <p class="note"><span lang="ru">Android · бесплатно · без рекламы</span><span lang="en">Android · free · no ads</span></p>
+      </div>
+      <div class="phones">
+        <div class="phone tilt-l"><img src="img/game.png" width="412" height="915" alt="Поле 8×8 с цветными блоками и счётом 1240"></div>
+        <div class="phone tilt-r"><img src="img/daily.png" width="390" height="768" alt="Ежедневный пазл пройден: 860 из 800, стрик 5"></div>
+      </div>
+    </div>
   </div>
-  <p class="note"><span lang="ru">Android · бесплатно · без рекламы</span><span lang="en">Android · free · no ads</span></p>
 </header>
 <main>
-  <div class="grid">
-    <section class="card">
-      <div class="dot"></div>
-      <h2><span lang="ru">Бесконечный режим</span><span lang="en">Endless mode</span></h2>
-      <p><span lang="ru">Три фигуры на ход, комбо за несколько линий сразу и рекорд, который хочется побить.</span><span lang="en">Three pieces per turn, combos for several lines at once, and a best score to beat.</span></p>
-    </section>
-    <section class="card">
-      <div class="dot"></div>
-      <h2><span lang="ru">Ежедневный пазл</span><span lang="en">Daily puzzle</span></h2>
-      <p><span lang="ru">Новая раздача каждый день и стрик за дни подряд.</span><span lang="en">A new deal every day and a streak for days in a row.</span></p>
-    </section>
-    <section class="card">
-      <div class="dot"></div>
-      <h2><span lang="ru">Дуэли</span><span lang="en">Duels</span></h2>
-      <p><span lang="ru">Отправь другу ссылку «Побей мой счёт»: он сыграет ту же раздачу.</span><span lang="en">Send a friend a “Beat my score” link: they play the very same deal.</span></p>
-    </section>
-    <section class="card">
-      <div class="dot"></div>
-      <h2><span lang="ru">Рейтинги</span><span lang="en">Leaderboards</span></h2>
-      <p><span lang="ru">Таблицы рекордов Google Play Games за день, неделю и всё время.</span><span lang="en">Google Play Games leaderboards for the day, week and all time.</span></p>
-    </section>
-  </div>
+  <section class="band">
+    <div class="wrap">
+      <h2 class="title"><span lang="ru">Как играть</span><span lang="en">How to play</span></h2>
+      <p class="sub"><span lang="ru">Правила за 10 секунд.</span><span lang="en">The rules in 10 seconds.</span></p>
+      <div class="steps">
+        <div class="step"><b><span lang="ru">Перетащи фигуру</span><span lang="en">Drag a piece</span></b><span><span lang="ru">Внизу три фигуры. Ставь их на поле 8×8 в любом порядке.</span><span lang="en">Three pieces wait below. Place them on the 8×8 board in any order.</span></span></div>
+        <div class="step"><b><span lang="ru">Собери линию</span><span lang="en">Fill a line</span></b><span><span lang="ru">Полный ряд или столбец исчезает. Несколько линий сразу — комбо.</span><span lang="en">A full row or column clears. Several at once is a combo.</span></span></div>
+        <div class="step"><b><span lang="ru">Не дай полю заполниться</span><span lang="en">Keep the board open</span></b><span><span lang="ru">Партия кончается, когда ни одна фигура не помещается.</span><span lang="en">The round ends when no piece fits.</span></span></div>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap">
+      <h2 class="title"><span lang="ru">Что внутри</span><span lang="en">What's inside</span></h2>
+      <p class="sub"><span lang="ru">Без регистрации и без рекламы.</span><span lang="en">No sign-up and no ads.</span></p>
+      <div class="grid">
+        <div class="card"><div class="piece c-blue"><i></i><i></i><i></i><i class="o"></i><i></i><i class="o"></i></div>
+          <h3><span lang="ru">Бесконечный режим</span><span lang="en">Endless mode</span></h3>
+          <p><span lang="ru">Три фигуры на ход, комбо за несколько линий и рекорд, который хочется побить.</span><span lang="en">Three pieces per turn, combos for several lines and a best score to beat.</span></p></div>
+        <div class="card"><div class="piece c-orange"><i></i><i></i><i class="o"></i><i class="o"></i><i></i><i></i></div>
+          <h3><span lang="ru">Ежедневный пазл</span><span lang="en">Daily puzzle</span></h3>
+          <p><span lang="ru">Новая раздача каждый день, одна для всех, и стрик за дни подряд.</span><span lang="en">A new deal every day, the same for everyone, and a streak for days in a row.</span></p></div>
+        <div class="card"><div class="piece c-purple"><i></i><i class="o"></i><i class="o"></i><i></i><i></i><i></i></div>
+          <h3><span lang="ru">Дуэли</span><span lang="en">Duels</span></h3>
+          <p><span lang="ru">Отправь другу «Побей мой счёт»: он сыграет ту же раздачу.</span><span lang="en">Send a friend “Beat my score”: they play the very same deal.</span></p></div>
+        <div class="card"><div class="piece c-green"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <h3><span lang="ru">Рейтинги</span><span lang="en">Leaderboards</span></h3>
+          <p><span lang="ru">Таблицы рекордов Google Play Games за день, неделю и всё время.</span><span lang="en">Google Play Games leaderboards for the day, week and all time.</span></p></div>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap">
+      <div class="cta">
+        <h2 class="title"><span lang="ru">Сыграй первую партию</span><span lang="en">Play your first round</span></h2>
+        <p class="sub"><span lang="ru">Бесплатно в Google Play.</span><span lang="en">Free on Google Play.</span></p>
+        <div class="actions"><a class="btn" href="https://play.google.com/store/apps/details?id=org.sshorg.blocks" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 5 3.5z"/></svg><span lang="ru">Скачать в Google Play</span><span lang="en">Get it on Google Play</span></a></div>
+      </div>
+    </div>
+  </section>
 </main>
 <footer>
-  <a href="https://blocks.sshorg.com/privacy"><span lang="ru">Политика конфиденциальности</span><span lang="en">Privacy policy</span></a>
-  · <a href="https://sshorg.com/">sshorg.com</a>
+  <a href="https://blocks.sshorg.com/privacy"><span lang="ru">Политика конфиденциальности</span><span lang="en">Privacy policy</span></a>·<a href="https://sshorg.com/">sshorg.com</a>
 </footer>
 </body>
 </html>

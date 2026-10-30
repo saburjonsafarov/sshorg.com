@@ -8,10 +8,12 @@ const PLAY = 'https://play.google.com/store/apps/details?id=org.sshorg.blocks';
 const HOST = 'https://blocks.sshorg.com';
 
 test('the Blocks pages load scripts only from the site and link to Google Play and the policy', () => {
-  for (const page of ['site/blocks/index.html', 'site/blocks/d/index.html']) {
+  for (const page of ['site/blocks/index.html', 'site/blocks/d/index.html', 'site/blocks/privacy.html']) {
     const html = read(page);
     assert.match(html, /<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self';/, page);
     assert.ok(!/<script>/.test(html) && !/ on\w+="/.test(html), `${page} has inline script`);
+    // The subdomain's CSP header has no 'unsafe-inline': an inline style would leave the page unstyled.
+    assert.ok(!/<style|\sstyle="/.test(html), `${page} has an inline style`);
     assert.ok(html.includes(`href="${PLAY}"`), `${page} has no Play link`);
     assert.ok(html.includes(`href="${HOST}/privacy"`), `${page} has no privacy link`);
     // Assets are relative, so the pages also work under sshorg.com/blocks/.

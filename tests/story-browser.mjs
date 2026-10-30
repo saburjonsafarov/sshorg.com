@@ -168,11 +168,11 @@ if (webgl) {
     const { page, context, errors } = await openPage({ viewport: { width: 1440, height: 900 } });
     assert.equal(await page.evaluate(() => window.__story.mode), 'live');
     // Hero beam: fades in after the first frame in the dark studio (about half a second;
-    // software GL in CI can starve frames, hence the wait), then the room lights up by chapter 01.
-    await page.waitForFunction(() => window.__story.light.spot >= 0.9, null, { timeout: 5000, polling: 100 }).catch(() => {});
+    // software GL in CI starves frames: 5 s was not always enough), then the room lights up by chapter 01.
+    await page.waitForFunction(() => window.__story.light.spot >= 0.9, null, { timeout: 15000, polling: 100 }).catch(() => {});
     const hero = await page.evaluate(() => ({ ...window.__story.light, bloom: window.__story.bloomAtStart }));
     assert.equal(hero.theme, 'dark');
-    assert.ok(hero.spot >= 0.9, `beam not on 5 s after the first frame (${hero.spot})`);
+    assert.ok(hero.spot >= 0.9, `beam not on 15 s after the first frame (${hero.spot})`);
     assert.ok(hero.reveal < 0.05, `studio already lit on the hero (${hero.reveal})`);
     assert.equal(hero.bloom, true, 'bloom should start on for a fine pointer');
     await checkHolds(page, 'desktop');

@@ -15,12 +15,13 @@ body {
 html[data-lang="ru"] [lang="en"]:not(html), html[data-lang="en"] [lang="ru"]:not(html) { display: none !important; }
 a { color: inherit; }
 .hero {
-  background: linear-gradient(135deg, var(--orange), var(--pink)); color: #fff;
+  /* Navy text: white on this gradient is under 3:1 (WCAG AA). */
+  background: linear-gradient(135deg, var(--orange), var(--pink)); color: var(--navy);
   padding: 20px 16px 56px; text-align: center;
 }
 .bar { display: flex; justify-content: flex-end; max-width: 960px; margin: 0 auto 24px; }
 .lang {
-  font: inherit; font-size: 14px; font-weight: 600; color: #fff; background: rgba(255, 255, 255, 0.2);
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--navy); background: rgba(255, 255, 255, 0.45);
   border: 0; border-radius: 999px; padding: 8px 16px; min-height: 40px; cursor: pointer;
 }
 .lang:focus-visible, .btn:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }

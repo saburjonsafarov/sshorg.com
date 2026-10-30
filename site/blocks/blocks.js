@@ -46,7 +46,8 @@
     document.querySelectorAll('[data-score]').forEach(function (el) { el.textContent = scoreText; });
     duel.hidden = false;
     document.getElementById('no-duel').hidden = true;
-    if (/Android/i.test(navigator.userAgent)) {
+    // В webview (Telegram, Instagram) intent:// часто заблокирован — там остаётся только Play.
+    if (/Android/i.test(navigator.userAgent) && !/; wv\)/.test(navigator.userAgent)) {
       var open = document.getElementById('open');
       open.href = 'intent://sshorg.com/blocks/d?' + query + '#Intent;scheme=https;package=' + PKG +
         ';S.browser_fallback_url=' + encodeURIComponent(play) + ';end';

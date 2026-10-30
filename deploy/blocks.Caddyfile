@@ -17,6 +17,13 @@ blocks.sshorg.com {
 	root * /srv/sshorg/blocks
 	encode zstd gzip
 	import blocks_sshorg_headers
+	# Онлайн-батлы: API и WebSocket — контейнер blocks-battle в сети Caddy (код — репо block-puzzle, server/).
+	# X-Real-IP ставится из соединения: сервер верит только ему (лимиты по адресу, IPv6 по /64).
+	handle /api/* {
+		reverse_proxy blocks-battle:8095 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
 	# /privacy → privacy.html, /d?s=..&p=.. → d/index.html: адреса, вшитые в игру, без редиректов
 	try_files {path} {path}.html {path}/index.html
 	@html path / /d /d/ /privacy

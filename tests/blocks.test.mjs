@@ -50,6 +50,7 @@ test('assetlinks.json declares the game package for App Links', () => {
   const [entry] = JSON.parse(read('site/blocks/.well-known/assetlinks.json'));
   assert.deepEqual(entry.relation, ['delegate_permission/common.handle_all_urls']);
   assert.equal(entry.target.package_name, 'org.sshorg.blocks');
+  assert.equal(entry.target.sha256_cert_fingerprints.length, 2, 'app signing + upload keys');
   for (const print of entry.target.sha256_cert_fingerprints) assert.match(print, /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/);
 });
 

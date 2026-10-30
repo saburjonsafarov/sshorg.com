@@ -63,7 +63,7 @@ Pages of the Android game «Блоки 8×8» (`org.sshorg.blocks`) live in `sit
 
 - `/` landing (ru/en), `/privacy` privacy policy (`privacy.html`), `/d?s=<seed>&p=<score>` duel link fallback (`d/index.html`).
 - `/.well-known/assetlinks.json` for App Links (intent filter: https, host `blocks.sshorg.com`, path prefix `/d`). **Placeholder:** `sha256_cert_fingerprints` is empty until the first AAB upload; then add the app signing key's SHA-256 from Play Console → Setup → App signing. Until then links open this page, not the game.
-- `/app-ads.txt` (also at the apex `site/app-ads.txt`, since crawlers look at the developer site's root). **Placeholder:** `pub-0000000000000000` until the AdMob account exists; keep both copies identical (a test checks).
+- `/app-ads.txt` (also at the apex `site/app-ads.txt`, since crawlers look at the developer site's root). AdMob publisher `pub-4925365052292709`; keep both copies identical (a test checks).
 
 Hosting: the regular deploy copies `site/blocks/` to `/srv/sshorg/blocks`; `deploy/blocks.Caddyfile` maps the subdomain there (`try_files` gives the extensionless addresses, CSP with `frame-ancestors` as a header). It is applied by the manual workflow `blocks-caddy.yml` (`inspect` → `apply`, with backup, `caddy validate`, smoke checks and automatic rollback), after the DNS record `blocks` A → 49.13.146.50 exists at GoDaddy. Do not touch the `api` record.
 

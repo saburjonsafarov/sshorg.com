@@ -60,3 +60,8 @@ test('app-ads.txt has one AdMob line in the IAB format, the same on the apex and
   assert.deepEqual(lines.map((line) => line.split(', ').length), [4]);
   assert.match(lines[0], /^google\.com, pub-\d{16}, DIRECT, f08c47fec0942fa0$/);
 });
+
+test('the privacy policy names the app and the developer, as Google Play requires', () => {
+  const html = read('site/blocks/privacy.html');
+  for (const name of ['Блоки 8×8', 'Blocks 8×8', 'org.sshorg.blocks', 'Saburjon Safarov']) assert.ok(html.includes(name), name);
+});

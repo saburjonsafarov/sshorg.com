@@ -57,6 +57,16 @@ sshorg.com, www.sshorg.com {
 }
 ```
 
+## Blocks 8×8 (blocks.sshorg.com)
+
+Pages of the Android game «Блоки 8×8» (`org.sshorg.blocks`) live in `site/blocks/` and are served on their own subdomain. The game has these addresses built in, so keep them stable:
+
+- `/` landing (ru/en), `/privacy` privacy policy (`privacy.html`), `/d?s=<seed>&p=<score>` duel link fallback (`d/index.html`).
+- `/.well-known/assetlinks.json` for App Links (intent filter: https, host `blocks.sshorg.com`, path prefix `/d`). Fingerprints: the Play App Signing key (installs from Google Play) and the upload key (builds installed outside Play). If a key rotates, add its SHA-256 from Play Console → Setup → App signing.
+- No `app-ads.txt` yet: the first release has no ads. When AdMob comes back, add `app-ads.txt` (publisher `pub-4925365052292709`) both here and at the apex `site/`, since crawlers look at the developer site's root.
+
+Hosting: the regular deploy copies `site/blocks/` to `/srv/sshorg/blocks`; `deploy/blocks.Caddyfile` maps the subdomain there (`try_files` gives the extensionless addresses, CSP with `frame-ancestors` as a header). It is applied by the manual workflow `blocks-caddy.yml` (`inspect` → `apply`, with backup, `caddy validate`, smoke checks and automatic rollback), after the DNS record `blocks` A → 49.13.146.50 exists at GoDaddy. Do not touch the `api` record.
+
 ## Studio 3D story
 
 The hero is a scroll-driven WebGL scene: a procedural laptop, phone, tablet and monitor in a studio, with a camera that travels between them while four chapters of text fade in and out.

@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.sshorg.blocks",
+      "sha256_cert_fingerprints": [
+        "AC:AA:65:0C:9C:29:2F:CA:16:85:04:BA:29:90:1C:5C:BE:0A:AE:A1:7B:22:48:E1:BE:54:D1:35:BE:66:E1:CF",
+        "C5:70:93:60:A7:32:DD:8A:7E:FC:1A:98:4A:20:62:E8:8C:2C:95:D1:EB:8B:E0:86:A3:D3:DF:A2:EC:63:06:34"
+      ]
+    }
+  }
+]

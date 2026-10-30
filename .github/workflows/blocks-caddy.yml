@@ -1,0 +1,100 @@
+name: Blocks subdomain (Caddy)
+
+# blocks.sshorg.com: блок из deploy/blocks.Caddyfile в общий Caddyfile (контейнер Sartarosh).
+# Меняется только блок между маркерами >>> / <<< blocks.sshorg.com; бэкап → validate → graceful reload;
+# при ошибке или если другой сайт сменил код ответа — откат. Запускать после DNS-записи blocks → VPS.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "inspect | apply | rollback"
+        type: choice
+        options: [inspect, apply, rollback]
+        default: inspect
+
+jobs:
+  caddy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST#*@}" >> ~/.ssh/known_hosts
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+
+      - name: Sites on this Caddy (before)
+        run: |
+          echo "== DNS blocks.sshorg.com: $(getent hosts blocks.sshorg.com || echo 'нет записи')"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" 'cat /root/Sartarosh/Caddyfile' > Caddyfile.server
+          grep -oE '^[a-zA-Z0-9*.,: -]+\{' Caddyfile.server | tr ', ' '\n\n' | grep -E '^[a-z0-9-]+(\.[a-z0-9-]+)+$' | grep -v '^blocks\.sshorg\.com$' | sort -u > hosts.txt
+          while read -r h; do echo "$h $(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://$h/" || echo ERR)"; done < hosts.txt | tee before.txt
+          echo "== current blocks block"
+          sed -n '/^# >>> blocks\.sshorg\.com/,/^# <<< blocks\.sshorg\.com/p' Caddyfile.server
+
+      - name: Apply block
+        if: ${{ inputs.mode != 'inspect' }}
+        run: |
+          scp -i ~/.ssh/deploy_key deploy/blocks.Caddyfile "${{ secrets.DEPLOY_HOST }}:/tmp/blocks-block.caddy"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" MODE='${{ inputs.mode }}' 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          C=sartarosh-caddy-1
+          CF=/root/Sartarosh/Caddyfile
+          docker exec "$C" caddy version
+          if [ "$MODE" = rollback ]; then
+            BAK=$(ls -1t "$CF".bak-blocks-* | head -1)
+            echo "rollback to $BAK"; cat "$BAK" > "$CF"
+          else
+            BAK="$CF.bak-blocks-$(date +%Y%m%d%H%M%S)"
+            cp -p "$CF" "$BAK"
+            # Убрать прежний блок между маркерами, остальное — байт в байт
+            # Без пары маркеров sed удалил бы всё до конца файла
+            [ "$(grep -c '^# >>> blocks\.sshorg\.com' "$BAK")" = "$(grep -c '^# <<< blocks\.sshorg\.com' "$BAK")" ] || { echo "unpaired blocks markers"; exit 1; }
+            sed '/^# >>> blocks\.sshorg\.com/,/^# <<< blocks\.sshorg\.com/d' "$BAK" > /tmp/Caddyfile.new
+            if grep -q 'blocks\.sshorg\.com' /tmp/Caddyfile.new; then echo "blocks.sshorg.com outside the markers — fix by hand"; exit 1; fi
+            printf '\n' >> /tmp/Caddyfile.new
+            cat /tmp/blocks-block.caddy >> /tmp/Caddyfile.new
+            # Файл примонтирован в контейнер: пишем поверх (тот же inode), не mv
+            cat /tmp/Caddyfile.new > "$CF"
+            echo "backup: $BAK"; diff "$BAK" "$CF" || true
+          fi
+          if ! docker exec "$C" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile; then
+            cat "$BAK" > "$CF"; echo "validate failed, restored $BAK"; exit 1
+          fi
+          if ! docker exec "$C" caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile; then
+            cat "$BAK" > "$CF"; docker exec "$C" caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile || true
+            echo "reload failed, restored $BAK"; exit 1
+          fi
+          echo "$BAK" > /tmp/blocks-last-backup
+          REMOTE
+
+      - name: Smoke check (rollback on regression)
+        if: ${{ inputs.mode == 'apply' }}
+        run: |
+          sleep 10  # первый сертификат Let's Encrypt
+          fail=0
+          while read -r h code; do
+            now=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://$h/" || echo ERR)
+            echo "$h before=$code now=$now"
+            [ "$now" = "$code" ] || fail=1
+          done < before.txt
+          check() {
+            got=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "https://blocks.sshorg.com$1" || echo ERR)
+            echo "blocks$1 -> $got (want $2)"; [ "$got" = "$2" ] || fail=1
+          }
+          check / 200
+          check "/d?s=1&p=2" 200
+          check /privacy 200
+          check /.well-known/assetlinks.json 200
+          check /no-such-page 404
+          curl -sI https://blocks.sshorg.com/.well-known/assetlinks.json | grep -i '^content-type: application/json' || fail=1
+          echo "== headers"; curl -sI https://blocks.sshorg.com/ | grep -iE 'content-security|x-frame|strict|cache-control|server' || true
+          if [ "$fail" = 1 ]; then
+            echo "regression — rolling back"
+            ssh -i ~/.ssh/deploy_key "${{ secrets.DEPLOY_HOST }}" 'B=$(cat /tmp/blocks-last-backup); cat "$B" > /root/Sartarosh/Caddyfile && docker exec sartarosh-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile && echo "restored $B"'
+            exit 1
+          fi

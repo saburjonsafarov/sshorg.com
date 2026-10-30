@@ -1,0 +1,27 @@
+# >>> blocks.sshorg.com — источник: репо sshorg.com, deploy/blocks.Caddyfile; применяет .github/workflows/blocks-caddy.yml
+(blocks_sshorg_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+		# То же, что meta CSP в страницах, плюс frame-ancestors (meta его не умеет)
+		Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		-Server
+	}
+}
+
+blocks.sshorg.com {
+	# Файлы — site/blocks/ из репо (деплой кладёт их в /srv/sshorg/blocks)
+	root * /srv/sshorg/blocks
+	encode zstd gzip
+	import blocks_sshorg_headers
+	# /privacy → privacy.html, /d?s=..&p=.. → d/index.html: адреса, вшитые в игру, без редиректов
+	try_files {path} {path}.html {path}/index.html
+	@html path / /d /d/ /privacy
+	header @html Cache-Control "no-cache"
+	header /.well-known/assetlinks.json Content-Type "application/json"
+	file_server
+}
+# <<< blocks.sshorg.com

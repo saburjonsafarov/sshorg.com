@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru" data-title-ru="Блоки 8×8 — побей мой счёт" data-title-en="Blocks 8×8 — beat my score">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Блоки 8×8 — побей мой счёт</title>
+  <link rel="icon" href="/blocks/icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#ff9a3c">
+  <meta property="og:title" content="Блоки 8×8 — побей мой счёт">
+  <meta property="og:description" content="Друг вызывает тебя на дуэль: сыграй ту же раздачу и набери больше.">
+  <link rel="stylesheet" href="/blocks/blocks.css">
+  <script src="/blocks/blocks.js" defer></script>
+</head>
+<body>
+<header class="hero">
+  <div class="bar"><button class="lang" id="lang" type="button"><span lang="ru">English</span><span lang="en">Русский</span></button></div>
+  <img class="icon" src="/blocks/icon.svg" width="112" height="112" alt="">
+  <h1><span lang="ru">Побей мой счёт</span><span lang="en">Beat my score</span></h1>
+  <div id="duel" hidden>
+    <p class="lead"><span lang="ru">Друг набрал</span><span lang="en">Your friend scored</span></p>
+    <p class="score" data-score></p>
+    <p class="lead"><span lang="ru">Сыграй ту же раздачу в «Блоки 8×8» и набери больше.</span><span lang="en">Play the same deal in Blocks 8×8 and score higher.</span></p>
+  </div>
+  <p class="lead" id="no-duel"><span lang="ru">Ссылка на дуэль неполная. Открой игру и начни свою партию.</span><span lang="en">This duel link is incomplete. Open the game and start your own round.</span></p>
+  <div class="actions">
+    <a class="btn" id="open" href="#" hidden><span lang="ru">Открыть в игре</span><span lang="en">Open in the game</span></a>
+    <a class="btn light" data-play href="https://play.google.com/store/apps/details?id=org.sshorg.blocks" rel="noopener"><span lang="ru">Скачать в Google Play</span><span lang="en">Get it on Google Play</span></a>
+  </div>
+  <p class="note"><span lang="ru">Игра для Android. В ссылке только номер раздачи и счёт.</span><span lang="en">Android game. The link carries only the deal number and the score.</span></p>
+</header>
+<footer>
+  <a href="/blocks/"><span lang="ru">Об игре</span><span lang="en">About the game</span></a>
+  · <a href="/blocks/privacy.html"><span lang="ru">Конфиденциальность</span><span lang="en">Privacy</span></a>
+</footer>
+</body>
+</html>

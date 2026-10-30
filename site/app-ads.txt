@@ -1,0 +1,3 @@
+# app-ads.txt для приложений разработчика sshorg.com (Google Play: «Блоки 8×8», org.sshorg.blocks).
+# TODO: заменить pub-0000000000000000 на реальный ID издателя AdMob (AdMob → Настройки → Информация об аккаунте).
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

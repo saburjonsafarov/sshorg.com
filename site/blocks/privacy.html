@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-lang="ru" data-title-ru="Блоки 8×8 — политика конфиденциальности" data-title-en="Blocks 8×8 — privacy policy">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Блоки 8×8 — политика конфиденциальности</title>
   <link rel="canonical" href="https://blocks.sshorg.com/privacy">
-  <style>
-    :root { color-scheme: light dark; }
-    body {
-      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f5f7; color: #1d1d1f; line-height: 1.55; padding: 24px 16px;
-    }
-    @media (prefers-color-scheme: dark) { body { background: #101012; color: #f5f5f7; } }
-    main { max-width: 720px; margin: 0 auto; }
-    h1 { font-size: clamp(28px, 6vw, 40px); letter-spacing: -0.02em; margin: 0 0 4px; }
-    h2 { font-size: 20px; margin: 32px 0 8px; }
-    .muted { opacity: 0.7; font-size: 15px; }
-    hr { border: 0; border-top: 1px solid currentColor; opacity: 0.15; margin: 48px 0; }
-    a { color: inherit; }
-  </style>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#ff9a3c">
+  <link rel="stylesheet" href="blocks.css">
+  <script src="blocks.js" defer></script>
 </head>
 <body>
-<main>
-  <h1>Блоки 8×8</h1>
-  <p class="muted">Политика конфиденциальности приложения «Блоки 8×8» · разработчик: Saburjon Safarov · действует с 30.10.2026</p>
+<header class="hero">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="https://blocks.sshorg.com/"><img src="icon.svg" width="36" height="36" alt=""><span lang="ru">Блоки 8×8</span><span lang="en">Blocks 8×8</span></a>
+      <button class="lang" id="lang" type="button"><span lang="ru">English</span><span lang="en">Русский</span></button>
+    </div>
+    <div class="doc-head">
+      <span class="eyebrow"><span lang="ru">Конфиденциальность</span><span lang="en">Privacy</span></span>
+      <h1><span lang="ru">Политика конфиденциальности</span><span lang="en">Privacy policy</span></h1>
+      <p><span lang="ru">Политика конфиденциальности приложения «Блоки 8×8» · разработчик: Saburjon Safarov · действует с 30.10.2026</span><span lang="en">Privacy policy for the app “Blocks 8×8” · developer: Saburjon Safarov · effective 30 Oct 2026</span></p>
+    </div>
+  </div>
+</header>
+<main class="doc">
+  <article lang="ru">
+
 
   <h2>Кто мы</h2>
   <p>Игру «Блоки 8×8» (Android, пакет <code>org.sshorg.blocks</code>) разрабатывает Saburjon Safarov (Сабурджон Сафаров), частный разработчик; это же имя указано как разработчик в Google Play. Связь: <a href="mailto:safarovsaburjon2002@gmail.com">safarovsaburjon2002@gmail.com</a>.</p>
@@ -45,12 +49,9 @@
 
   <h2>Изменения</h2>
   <p>Если политика изменится, новая версия появится на этой странице с новой датой.</p>
+  </article>
+  <article lang="en">
 
-  <hr>
-
-  <h1 lang="en">Blocks 8×8</h1>
-  <p class="muted" lang="en">Privacy policy for the app “Blocks 8×8” · developer: Saburjon Safarov · effective 30 Oct 2026</p>
-  <div lang="en">
     <p>Blocks 8×8 (Android, package <code>org.sshorg.blocks</code>) is developed by Saburjon Safarov, an individual developer; the same name is shown as the developer on Google Play. Contact: <a href="mailto:safarovsaburjon2002@gmail.com">safarovsaburjon2002@gmail.com</a>.</p>
     <p><strong>On-device data.</strong> The current game, best score, daily streak and sound/vibration settings stay on your device. We do not receive them and there are no accounts.</p>
     <p><strong>Analytics (Google Firebase).</strong> We use Firebase Analytics to see which levels are hard and where players stop: events such as game started, game over (score), daily puzzle passed. This data contains no name, phone number or contacts.</p>
@@ -58,7 +59,10 @@
     <p><strong>Children.</strong> The game is intended for users aged 13 and over and is not directed at children.</p>
     <p><strong>Deleting data.</strong> On-device data is removed with the app or via “Clear data”.</p>
     <p><strong>Changes.</strong> Any update will appear on this page with a new date.</p>
-  </div>
+  </article>
 </main>
+<footer>
+  <a href="https://blocks.sshorg.com/"><span lang="ru">Об игре</span><span lang="en">About the game</span></a>·<a href="https://play.google.com/store/apps/details?id=org.sshorg.blocks" rel="noopener">Google Play</a>·<a href="https://sshorg.com/">sshorg.com</a>
+</footer>
 </body>
 </html>

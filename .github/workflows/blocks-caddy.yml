@@ -89,7 +89,6 @@ jobs:
           check / 200
           check "/d?s=1&p=2" 200
           check /privacy 200
-          check /app-ads.txt 200
           check /.well-known/assetlinks.json 200
           check /no-such-page 404
           curl -sI https://blocks.sshorg.com/.well-known/assetlinks.json | grep -i '^content-type: application/json' || fail=1

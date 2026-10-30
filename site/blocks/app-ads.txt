@@ -1,2 +1,0 @@
-# app-ads.txt для приложений разработчика sshorg.com (Google Play: «Блоки 8×8», org.sshorg.blocks).
-google.com, pub-4925365052292709, DIRECT, f08c47fec0942fa0

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 const root = new URL('../', import.meta.url);
@@ -53,15 +53,13 @@ test('assetlinks.json declares the game package for App Links', () => {
   for (const print of entry.target.sha256_cert_fingerprints) assert.match(print, /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/);
 });
 
-test('app-ads.txt has one AdMob line in the IAB format, the same on the apex and the subdomain', () => {
-  const apex = read('site/app-ads.txt');
-  assert.equal(read('site/blocks/app-ads.txt'), apex);
-  const lines = apex.split('\n').filter((line) => line && !line.startsWith('#'));
-  assert.deepEqual(lines.map((line) => line.split(', ').length), [4]);
-  assert.match(lines[0], /^google\.com, pub-\d{16}, DIRECT, f08c47fec0942fa0$/);
-});
-
 test('the privacy policy names the app and the developer, as Google Play requires', () => {
   const html = read('site/blocks/privacy.html');
   for (const name of ['Блоки 8×8', 'Blocks 8×8', 'org.sshorg.blocks', 'Saburjon Safarov']) assert.ok(html.includes(name), name);
+});
+
+test('the first release has no ads: no AdMob in the policy, no app-ads.txt', () => {
+  assert.ok(!/AdMob|реклам|advertis|\bads?\b/i.test(read('site/blocks/privacy.html')), 'ads in the policy');
+  assert.match(read('site/blocks/index.html'), /без рекламы.*no ads/);
+  assert.ok(!existsSync(new URL('site/app-ads.txt', root)) && !existsSync(new URL('site/blocks/app-ads.txt', root)));
 });
